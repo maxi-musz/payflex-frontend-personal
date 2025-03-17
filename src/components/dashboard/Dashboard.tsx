@@ -7,7 +7,7 @@ import TransactionOptions from './dataDisplay/TransactionOptions';
 
 const Dashboard = () => {
   return (
-    <div className='w-full h-full min-h-screen pt-2 md:pt- pb-4 space-y-2 md:space-y-5'>
+    <div className='w-full pt-2 pb-4 space-y-2 md:space-y-5'>
         {/* <div>
             <h1 className='text-2xl font-semibold'>Welcome, <span className='text-blue-700'>Adrian</span></h1>
             <p>Access & manage your account and transactions efficiently.</p>

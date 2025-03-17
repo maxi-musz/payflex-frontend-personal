@@ -10,19 +10,19 @@ interface DropDownMenuProps {
         title: string,
         url: string
     }[],
-    tab: string
 }
 
-const DropDownMenu = ({menu, tab}: DropDownMenuProps) => {
+const DropDownMenu = ({menu}: DropDownMenuProps) => {
     const pathName = usePathname();
     
     const isActivePath = (route: string | null) => {
         if (!route) return false;
-        return pathName.includes(route);
+        return pathName === route;
+        // return pathName.includes(route);
     };
 
   return (
-    <ul className={`${tab === 'Account' ? 'top-7' : 'top-10'} w-full border absolute left-0 py-1 z-20 bg-white shadow-md rounded-radius-4`}>
+    <ul className={`top-10 w-full border absolute left-0 py-1 z-20 bg-white shadow-md rounded-radius-4`}>
         {menu.map(menuItem => 
             <li key={menuItem.id} className='group w-full whitespace-nowrap p-1'>
                 <ButtonLinkNeutral

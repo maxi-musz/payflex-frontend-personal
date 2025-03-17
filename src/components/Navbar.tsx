@@ -1,11 +1,12 @@
 'use client';
 
-import Link from 'next/link';
 import React, { useState } from 'react';
-import Image from 'next/image';
 import Sidebar from './sidebar/Sidebar';
 import ButtonNeutral from './button/ButtonNeutral';
 import MenuIcon from './icons/MenuIcon';
+import { HelpCenterOutlined, NotificationsOutlined, QrCodeScannerOutlined } from '@mui/icons-material';
+import Link from 'next/link';
+import Image from 'next/image';
 
 const Navbar: React.FC = () => {
   const [open, setOpen] = useState(false);
@@ -14,9 +15,9 @@ const Navbar: React.FC = () => {
 
   return (
     <>
-      <nav className="flex lg:hidden items-center justify-between gap-3 z-30 py-1 md:py-2 pl-[2px] pr-3 sm:px-3 md:px-5 border-b border-customGray">
-        <div className="w-full flex items-center justify-between">
-          <Link href="/" className={`lg:hidden sm:mr-4 relative w-[138.32px] h-[45px]`}>
+      <nav className="flex items-center justify-between gap-3 z-30 py-2 sm:px-3 md:px-2">
+        <div className="w-full flex items-center gap-2">
+          <Link href="/" className={`lg:hidden sm:mr-4 relative w-16 h-[35px] sm:w-20 sm:h-[40px] md:w-28 md:h-[45px]`}>  
             <Image
               src="/images/LAPO_Logo_2022-removebg-preview 1.svg"
               alt="Lapo's Logo"
@@ -26,10 +27,20 @@ const Navbar: React.FC = () => {
               sizes="(max-width: 768px) 100vw, 50vw"
             />
           </Link>
+          <h1 className='text-base md:text-xl font-semibold py-1'>Hi, <span className='text-blue-700'>Adrian</span></h1>
         </div>
+        
 
-        {/* Hamburger menu */}
-        <ButtonNeutral onClick={() => setOpen(!open)} icon1={<MenuIcon />} classes='lg:hidden text-gray-700 focus:outline-primary' />
+        <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1">
+            <ButtonNeutral icon2={<HelpCenterOutlined style={{fontSize: '20px'}} />} classes='text-sm bg-transparent text-neutral-600 hover:bg-blue-100 hover:text-blue-700 transition-all duration-300 eas-in-out rounded-full size-8' />
+            <ButtonNeutral icon2={<QrCodeScannerOutlined style={{fontSize: '20px'}} />} classes='text-sm bg-transparent text-neutral-600 hover:bg-blue-100 hover:text-blue-700 transition-all duration-300 eas-in-out rounded-full size-8' />
+            <ButtonNeutral icon2={<NotificationsOutlined style={{fontSize: '20px'}} />} classes='text-sm bg-transparent text-neutral-600 hover:bg-blue-100 hover:text-blue-700 transition-all duration-300 eas-in-out rounded-full size-8' />
+          </div>
+
+          {/* Hamburger menu */}
+          <ButtonNeutral onClick={() => setOpen(!open)} icon1={<MenuIcon />} classes='lg:hidden focus:outline-primary bg-transparent text-neutral-700 hover:bg-blue-100 hover:text-blue-700 transition-all duration-300 eas-in-out rounded-radius-8 p-1' />
+        </div>
       </nav>
 
       {open && (

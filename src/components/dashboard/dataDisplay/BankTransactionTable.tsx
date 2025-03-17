@@ -3,12 +3,40 @@
 import FullPagination from '@/components/pagination/FullPagination';
 import { cardRequests, recentCardRequestTableHead } from '@/utils/data';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const BankTransactionTable = () => {
   // ============== pagination =================
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [transactionPerPage, settransactionPerPage] = useState<number>(4);
+  const [transactionPerPage, setTransactionPerPage] = useState<number>(0);
+
+  useEffect(() => {
+    const handleResize = () => { 
+      if (window.innerWidth < 640) {
+        setTransactionPerPage(2);
+      } else {
+        if (window.innerHeight < 800) {
+          setTransactionPerPage(5);
+        } else if (window.innerHeight < 830) {
+          setTransactionPerPage(5);
+        } else if (window.innerHeight < 850) {
+          setTransactionPerPage(6)
+        } else if (window.innerHeight < 1085) {
+          setTransactionPerPage(8)
+        } else if (window.innerHeight < 1180) {
+          setTransactionPerPage(10)
+        } else {
+          setTransactionPerPage(10);
+        }
+      }
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, [transactionPerPage]);
+
 
   const indexOfLastProduct = currentPage * transactionPerPage;
   const indexOfFirstProduct = indexOfLastProduct - transactionPerPage;
@@ -18,7 +46,7 @@ const BankTransactionTable = () => {
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
   
   const handleRowsPerPageChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    settransactionPerPage(Number(event.target.value));
+    setTransactionPerPage(Number(event.target.value));
     setCurrentPage(1);
   };
   // ============== pagination =================

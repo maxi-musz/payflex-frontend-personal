@@ -6,6 +6,7 @@ import Link from 'next/link';
 import ButtonNeutral from '../button/ButtonNeutral';
 import { useRouter } from 'next/navigation';
 import Tabs from './Tabs';
+import { Logout } from '@mui/icons-material';
 
 interface SidebarProps {
     show?: string;
@@ -44,8 +45,8 @@ const Sidebar: React.FC<SidebarProps> = ({ show = 'hidden', closeSidebar = () =>
 
                         <div className="border-t">
                             <ul className="flex flex-col items-start justify-start gap-3 w-full py-2">
-                                <Tabs start={7} stop={8} type="lowerBtn" />
-                                <Tabs start={8} stop={menuItems.length} type="lowerLink" />
+                                <Tabs start={7} stop={8} type="btn" />
+                                <Tabs start={8} stop={menuItems.length} type="link" />
                             </ul>
 
                             <div className="pl-2 pt-2 flex items-center gap-3 border-t">
@@ -65,7 +66,7 @@ const Sidebar: React.FC<SidebarProps> = ({ show = 'hidden', closeSidebar = () =>
                                 <ButtonNeutral
                                     onClick={() => router.push('/login')}
                                     classes={`focus:ring-transparent bg-transparent border-transparent hover:bg-[#F6F6F6] border hover:border-customGray p-1 rounded-radius-4 transition-all duration-300 ease-in-out`}
-                                    icon1={<div className="relative size-[24px]"><Image src={`/icons/logout-02.svg`} fill alt={`logout icon`} title={`Logout`} className={`object-contain`} sizes="(max-width: 768px) 100vw, 50vw" /></div>}
+                                    icon1={<Logout style={{fontSize: '20px'}} />}
                                 />
                             </div>
                         </div>

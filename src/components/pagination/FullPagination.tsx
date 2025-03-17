@@ -21,35 +21,35 @@ const FullPagination = ({transactionPerPage, handleRowsPerPageChange, totalTrans
                     onChange={handleRowsPerPageChange}
                     className="span"
                 >
-                    <option value={totalTransactions > 5 && totalTransactions < 10 ? totalTransactions : 5}>
-                        {totalTransactions > 5 && totalTransactions < 10 ? totalTransactions : 5}
+                    <option value={totalTransactions > 5 && totalTransactions <= 10 ? transactionPerPage : 5}>
+                        {totalTransactions > 5 && totalTransactions <= 10 ? transactionPerPage : 5}
                     </option>
-                    <option value={totalTransactions > 10 && totalTransactions < 15 ? totalTransactions: 10}>
-                        {totalTransactions > 10 && totalTransactions < 15 ? totalTransactions: 10}
+                    <option value={totalTransactions > 10 && totalTransactions <= 15 ? totalTransactions: 10}>
+                        {totalTransactions > 10 && totalTransactions <= 15 ? totalTransactions: 10}
                     </option>
-                    <option value={totalTransactions > 15 && totalTransactions < 20 ? totalTransactions : 15}>
-                        {totalTransactions > 15 && totalTransactions < 20 ? totalTransactions : 15}
+                    <option value={totalTransactions > 15 && totalTransactions <= 20 ? totalTransactions : 15}>
+                        {totalTransactions > 15 && totalTransactions <= 20 ? totalTransactions : 15}
                     </option>
-                    <option value={totalTransactions > 20 && totalTransactions < 25 ? totalTransactions : 20}>
-                        {totalTransactions > 20 && totalTransactions < 25 ? totalTransactions : 20}
+                    <option value={totalTransactions > 20 && totalTransactions <= 25 ? totalTransactions : 20}>
+                        {totalTransactions > 20 && totalTransactions <= 25 ? totalTransactions : 20}
                     </option>
-                    <option value={totalTransactions > 25 && totalTransactions < 30 ? totalTransactions : 25}>
-                        {totalTransactions > 25 && totalTransactions < 30 ? totalTransactions : 25}
+                    <option value={totalTransactions > 25 && totalTransactions <= 30 ? totalTransactions : 25}>
+                        {totalTransactions > 25 && totalTransactions <= 30 ? totalTransactions : 25}
                     </option>
-                    <option value={totalTransactions > 30 && totalTransactions < 35 ? totalTransactions : 30}>
-                        {totalTransactions > 30 && totalTransactions < 35 ? totalTransactions : 30}
+                    <option value={totalTransactions > 30 && totalTransactions <= 35 ? totalTransactions : 30}>
+                        {totalTransactions > 30 && totalTransactions <= 35 ? totalTransactions : 30}
                     </option>
-                    <option value={totalTransactions > 35 && totalTransactions < 40 ? totalTransactions : 35}>
-                        {totalTransactions > 35 && totalTransactions < 40 ? totalTransactions : 35}
+                    <option value={totalTransactions > 35 && totalTransactions <= 40 ? totalTransactions : 35}>
+                        {totalTransactions > 35 && totalTransactions <= 40 ? totalTransactions : 35}
                     </option>
-                    <option value={totalTransactions > 40 && totalTransactions < 45 ? totalTransactions : 40}>
-                        {totalTransactions > 40 && totalTransactions < 45 ? totalTransactions : 40}
+                    <option value={totalTransactions > 40 && totalTransactions <= 45 ? totalTransactions : 40}>
+                        {totalTransactions > 40 && totalTransactions <= 45 ? totalTransactions : 40}
                     </option>
-                    <option value={totalTransactions > 45 && totalTransactions < 50 ? totalTransactions : 45}>
-                        {totalTransactions > 45 && totalTransactions < 50 ? totalTransactions : 45}
+                    <option value={totalTransactions > 45 && totalTransactions <= 50 ? totalTransactions : 45}>
+                        {totalTransactions > 45 && totalTransactions <= 50 ? totalTransactions : 45}
                     </option>
-                    <option value={totalTransactions > 50 && totalTransactions < 55 ? totalTransactions : 50}>
-                        {totalTransactions > 50 && totalTransactions < 55 ? totalTransactions : 50}
+                    <option value={totalTransactions > 50 && totalTransactions <= 55 ? totalTransactions : 50}>
+                        {totalTransactions > 50 && totalTransactions <= 55 ? totalTransactions : 50}
                     </option>
                     <option value={100}>100</option>
                 </select>

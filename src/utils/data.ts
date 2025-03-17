@@ -1,17 +1,18 @@
+import { Home, ContactPhoneOutlined, WhatsApp, AccountCircleOutlined, SnippetFolderOutlined, MonetizationOnOutlined, CreditCardOutlined, NetworkWifiOutlined, AssuredWorkloadOutlined, ShoppingBagOutlined, SendTimeExtensionOutlined, ArrowUpward, SendOutlined, ConnectWithoutContact, BarChart, SettingsCell, CameraRear, SportsSoccer, ConnectedTv, Wallet, HistoryEdu, Category } from '@mui/icons-material';
 
 export const menuItems = [
     {
         id: 1,
         title: "Dashboard",
         url: '/',
-        icon: 'home.svg',
+        icon: Home,
         dropdownMenu: [],
     },
     {
         id: 2,
         title: "Transfer",
         url: '',
-        icon: 'layers-three-01.svg',
+        icon: SendTimeExtensionOutlined,
         dropdownMenu: [
             {
                 id: 1,
@@ -29,7 +30,7 @@ export const menuItems = [
         id: 3,
         title: "VTU Payment",
         url: 'vtu-payment',
-        icon: 'credit-card-pos.svg',
+        icon: ShoppingBagOutlined,
         dropdownMenu: [
             {
                 id: 1,
@@ -72,7 +73,7 @@ export const menuItems = [
         id: 4,
         title: "Data Menu",
         url: '',
-        icon: 'setting-05.svg',
+        icon: NetworkWifiOutlined,
         dropdownMenu: [
             {
                 id: 1,
@@ -105,7 +106,7 @@ export const menuItems = [
         id: 5,
         title: "Bills Payment",
         url: '',
-        icon: 'credit-card-accept.svg',
+        icon: CreditCardOutlined,
         dropdownMenu: [
             {
                 id: 1,
@@ -143,21 +144,21 @@ export const menuItems = [
         id: 6,
         title: "Connect Bank",
         url: '/connect-bank',
-        icon: 'chart-bar-line.svg',
+        icon: AssuredWorkloadOutlined,
         dropdownMenu: [],
     },
     {
         id: 7,
         title: "Refer and Earn",
         url: '/refer-and-earn',
-        icon: 'user-group.svg',
+        icon: MonetizationOnOutlined,
         dropdownMenu: [],
     },
     {
         id: 8,
         title: "Account",
         url: '',
-        icon: '',
+        icon: AccountCircleOutlined,
         dropdownMenu: [
             {
                 id: 1,
@@ -185,21 +186,21 @@ export const menuItems = [
         id: 9,
         title: "API Docs",
         url: '/api-docs',
-        icon: '',
+        icon: SnippetFolderOutlined,
         dropdownMenu: [],
     },
     {
         id: 10,
         title: "Join WhatsApp group",
         url: '/whatsapp',
-        icon: '',
+        icon: WhatsApp,
         dropdownMenu: [],
     },
     {
         id: 11,
         title: "Contact Support",
         url: '/contact-support',
-        icon: '',
+        icon: ContactPhoneOutlined,
         dropdownMenu: [],
     },
 ];
@@ -228,10 +229,31 @@ export const cardRequests = [
     {id: 3, transaction: "Figma", amount: '1,500', date: 'Wed 23:21pm', status: 'Processing', category: 'Income', avatar: '3.jpeg' },
     {id: 4, transaction: "Fresh F&V", amount: '300', date: 'Wed 23:21pm', status: 'Success', category: 'Groceries', avatar: '5.jpeg' },
     {id: 5, transaction: "Sam Sulek", amount: '1,500', date: 'Wed 23:21pm', status: 'Processing', category: 'Food', avatar: 'default_avatar.png' },
+    {id: 6, transaction: "Spotify", amount: '1,500', date: 'Wed 23:21pm', status: 'Success', category: 'Subscriptions', avatar: '2.jpeg' },
+    {id: 7, transaction: "Alexa Doe", amount: '500', date: 'Wed 23:21pm', status: 'Declined', category: 'Deposit', avatar: 'default_avatar.png' },
+    {id: 8, transaction: "Figma", amount: '1,500', date: 'Wed 23:21pm', status: 'Processing', category: 'Income', avatar: '3.jpeg' },
+    {id: 9, transaction: "Fresh F&V", amount: '300', date: 'Wed 23:21pm', status: 'Success', category: 'Groceries', avatar: '5.jpeg' },
+    {id: 10, transaction: "Sam Sulek", amount: '1,500', date: 'Wed 23:21pm', status: 'Processing', category: 'Food', avatar: 'default_avatar.png' },
 ];
 
 export const budgets = [
     {id: 1, text1: "Subscriptions", text2: '$28 left', icon: 'setting-05.svg', bg: 'gray', overallColor: 'blue', progress: '25' },
     {id: 2, text1: "Food and booze", text2: '$120 left', icon: 'package-check.svg', bg: 'orange', overallColor: 'green', progress: '75' },
     {id: 3, text1: "Savings", text2: '$50 left', icon: 'credit-card-pos.svg', bg: 'green', overallColor: 'red', progress: '40' },
+];
+
+export const transactionsOptions = [
+    {id: 1, title: "Local Transfer", btnText: 'Send', textIcon: ArrowUpward, btnIcon: SendOutlined},
+    {id: 2, title: "Foreign Transfer", btnText: 'Send', textIcon: ArrowUpward, btnIcon: SendOutlined},
+    {id: 3, title: "Connect Bank", btnText: 'Connect', textIcon: BarChart, btnIcon: ConnectWithoutContact},
+];
+
+export const availableTransactions = [
+    {id: 1, title: "Airtime", icon: SettingsCell},
+    {id: 2, title: "Data", icon: CameraRear},
+    {id: 3, title: "Betting", icon: SportsSoccer},
+    {id: 4, title: "TV Subscription", icon: ConnectedTv},
+    {id: 5, title: "Fund Wallet", icon: Wallet},
+    {id: 6, title: "Transaction History", icon: HistoryEdu},
+    {id: 7, title: "More", icon: Category},
 ];

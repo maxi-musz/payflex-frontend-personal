@@ -12,21 +12,21 @@ const BankTransactionTable = () => {
 
   useEffect(() => {
     const handleResize = () => { 
-      if (window.innerWidth < 640) {
+      if (window.innerWidth <= 640) {
         setTransactionPerPage(2);
       } else {
-        if (window.innerHeight < 800) {
-          setTransactionPerPage(5);
-        } else if (window.innerHeight < 830) {
-          setTransactionPerPage(5);
-        } else if (window.innerHeight < 850) {
-          setTransactionPerPage(6)
-        } else if (window.innerHeight < 1085) {
-          setTransactionPerPage(8)
-        } else if (window.innerHeight < 1180) {
+        if (window.innerHeight <= 731) {
+          setTransactionPerPage(6);
+        } else if (window.innerHeight <= 810) {
+          setTransactionPerPage(7);
+        } else if (window.innerHeight <= 1180) {
           setTransactionPerPage(10)
+        // } else if (window.innerHeight <= 1085) {
+        //   setTransactionPerPage(8)
+        // } else if (window.innerHeight <= 1180) {
+        //   setTransactionPerPage(10)
         } else {
-          setTransactionPerPage(10);
+          setTransactionPerPage(15);
         }
       }
     };

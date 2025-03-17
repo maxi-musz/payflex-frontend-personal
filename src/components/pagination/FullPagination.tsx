@@ -10,9 +10,11 @@ interface FullPaginationProps {
 }
 
 const FullPagination = ({transactionPerPage, handleRowsPerPageChange, totalTransactions, totalPages, paginate, currentPage}: FullPaginationProps) => {  
+    console.log(transactionPerPage, handleRowsPerPageChange, totalTransactions);
   return (
-    <div className='pagination w-full flex flex-col md:flex-row items-center justify-between'>
-        <div className='pages flex items-center justify-between gap-3'>
+    // <div className='pagination w-full flex flex-col md:flex-row items-center justify-center'>
+    <div className='pagination w-full flex flex-col items-center justify-center'>
+        {/* <div className='pages flex items-center justify-between gap-3'>
             <span>Showing</span>
 
             <div className="select-container">
@@ -56,7 +58,7 @@ const FullPagination = ({transactionPerPage, handleRowsPerPageChange, totalTrans
             </div>
 
             <span>out of {totalTransactions}</span>
-        </div>
+        </div> */}
         <BasicPagination count={totalPages} onPageChange={paginate} currentPage={currentPage} />
     </div>
   )

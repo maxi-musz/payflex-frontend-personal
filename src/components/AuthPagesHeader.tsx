@@ -14,7 +14,7 @@ const AuthPagesHeader = () => {
               sizes="(max-width: 768px) 100vw, 50vw"
           />
       </span>
-      <h1 className='text-2xl font-bold'>Horizone</h1>
+      <h1 className='text-2xl font-bold'>PayFlex</h1>
     </div>
   )
 }

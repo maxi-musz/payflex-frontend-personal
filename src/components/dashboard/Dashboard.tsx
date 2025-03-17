@@ -13,11 +13,11 @@ const Dashboard = () => {
             <p>Access & manage your account and transactions efficiently.</p>
         </div> */}
 
-        <TransactionOptions />
-
         <div className='w-full rounded-radius-12 py- pl-1 pr-3 bg-white border border-customGray'>
             <BankAccountsPieChart />
         </div>
+
+        <TransactionOptions />
 
         <div className="flex items-center justify-between">
             <h2 className='text-base font-semibold'>Recent transactions</h2>

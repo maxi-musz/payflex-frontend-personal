@@ -16,8 +16,8 @@ const SidebarRight: React.FC<SidebarProps> = ({ show = 'hidden', closeSidebar = 
             <div className="relative mb-16">
                 <div className="relative w-full h-[100px]">
                     <Image
-                        src="/images/victorokoye-1.png"
-                        alt="Lapo's Logo"
+                        src="/images/profile_banner.jpg"
+                        alt="User's profile banner"
                         fill
                         priority
                         className="object-cover"
@@ -27,7 +27,7 @@ const SidebarRight: React.FC<SidebarProps> = ({ show = 'hidden', closeSidebar = 
                 <div className="absolute -bottom-1/2 left-4 size-20 rounded-full border-2 border-white shadow-md">
                     <Image
                         src="/images/3.jpeg"
-                        alt="Lapo's Logo"
+                        alt="User's profile picture"
                         fill
                         priority
                         className="object-cover rounded-full"
@@ -41,7 +41,7 @@ const SidebarRight: React.FC<SidebarProps> = ({ show = 'hidden', closeSidebar = 
                 <p className='text-textGray text-sm'>adrian@jsmastery.pro</p>
             </div>
 
-            <div className="divide-y divide-customGray space-y-52">
+            <div className="divide-y divide-customGray space-y-64">
                 <div className='px-4'>
                     <div className="flex items-center justify-between">
                         <h2 className=''>My Banks</h2>
@@ -49,20 +49,20 @@ const SidebarRight: React.FC<SidebarProps> = ({ show = 'hidden', closeSidebar = 
                     </div>
 
                     <div className="relative my-6">
-                        <div className="absolute right-0 top-5 w-[90%] h-[130px] rounded-xl">
+                        <div className="absolute right-0 top-7 w-[90%] h-[170px] rounded-xl">
                             <Image
-                                src="/images/victorokoye-1.png"
-                                alt="Lapo's Logo"
+                                src="/images/gold-debit-new.png"
+                                alt="Gold debit card"
                                 fill
                                 priority
                                 className="object-cover rounded-xl"
                                 sizes="(max-width: 768px) 100vw, 50vw"
                             />
                         </div>
-                        <div className="absolute left-0 top-0 w-[90%] h-[130px] rounded-xl">
+                        <div className="absolute left-0 top-0 w-[90%] h-[170px] rounded-xl">
                             <Image
-                                src="/images/giithome.png"
-                                alt="Lapo's Logo"
+                                src="/images/uba-debit-mastercard.png"
+                                alt="UBA debit card"
                                 fill
                                 priority
                                 className="object-cover rounded-xl"

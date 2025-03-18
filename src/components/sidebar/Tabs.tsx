@@ -3,10 +3,11 @@
 import { menuItems } from '@/utils/data';
 import React, { useEffect, useState } from 'react'
 import ButtonNeutral from '../button/ButtonNeutral';
-import { usePathname } from 'next/navigation';
-import ButtonLinkNeutral from '../button/ButtonLinkNeutral';
+import { usePathname, useRouter } from 'next/navigation';
 import DropDownMenu from './DropDownMenu';
 import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
+import { useGeneralData } from '@/context/GeneralDataContext';
+import ButtonLinkNeutral from '../button/ButtonLinkNeutral';
 
 interface TabsProps {
     start: number,
@@ -17,13 +18,31 @@ interface TabsProps {
 const Tabs = ({start, stop, type}: TabsProps) => {
     const [currentDropdownTab, setCurrentDropdownTab] = useState<string | null>(null);
     const [currentActiveTab, setCurrentActiveTab] = useState<string | null>(null);
+
+    const {setCurrentData, currentData, updateGeneralData} = useGeneralData();
     const pathName = usePathname();
+    const router = useRouter();
+
+    useEffect(() => {
+        if (pathName !== '/') {
+            updateGeneralData(pathName);
+        } else {
+            updateGeneralData(currentData.currentTab);
+        }
+    }, [currentData.currentTab, updateGeneralData, pathName]);
+
+    const handleTabNavigation = (url: string) => {
+        if (url === '/') router.push('/');
+        // setCurrentUrl(url);
+        if (pathName === '/') setCurrentData({currentTab: url});
+        // console.log(currentUrl);
+    };
 
     useEffect(() => {
         const activeTab = menuItems.find(item => {
-            if (item.url === pathName) return true;
+            if (item.url === (currentData.currentTab || pathName)) return true;
             if (item.dropdownMenu) {
-                return item.dropdownMenu.some(subItem => subItem.url === pathName);
+                return item.dropdownMenu.some(subItem => subItem.url === (currentData.currentTab || pathName));
             }
             return false;
         });
@@ -31,14 +50,15 @@ const Tabs = ({start, stop, type}: TabsProps) => {
             setCurrentActiveTab(activeTab.title);
         }
         // console.log(currentActiveTab, currentDropdownTab)
-    }, [pathName, currentActiveTab, currentDropdownTab]);
+    }, [pathName, currentData.currentTab, currentActiveTab, currentDropdownTab]);
 
-    const isActivePath = (route: string | null) => {
+    const isActivePath = (route: string) => {
         if (!route) return false;
-        return route === '/' ? pathName === route : pathName.startsWith(route);
+        return route === '/' || route === '/api-docs' || route === '/whatsapp' || route === '/contact-support' ? (currentData.currentTab || pathName) === route : (currentData.currentTab || pathName).startsWith(route);
     };
 
     const toggleDropdownMenu = (tab: string) => {
+        // handleTabNavigation(url);
         setCurrentDropdownTab((prevId) => (prevId === tab ? null : tab));
     };
 
@@ -52,24 +72,31 @@ const Tabs = ({start, stop, type}: TabsProps) => {
                     key={item.id}
                     btnText1={item.title}
                     onClick={() => toggleDropdownMenu(item.title)}
-                    classes={`${(isActivePath(item.url) || currentDropdownTab === item.title || currentActiveTab === item.title) ? "text-white bg-blue-600" : "text-textGray bg-transparent border-transparent"} focus:ring-transparent focus:text-white focus:bg-blue-600 flex-1 flex items-center gap-2 w-full hover:text-white hover:bg-blue-600 py-2 px-3 rounded-radius-4 text-sm transition-all duration-300 ease-in-out`}
+                    classes={`${(isActivePath(item.url) || currentDropdownTab === item.title || currentActiveTab === item.title) ? "text-white bg-blue-600" : "text-textGray bg-transparent border-transparent"} flex-1 flex items-center gap-2 w-full hover:text-white hover:bg-blue-600 py-2 px-3 rounded-radius-4 text-sm transition-all duration-300 ease-in-out`}
                     icon1={<item.icon style={{fontSize: '16px'}} />}
                     icon2={currentDropdownTab === item.title ? <KeyboardArrowUp style={{fontSize: '16px'}} /> : <KeyboardArrowDown style={{fontSize: '16px'}} />}
                 />
 
-                {currentDropdownTab === item.title && <DropDownMenu menu={item.dropdownMenu} /> }
-            </span>
-            }
+                {currentDropdownTab === item.title && <DropDownMenu menu={item.dropdownMenu} handleTabNavigation={handleTabNavigation} /> }
+            </span>}
 
             {type === 'link' &&
+            <ButtonNeutral
+                onClick={() => handleTabNavigation(item.url)}
+                key={item.id}
+                btnText1={item.title}
+                classes={`${isActivePath(item.url) ? "text-white bg-blue-600" : "text-textGray bg-transparent border-transparent"} flex-1 flex items-center gap-2 w-full hover:text-white hover:bg-blue-600 py-2 px-3 rounded-radius-4 text-sm transition-all duration-300 ease-in-out`}
+                icon1={<item.icon style={{fontSize: '16px'}} />}
+            />}
+
+            {type === 'lowerLink' &&
             <ButtonLinkNeutral
                 href={item.url}
                 key={item.id}
                 btnText1={item.title}
-                classes={`${isActivePath(item.url) ? "text-white bg-blue-600" : "text-textGray bg-transparent border-transparent"} focus:ring-transparent flex-1 flex items-center gap-2 w-full hover:text-white hover:bg-blue-600 py-2 px-3 rounded-radius-4 text-sm transition-all duration-300 ease-in-out`}
+                classes={`${isActivePath(item.url) ? "text-white bg-blue-600" : "text-textGray bg-transparent border-transparent"} flex-1 flex items-center gap-2 w-full hover:text-white hover:bg-blue-600 py-2 px-3 rounded-radius-4 text-sm transition-all duration-300 ease-in-out`}
                 icon1={<item.icon style={{fontSize: '16px'}} />}
-            />
-            }
+            />}
         </li>
     )}
     </>

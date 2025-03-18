@@ -6,4 +6,4 @@ const DataPricing = () => {
   )
 }
 
-export default DataPricing;
+export default DataPricing

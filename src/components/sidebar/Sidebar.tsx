@@ -21,8 +21,8 @@ const Sidebar: React.FC<SidebarProps> = ({ show = 'hidden', closeSidebar = () =>
             <div className={`relative overflow-y-scroll custom-scrollbar2 w-full h-screen min-h-screen flex flex-col justify-between items-start px-1 pt-10 md:pt-0`}>
                 <button className='absolute top-2 right-2 text-3xl md:hidden hover:text-red-500' onClick={closeSidebar}>&times;</button>
                 <div className="h-full min-h-full flex flex-col justify-start items-start gap-4 pb-5 md:py-6">
-                    {/* <Link href="/" className="relative size-14 px-3 border"> */}
-                    <Link href="/" className="relative w-[138.32px] h-14 px-3 border">
+                    {/* <Link href="/" className="relative size-14 px-3"> */}
+                    <Link href="/" className="relative w-[138.32px] h-14 px-3">
                         <Image
                             src="/images/PayFlex-Logo.jpg"
                             alt="PayFlex's Logo"

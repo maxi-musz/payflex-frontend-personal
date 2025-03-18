@@ -9,8 +9,8 @@ const TransferSuccessModal = ({handleModalToggle}: {handleModalToggle: () => voi
     // const router = useRouter();
 
   return (
-    <section className="fixed inset-0 -top-5 bg-gray-800 bg-opacity-80 flex justify-center items-center p-2 z-[999999]">
-        <div className="bg-white w-[27rem] rounded-radius-12 shadow-lg flex flex-col justify-center items-center">
+    <section className="fixed inset-0 -top-10 bg-gray-800 bg-opacity-80 flex justify-center items-center p-2 z-[999999]">
+        <div className="bg-white md:w-[27rem] rounded-radius-12 shadow-lg flex flex-col justify-center items-center">
             <div className="w-full p-6 flex flex-col items-start justify-between gap-4 rounded-radius-12">
                 <div className='rounded-radius-12 size-10 border border-gray-200 flex items-center justify-center'>
                     <span className='text-green-600'><CheckCircle /></span>

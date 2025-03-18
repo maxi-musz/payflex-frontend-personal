@@ -48,27 +48,25 @@ const NGNToNGN = () => {
       setIsLoading(true);
       setTimeout(() => {
         setIsSuccessModalOpen(true);
-      }, 1000)
-      setIsLoading(false);
+        setIsLoading(false);
+      }, 1000);
     } else {
       setIsSuccessModalOpen(false);
     }
   };
   
-  // if (isLoading) {
-  //   return <Loading/>;
-  // };
+  if (isLoading) {
+    return <Loading/>;
+  };
 
   return (
-    <>
-    {isLoading ? <Loading/>
-      :
-      <section className='flex flex-col md:flex-row items-start justify-between gap-6'>
-        <div className="w-full md:w-1/4">
-          <h1 className='text-lg font-semibold'>Local Transfer</h1>
-        </div>
+    <section className='space-y-5'>
+      <div className="w-full">
+        <h1 className='text-lg font-semibold'>Local Transfer</h1>
+      </div>
 
-        <div className='w-full md:w-3/4 rounded-radius-12 p-6 bg-white border border-customGray space-y-3'>
+      <div className="w-full mt-3">
+        <div className='w-96 rounded-radius-12 p-6 mx-auto bg-white border border-customGray space-y-3'>
           <h2 className='font-semibold pb-4'>Recipient Account</h2>
           <form className="w-full space-y-3">
               <div className="w-full space-y-3">
@@ -100,11 +98,10 @@ const NGNToNGN = () => {
               
           </form>
         </div>
+      </div>
 
-        {isSuccessModalOpen && <TransferSuccessModal handleModalToggle={handleModalToggle} />}
-      </section>
-    }
-    </>
+      {isSuccessModalOpen && <TransferSuccessModal handleModalToggle={handleModalToggle} />}
+    </section>
   )
 }
 

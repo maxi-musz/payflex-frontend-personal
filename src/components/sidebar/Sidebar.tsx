@@ -21,10 +21,11 @@ const Sidebar: React.FC<SidebarProps> = ({ show = 'hidden', closeSidebar = () =>
             <div className={`relative overflow-y-scroll custom-scrollbar2 w-full h-screen min-h-screen flex flex-col justify-between items-start px-1 pt-10 md:pt-0`}>
                 <button className='absolute top-2 right-2 text-3xl md:hidden hover:text-red-500' onClick={closeSidebar}>&times;</button>
                 <div className="h-full min-h-full flex flex-col justify-start items-start gap-4 pb-5 md:py-6">
-                    <Link href="/" className="relative w-[138.32px] h-[45px] px-3">
+                    {/* <Link href="/" className="relative size-14 px-3 border"> */}
+                    <Link href="/" className="relative w-[138.32px] h-14 px-3 border">
                         <Image
-                            src="/images/LAPO_Logo_2022-removebg-preview 1.svg"
-                            alt="Lapo's Logo"
+                            src="/images/PayFlex-Logo.jpg"
+                            alt="PayFlex's Logo"
                             fill
                             priority
                             className="object-contain"
@@ -52,8 +53,8 @@ const Sidebar: React.FC<SidebarProps> = ({ show = 'hidden', closeSidebar = () =>
                             <div className="pl-2 pt-2 flex items-center gap-3 border-t">
                                 <div className="relative size-9">
                                     <Image
-                                        src="/images/cardinfra logo 1.svg"
-                                        alt="cardinfra logo"
+                                        src="/images/Payflex-Logo.jpg"
+                                        alt="Payflex's logo"
                                         fill
                                         className="object-contain"
                                         sizes="(max-width: 768px) 100vw, 50vw"

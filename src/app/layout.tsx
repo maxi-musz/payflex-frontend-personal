@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import './globals.css';
+import { GeneralDataProvider } from '@/context/GeneralDataContext';
 
 export const metadata = {
   title: "Payflex | Payflex Banking App",
@@ -11,7 +12,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="en">
       <body className='relative h-full min-h-fit flex'>
         <div className="w-full h-fit min-h-screen">
-          {children}
+          <GeneralDataProvider>
+            {children}
+          </GeneralDataProvider>
         </div>
       </body>
     </html>

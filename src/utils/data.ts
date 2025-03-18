@@ -257,3 +257,16 @@ export const availableTransactions = [
     {id: 6, title: "Transaction History", icon: HistoryEdu},
     {id: 7, title: "More", icon: Category},
 ];
+
+export const INITIAL_GENERAL_DATA = {
+    currentTab: '/',
+}
+
+export const availableBankOptions = [
+    {id: 1, accountName: "Maleek Umar Buhari", bank: 'United Bank of Africa (UBA)', accountNumber: '9847635637'},
+    {id: 2, accountName: "Onyeka Onwenu Veronica", bank: 'First Bank of Nigeria (FBN)', accountNumber: '8374649072'},
+    {id: 3, accountName: "Vik John Basil", bank: 'Zenith Bank', accountNumber: '0947483622'},
+    {id: 4, accountName: "John Doe Mark", bank: 'Fidelity Bank', accountNumber: '3384995787'},
+    {id: 5, accountName: "Ifeanyi Hyacinth Okafor", bank: 'Union Bank', accountNumber: '0049044453'},
+    {id: 6, accountName: "Mark Anthony Odumodu", bank: 'Access Bank', accountNumber: '2849111758'},
+];

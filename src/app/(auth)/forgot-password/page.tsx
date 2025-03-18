@@ -56,31 +56,6 @@ const ForgotPasswordPage = () => {
                 </div>
                     
                 {isOTPOpen && <OTPConfirmModal handleModalToggle={openOTP} emailAddress={emailAddress} />}
-
-                {/* <div className={`${isOTPOpen ? 'translate-y-0' : 'translate-y-full'} transition-all duration-500 ease-in-out flex flex-col gap-6 w-[90%] md:w-[50%] h-1/2 mx-auto`}>
-                    <div className="w-full mx-auto py-16">
-                        <form className="w-full space-y-3">
-                            <p className='text-center font-semibold'>Enter OTP</p>
-                            <div className="w-full flex items-center justify-center gap-2 py-2">
-                                <div className="w-[10%] pl-1 font-bold">
-                                    <InputOne onChange={(e) => e.target.value} value={''} />
-                                </div>
-                                <div className="w-[10%] pl-1 font-bold">
-                                    <InputOne onChange={(e) => e.target.value} value={''} />
-                                </div>
-                                <div className="w-[10%] pl-1 font-bold">
-                                    <InputOne onChange={(e) => e.target.value} value={''} />
-                                </div>
-                                <div className="w-[10%] pl-1 font-bold">
-                                    <InputOne onChange={(e) => e.target.value} value={''} />
-                                </div>
-                                
-                            </div>
-                            
-                            <ButtonLinkOne href='/change-password' classes='py-2 px-2 w-full text-sm rounded-' btnText1='Send' />
-                        </form>
-                    </div>
-                </div> */}
             </div>
 
             <AuthPagesRightSide />

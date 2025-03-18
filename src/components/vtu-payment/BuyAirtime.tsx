@@ -6,4 +6,4 @@ const BuyAirtime = () => {
   )
 }
 
-export default BuyAirtime;
+export default BuyAirtime

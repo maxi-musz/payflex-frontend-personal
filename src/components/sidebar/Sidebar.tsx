@@ -46,7 +46,7 @@ const Sidebar: React.FC<SidebarProps> = ({ show = 'hidden', closeSidebar = () =>
                         <div className="border-t">
                             <ul className="flex flex-col items-start justify-start gap-3 w-full py-2">
                                 <Tabs start={7} stop={8} type="btn" />
-                                <Tabs start={8} stop={menuItems.length} type="link" />
+                                <Tabs start={8} stop={menuItems.length} type="lowerLink" />
                             </ul>
 
                             <div className="pl-2 pt-2 flex items-center gap-3 border-t">

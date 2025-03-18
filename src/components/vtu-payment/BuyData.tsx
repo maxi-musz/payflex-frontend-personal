@@ -6,4 +6,4 @@ const BuyData = () => {
   )
 }
 
-export default BuyData;
+export default BuyData

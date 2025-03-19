@@ -34,7 +34,7 @@ const Sidebar: React.FC<SidebarProps> = ({ show = 'hidden', closeSidebar = () =>
                                 sizes="(max-width: 768px) 100vw, 50vw"
                             />
                         </div>
-                        <p className="font-semibold text-4xl">PayFlex</p>
+                        <p className="font-semibold text-3xl lg:text-4xl">PayFlex</p>
                     </Link>
                     
                     <div className="flex-1 flex flex-col items-start justify-between gap-5">

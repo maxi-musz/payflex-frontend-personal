@@ -65,7 +65,7 @@ const InputOne: React.FC<InputProps> = ({
     :
     <>
     <label htmlFor={name} className="text-sm text-neutral-700">{label}</label>
-    <div className={`${disabled ? 'opacity-30 border-neutral-400 cursor-not-allowed' : 'border-customGray'} w-full bg-white border flex items-center justify-between rounded-radius-8 focus-within:ring-1 focus-within:ring-primary hover:ring-primary`}>
+    <div className={`${disabled ? 'opacity-50 border-neutral-400 cursor-not-allowed' : 'border-customGray'} w-full bg-white border flex items-center justify-between rounded-radius-8 focus-within:ring-1 focus-within:ring-primary hover:ring-primary`}>
       <input
         key={key}
         id={name}

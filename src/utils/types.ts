@@ -41,4 +41,6 @@ export interface Product {
   
   export type GeneralDataProps = {
     currentTab: string,
+    // userName: string,
+    // userEmail: string,
 }

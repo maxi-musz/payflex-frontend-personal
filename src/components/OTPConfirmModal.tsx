@@ -5,7 +5,7 @@ import ButtonOne from './button/ButtonOne';
 import InputOne from './inputs/InputOne';
 import { ErrorOutline, Restore } from '@mui/icons-material';
 import ButtonNeutral from './button/ButtonNeutral';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 const OTPConfirmModal = ({handleModalToggle, emailAddress}: {handleModalToggle: () => void, emailAddress: string}) => {
     const [otpTime, setOTPTime] = useState<number>(60);
@@ -13,6 +13,7 @@ const OTPConfirmModal = ({handleModalToggle, emailAddress}: {handleModalToggle: 
         const [error, setError] = useState<string>('');
 
     const router = useRouter();
+    const pathName = usePathname();
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -40,8 +41,12 @@ const OTPConfirmModal = ({handleModalToggle, emailAddress}: {handleModalToggle: 
             return;
         } else {
             setError('');
-            handleModalToggle();
-            router.push('/change-password')
+            if (pathName === '/register') {
+                handleModalToggle();
+            }else {
+                handleModalToggle();
+                router.push('/change-password');
+            };
         };
     }
 

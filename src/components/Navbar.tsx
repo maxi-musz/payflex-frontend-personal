@@ -5,11 +5,14 @@ import Sidebar from './sidebar/Sidebar';
 import ButtonNeutral from './button/ButtonNeutral';
 import MenuIcon from './icons/MenuIcon';
 import { HelpCenterOutlined, NotificationsOutlined, QrCodeScannerOutlined } from '@mui/icons-material';
-import Link from 'next/link';
-import Image from 'next/image';
+// import Link from 'next/link';
+// import Image from 'next/image';
+// import { useGeneralData } from '@/context/GeneralDataContext';
 
 const Navbar: React.FC = () => {
   const [open, setOpen] = useState(false);
+      // const {currentData} = useGeneralData();
+      // const userNameArray = currentData.userName.split('').map(item => item.trim()).filter(item => item !== '');
   
   const closeSidebar = () => setOpen(false);
 
@@ -17,17 +20,21 @@ const Navbar: React.FC = () => {
     <>
       <nav className="flex items-center justify-between gap-3 z-30 py-2 sm:px-3 md:px-2">
         <div className="w-full flex items-center gap-2">
-          <Link href="/" className={`lg:hidden sm:mr-4 relative w-16 h-[35px] sm:w-20 sm:h-[40px] md:w-28 md:h-[45px]`}>  
-            <Image
-              src="/images/LAPO_Logo_2022-removebg-preview 1.svg"
-              alt="Lapo's Logo"
-              fill
-              priority
-              className="object-contain"
-              sizes="(max-width: 768px) 100vw, 50vw"
-            />
-          </Link>
-          <h1 className='text-base md:text-xl font-semibold py-1'>Hi, <span className='text-blue-700'>Adrian</span></h1>
+          {/* <Link href="/" className={`lg:hidden sm:mr-4 relative w-16 h-[35px] sm:w-20 sm:h-[40px] md:w-28 md:h-[45px]`}>
+              <div className="relative size-14 px-3 rounded-full">
+                  <Image
+                      src="/images/PayFlex-Logo.jpg"
+                      alt="PayFlex's Logo"
+                      fill
+                      priority
+                      className="object-contai rounded-full"
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                  />
+              </div>
+              <p className="font-semibold md:text-3xl lg:text-4xl hidden md:inline">PayFlex</p>
+          </Link> */}
+          <h1 className='text-base md:text-xl font-semibold py-1'>Hi, <span className='text-blue-700'>Joseph</span></h1>
+          {/* <h1 className='text-base md:text-xl font-semibold py-1'>Hi, <span className='text-blue-700'>{userNameArray[0]}</span></h1> */}
         </div>
         
 

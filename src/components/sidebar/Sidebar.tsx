@@ -7,6 +7,7 @@ import ButtonNeutral from '../button/ButtonNeutral';
 import { useRouter } from 'next/navigation';
 import Tabs from './Tabs';
 import { Logout } from '@mui/icons-material';
+// import { useGeneralData } from '@/context/GeneralDataContext';
 
 interface SidebarProps {
     show?: string;
@@ -15,22 +16,25 @@ interface SidebarProps {
   
 const Sidebar: React.FC<SidebarProps> = ({ show = 'hidden', closeSidebar = () => {} }) => {
     const router = useRouter();
+    // const {currentData} = useGeneralData();
 
     return (
         <nav className={`${show === 'block' ? 'fixed lg:hidden' : 'hidden'} px-2 lg:block top-0 left-0 z-50 lg:z-auto w-4/6 sm:w-3/6 lg:w-[21%] xl:w-1/6 h-full min-h-screen bg-white lg:bg-transparent`}>
             <div className={`relative overflow-y-scroll custom-scrollbar2 w-full h-screen min-h-screen flex flex-col justify-between items-start px-1 pt-10 md:pt-0`}>
-                <button className='absolute top-2 right-2 text-3xl md:hidden hover:text-red-500' onClick={closeSidebar}>&times;</button>
+                <button className='absolute top-2 right-2 text-3xl lg:hidden hover:text-red-500' onClick={closeSidebar}>&times;</button>
                 <div className="h-full min-h-full flex flex-col justify-start items-start gap-4 pb-5 md:py-6">
-                    {/* <Link href="/" className="relative size-14 px-3"> */}
-                    <Link href="/" className="relative w-[138.32px] h-14 px-3">
-                        <Image
-                            src="/images/PayFlex-Logo.jpg"
-                            alt="PayFlex's Logo"
-                            fill
-                            priority
-                            className="object-contain"
-                            sizes="(max-width: 768px) 100vw, 50vw"
-                        />
+                    <Link href="/" className="flex items-center gap-1">
+                        <div className="relative size-14 px-3 rounded-full">
+                            <Image
+                                src="/images/PayFlex-Logo.jpg"
+                                alt="PayFlex's Logo"
+                                fill
+                                priority
+                                className="object-contai rounded-full"
+                                sizes="(max-width: 768px) 100vw, 50vw"
+                            />
+                        </div>
+                        <p className="font-semibold text-4xl">PayFlex</p>
                     </Link>
                     
                     <div className="flex-1 flex flex-col items-start justify-between gap-5">
@@ -39,30 +43,34 @@ const Sidebar: React.FC<SidebarProps> = ({ show = 'hidden', closeSidebar = () =>
                             <Search onChange={handleSearch} />
                         </div> */}
                         <ul className="flex flex-col items-start justify-start gap-3 w-full">
-                            <Tabs start={0} stop={1} type="link" />
-                            <Tabs start={1} stop={5} type="btn" />
-                            <Tabs start={5} stop={7} type="link" />
+                            <Tabs start={0} stop={2} type="link" />
+                            <Tabs start={2} stop={3} type="btn" />
+                            <Tabs start={3} stop={5} type="link" />
+                            <Tabs start={5} stop={8} type="btn" />
+                            <Tabs start={8} stop={9} type="link" />
                         </ul>
 
                         <div className="border-t">
                             <ul className="flex flex-col items-start justify-start gap-3 w-full py-2">
-                                <Tabs start={7} stop={8} type="btn" />
-                                <Tabs start={8} stop={menuItems.length} type="lowerLink" />
+                                <Tabs start={9} stop={10} type="btn" />
+                                <Tabs start={10} stop={menuItems.length} type="lowerLink" />
                             </ul>
 
-                            <div className="pl-2 pt-2 flex items-center gap-3 border-t">
-                                <div className="relative size-9">
+                            <div className="pl-2 pt-2 pb-5 flex items-center gap-3 border-t">
+                                <div className="relative size-9 rounded-full">
                                     <Image
-                                        src="/images/Payflex-Logo.jpg"
-                                        alt="Payflex's logo"
+                                        src="/images/3.jpeg"
+                                        alt="User's profile image"
                                         fill
-                                        className="object-contain"
+                                        className="object-contain rounded-full"
                                         sizes="(max-width: 768px) 100vw, 50vw"
                                     />
                                 </div>
                                 <div className='flex flex-col'>
-                                    <p className='capitalize text-[12px] text-textGray font-semibold'>Adiran Haydn</p>
-                                    <p className='text-[10px] text-textGray'>adrian@smastery.pro</p>
+                                    <p className='capitalize text-[12px] text-textGray font-semibold'>Joseph Mark</p>
+                                    <p className='text-[10px] text-textGray'>joseph.mark@gmail.com</p>
+                                    {/* <p className='capitalize text-[12px] text-textGray font-semibold'>{currentData.userName}</p>
+                                    <p className='text-[10px] text-textGray'>{currentData.userEmail}</p> */}
                                 </div>
                                 <ButtonNeutral
                                     onClick={() => router.push('/login')}

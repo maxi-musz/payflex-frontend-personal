@@ -10,6 +10,13 @@ export const menuItems = [
     },
     {
         id: 2,
+        title: "Connect Bank",
+        url: '/connect-bank',
+        icon: AssuredWorkloadOutlined,
+        dropdownMenu: [],
+    },
+    {
+        id: 3,
         title: "Transfer",
         url: '',
         icon: SendTimeExtensionOutlined,
@@ -27,7 +34,21 @@ export const menuItems = [
         ],
     },
     {
-        id: 3,
+        id: 4,
+        title: "Virtual Cards",
+        url: '/virtual-cards',
+        icon: AssuredWorkloadOutlined,
+        dropdownMenu: [],
+    },
+    {
+        id: 5,
+        title: "Redeem Giftcard",
+        url: '/redeem-giftcard',
+        icon: AssuredWorkloadOutlined,
+        dropdownMenu: [],
+    },
+    {
+        id: 6,
         title: "VTU Payment",
         url: 'vtu-payment',
         icon: ShoppingBagOutlined,
@@ -70,7 +91,7 @@ export const menuItems = [
         ],
     },
     {
-        id: 4,
+        id: 7,
         title: "Data Menu",
         url: '',
         icon: NetworkWifiOutlined,
@@ -103,7 +124,7 @@ export const menuItems = [
         ],
     },
     {
-        id: 5,
+        id: 8,
         title: "Bills Payment",
         url: '',
         icon: CreditCardOutlined,
@@ -141,21 +162,14 @@ export const menuItems = [
         ],
     },
     {
-        id: 6,
-        title: "Connect Bank",
-        url: '/connect-bank',
-        icon: AssuredWorkloadOutlined,
-        dropdownMenu: [],
-    },
-    {
-        id: 7,
+        id: 9,
         title: "Refer and Earn",
         url: '/refer-and-earn',
         icon: MonetizationOnOutlined,
         dropdownMenu: [],
     },
     {
-        id: 8,
+        id: 10,
         title: "Account",
         url: '',
         icon: AccountCircleOutlined,
@@ -183,21 +197,21 @@ export const menuItems = [
         ],
     },
     {
-        id: 9,
+        id: 11,
         title: "API Docs",
         url: '/api-docs',
         icon: SnippetFolderOutlined,
         dropdownMenu: [],
     },
     {
-        id: 10,
+        id: 12,
         title: "Join WhatsApp group",
         url: '/whatsapp',
         icon: WhatsApp,
         dropdownMenu: [],
     },
     {
-        id: 11,
+        id: 13,
         title: "Contact Support",
         url: '/contact-support',
         icon: ContactPhoneOutlined,
@@ -260,6 +274,8 @@ export const availableTransactions = [
 
 export const INITIAL_GENERAL_DATA = {
     currentTab: '/',
+    // userName: 'Joseph Mark',
+    // userEmail: 'joseph.mark@gmail.com',
 }
 
 export const availableBankOptions = [

@@ -5,10 +5,29 @@ import AuthPagesRightSide from '@/components/AuthPagesRightSide';
 import ButtonLinkOne from '@/components/button/ButtonLinkOne';
 import InputOne from '@/components/inputs/InputOne';
 import InputSelect from '@/components/inputs/InputSelect';
+import OTPConfirmModal from '@/components/OTPConfirmModal';
 import Link from 'next/link';
-import React from 'react'
+import React, { useState } from 'react'
 
 const RegisterPage = () => {
+    const [isOTPOpen, setIsOTPOpen] = useState<boolean>(false);
+    const [emailAddress, setEmailAddress] = useState<string>('');
+    const [error, setError] = useState<string>('');
+    
+    const openOTP = () => {
+        if (!emailAddress) {
+            setError('Enter the email address you registered with');
+            return;
+        } else if (emailAddress.length < 4 || !emailAddress.includes('@')) {
+            setError('Invalid email address');
+            return;
+        } else {
+            setError('');
+            setIsOTPOpen(prev => !prev);
+        }
+
+    };
+
   return (
     <div className='h-full min-h-screen w-full flex flex-col md:flex-row '>
         <div className='order-2 md:order-1 w-full md:w-1/2 h-fit py-8 md:h-screen min-h-full flex items-center justify-center'>
@@ -33,7 +52,13 @@ const RegisterPage = () => {
 
                         <div className="w-full flex flex-col md:flex-row items-center gap-2 md:gap-3">
                             <div className="w-full md:w-1/2">
-                                <InputOne onChange={(e) => e.target.value} value={''} label='Email' name="email" placeholderText='Enter your email address' />
+                                <InputOne required={true} onChange={(e) => setEmailAddress(e.target.value)} value={''} label='Email' name="email" placeholderText='Enter your email address' />
+                                <div className="flex items-center justify-between">
+                                    {/* {!error && <p className='text-center text-xs text-neutral-600'>Click the 'verify button to verify email</p>} */}
+                                    {error ? <p className='text-center text-xs text-red-700'>{error}</p>
+                                    : <p className='text-center text-xs text-neutral-600'>Click the &apos;verify&apos; button to verify email</p>}
+                                    <button type='button' onClick={openOTP} className='px-2 text-sm'>Verify</button>
+                                </div>
                             </div>
 
                             <div className="w-full md:w-1/2">
@@ -72,6 +97,8 @@ const RegisterPage = () => {
                     </form>
                 </div>
             </div>
+
+            {isOTPOpen && <OTPConfirmModal handleModalToggle={openOTP} emailAddress={emailAddress} />}
         </div>
 
         <AuthPagesRightSide />

@@ -66,7 +66,7 @@ const NGNToNGN = () => {
       </div>
 
       <div className="w-full mt-3">
-        <div className='w-96 rounded-radius-12 p-6 mx-auto bg-white border border-customGray space-y-3'>
+        <div className='w-full sm:w-96 rounded-radius-12 p-6 mx-auto bg-white border border-customGray space-y-3'>
           <h2 className='font-semibold pb-4'>Recipient Account</h2>
           <form className="w-full space-y-3">
               <div className="w-full space-y-3">

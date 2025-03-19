@@ -1,11 +1,11 @@
-import { Home, ContactPhoneOutlined, WhatsApp, AccountCircleOutlined, SnippetFolderOutlined, MonetizationOnOutlined, CreditCardOutlined, NetworkWifiOutlined, AssuredWorkloadOutlined, ShoppingBagOutlined, SendTimeExtensionOutlined, ArrowUpward, SendOutlined, ConnectWithoutContact, BarChart, SettingsCell, CameraRear, SportsSoccer, ConnectedTv, Wallet, HistoryEdu, Category } from '@mui/icons-material';
+import { ContactPhoneOutlined, WhatsApp, AccountCircleOutlined, SnippetFolderOutlined, MonetizationOnOutlined, CreditCardOutlined, NetworkWifiOutlined, AssuredWorkloadOutlined, ShoppingBagOutlined, SendTimeExtensionOutlined, ArrowUpward, SendOutlined, ConnectWithoutContact, BarChart, SettingsCell, CameraRear, SportsSoccer, ConnectedTv, Wallet, HistoryEdu, Category, CardGiftcardOutlined, CardMembershipOutlined, HomeOutlined, CurrencyExchangeOutlined } from '@mui/icons-material';
 
 export const menuItems = [
     {
         id: 1,
         title: "Dashboard",
         url: '/',
-        icon: Home,
+        icon: HomeOutlined,
         dropdownMenu: [],
     },
     {
@@ -35,20 +35,27 @@ export const menuItems = [
     },
     {
         id: 4,
-        title: "Virtual Cards",
-        url: '/virtual-cards',
-        icon: AssuredWorkloadOutlined,
+        title: "P2P Lending 🔥",
+        url: '/p2p-lending',
+        icon: CurrencyExchangeOutlined,
         dropdownMenu: [],
     },
     {
         id: 5,
-        title: "Redeem Giftcard",
-        url: '/redeem-giftcard',
-        icon: AssuredWorkloadOutlined,
+        title: "Virtual Cards",
+        url: '/virtual-cards',
+        icon: CardMembershipOutlined,
         dropdownMenu: [],
     },
     {
         id: 6,
+        title: "Redeem Giftcard",
+        url: '/redeem-giftcard',
+        icon: CardGiftcardOutlined,
+        dropdownMenu: [],
+    },
+    {
+        id: 7,
         title: "VTU Payment",
         url: 'vtu-payment',
         icon: ShoppingBagOutlined,
@@ -91,7 +98,7 @@ export const menuItems = [
         ],
     },
     {
-        id: 7,
+        id: 8,
         title: "Data Menu",
         url: '',
         icon: NetworkWifiOutlined,
@@ -124,7 +131,7 @@ export const menuItems = [
         ],
     },
     {
-        id: 8,
+        id: 9,
         title: "Bills Payment",
         url: '',
         icon: CreditCardOutlined,
@@ -169,7 +176,7 @@ export const menuItems = [
         dropdownMenu: [],
     },
     {
-        id: 10,
+        id: 11,
         title: "Account",
         url: '',
         icon: AccountCircleOutlined,
@@ -197,21 +204,21 @@ export const menuItems = [
         ],
     },
     {
-        id: 11,
+        id: 12,
         title: "API Docs",
         url: '/api-docs',
         icon: SnippetFolderOutlined,
         dropdownMenu: [],
     },
     {
-        id: 12,
+        id: 13,
         title: "Join WhatsApp group",
         url: '/whatsapp',
         icon: WhatsApp,
         dropdownMenu: [],
     },
     {
-        id: 13,
+        id: 14,
         title: "Contact Support",
         url: '/contact-support',
         icon: ContactPhoneOutlined,

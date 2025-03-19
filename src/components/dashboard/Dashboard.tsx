@@ -29,6 +29,7 @@ import ConnectBank from '../connect-bank/ConnectBank';
 import ReferAndEarn from '../refer-and-earn/ReferAndEarn';
 import VirtualCards from '../virtual-cards/VirtualCards';
 import RedeemGiftcard from '../redeem-giftcard/RedeemGiftcard';
+import P2PLending from '../p2p-lending/P2PLending';
 
 const Dashboard = () => {
   const {currentTab} = useGeneralData();
@@ -55,6 +56,7 @@ const Dashboard = () => {
         {currentTab === '/ngn-ngn-transfer' && <NGNToNGN />}
         {currentTab === '/ngn-foreign-transfer' && <NGNToForeign />}
         {currentTab === '/virtual-cards' && <VirtualCards />}
+        {currentTab === '/p2p-lending' && <P2PLending />}
         {currentTab === '/redeem-giftcard' && <RedeemGiftcard />}
         {currentTab === '/buy-airtime' && <BuyAirtime />}
         {currentTab === '/buy-data' && <BuyData />}

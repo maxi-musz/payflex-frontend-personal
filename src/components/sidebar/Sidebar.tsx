@@ -45,15 +45,15 @@ const Sidebar: React.FC<SidebarProps> = ({ show = 'hidden', closeSidebar = () =>
                         <ul className="flex flex-col items-start justify-start gap-3 w-full">
                             <Tabs start={0} stop={2} type="link" />
                             <Tabs start={2} stop={3} type="btn" />
-                            <Tabs start={3} stop={5} type="link" />
-                            <Tabs start={5} stop={8} type="btn" />
-                            <Tabs start={8} stop={9} type="link" />
+                            <Tabs start={3} stop={6} type="link" />
+                            <Tabs start={6} stop={9} type="btn" />
+                            <Tabs start={9} stop={10} type="link" />
                         </ul>
 
                         <div className="border-t">
                             <ul className="flex flex-col items-start justify-start gap-3 w-full py-2">
-                                <Tabs start={9} stop={10} type="btn" />
-                                <Tabs start={10} stop={menuItems.length} type="lowerLink" />
+                                <Tabs start={10} stop={11} type="btn" />
+                                <Tabs start={11} stop={menuItems.length} type="lowerLink" />
                             </ul>
 
                             <div className="pl-2 pt-2 pb-5 flex items-center gap-3 border-t">

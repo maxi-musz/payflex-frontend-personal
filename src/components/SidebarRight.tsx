@@ -39,8 +39,8 @@ const SidebarRight: React.FC<SidebarProps> = ({ show = 'hidden', closeSidebar = 
             </div>
 
             <div className='px-4 mb-6'>
-                <h2 className='font-semibold'>Joseph Mark</h2>
-                <p className='text-textGray text-sm'>joseph.mark@gmail.com</p>
+                <h2 className='font-semibold'>Victor Okoye</h2>
+                <p className='text-textGray text-sm'>victor.c.okoye@gmail.com</p>
                 {/* <h2 className='font-semibold'>{currentData.userName}</h2>
                 <p className='text-textGray text-sm'>{currentData.userEmail}</p> */}
             </div>

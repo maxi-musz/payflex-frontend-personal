@@ -33,7 +33,7 @@ const Navbar: React.FC = () => {
               </div>
               <p className="font-semibold md:text-3xl lg:text-4xl hidden md:inline">PayFlex</p>
           </Link> */}
-          <h1 className='text-base md:text-xl font-semibold py-1'>Hi, <span className='text-blue-700'>Joseph</span></h1>
+          <h1 className='text-base md:text-xl font-semibold py-1'>Hi, <span className='text-blue-700'>Victor</span></h1>
           {/* <h1 className='text-base md:text-xl font-semibold py-1'>Hi, <span className='text-blue-700'>{userNameArray[0]}</span></h1> */}
         </div>
         

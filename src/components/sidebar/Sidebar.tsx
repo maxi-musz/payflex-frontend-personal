@@ -67,8 +67,8 @@ const Sidebar: React.FC<SidebarProps> = ({ show = 'hidden', closeSidebar = () =>
                                     />
                                 </div>
                                 <div className='flex flex-col'>
-                                    <p className='capitalize text-[12px] text-textGray font-semibold'>Joseph Mark</p>
-                                    <p className='text-[10px] text-textGray'>joseph.mark@gmail.com</p>
+                                    <p className='capitalize text-[12px] text-textGray font-semibold'>Victor Okoye</p>
+                                    <p className='text-[10px] text-textGray'>victor.c.okoye@gmail.com</p>
                                     {/* <p className='capitalize text-[12px] text-textGray font-semibold'>{currentData.userName}</p>
                                     <p className='text-[10px] text-textGray'>{currentData.userEmail}</p> */}
                                 </div>

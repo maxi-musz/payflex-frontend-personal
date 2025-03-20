@@ -293,3 +293,68 @@ export const availableBankOptions = [
     {id: 5, accountName: "Ifeanyi Hyacinth Okafor", bank: 'Union Bank', accountNumber: '0049044453'},
     {id: 6, accountName: "Mark Anthony Odumodu", bank: 'Access Bank', accountNumber: '2849111758'},
 ];
+
+export const p2pLendingTabs = [
+    {id: 1, title: "Lend"},
+    {id: 2, title: "Borrow"},
+    {id: 3, title: "History"},
+];
+
+export const availableLendersTableHead = [
+    {id: 1, title: "S/N"},
+    {id: 2, title: "Image"},
+    {id: 3, title: "Full Name"},
+    {id: 4, title: "Amount"},
+    {id: 5, title: "Rating/100"},
+    {id: 6, title: "Action"},
+];
+
+export const availableLenders = [
+    {id: 1, fullName: "Jude Adeyemi", amount: '120,500', rating: '55', avatar: '2.jpeg' },
+    {id: 2, fullName: "Victory Okolie", amount: '500000', rating: '23', avatar: 'default_avatar.png' },
+    {id: 3, fullName: "Emmanuel Damilola", amount: '150,500', rating: '77', avatar: '3.jpeg' },
+    {id: 4, fullName: "Mark Anthony", amount: '300000', rating: '48', avatar: '5.jpeg' },
+    {id: 5, fullName: "Sam Sulek", amount: '1,000,000', rating: '100', avatar: 'default_avatar.png' },
+    {id: 6, fullName: "Onyema Ejike", amount: '120,500', rating: '100', avatar: '2.jpeg' },
+    {id: 7, fullName: "Alexa Doe", amount: '80000', rating: '55', avatar: 'default_avatar.png' },
+    {id: 8, fullName: "Sunday Uwaezuoke", amount: '100,500', rating: '60', avatar: '3.jpeg' },
+    {id: 9, fullName: "Favour Odeyemi", amount: '30000', rating: '75', avatar: '5.jpeg' },
+    {id: 10, fullName: "Sam Sulek", amount: '150,000', rating: '65', avatar: 'default_avatar.png' },
+];
+
+export const rowDropdownMenu = [
+    {
+        id: 1,
+        title: 'Accept',
+        url: ''
+    },
+    {
+        id: 2,
+        title: 'View User',
+        url: '/user'
+    },
+    {
+        id: 3,
+        title: 'Report User',
+        url: ''
+    },
+    {
+        id: 4,
+        title: 'Block User',
+        url: ''
+    },
+];
+
+
+export const users = [
+    { id: 1, organization: 'Lendsqr', username: 'Grace Effiom', email: 'grace@lendsqr.com', phoneNumber: '07038474444', dateJoined: 'Jan 1, 2020 11:30 AM', status: 'active' },
+    { id: 2, organization: 'Irorun', username: 'Adedeji Joy', email: 'joy@lendsqr.com', phoneNumber: '07094833345', dateJoined: 'May 20, 2021 09:35 AM', status: 'inactive' },
+    { id: 3, organization: 'Relith', username: 'Debby Ogana', email: 'debby@relith.com', phoneNumber: '07003957771', dateJoined: 'Apr 15, 2020 10:00 AM', status: 'active' },
+    { id: 4, organization: 'McCkiney', username: 'Ada Imoke', email: 'ada@mcckiney.com', phoneNumber: '07038474444', dateJoined: 'Sept 22, 2022 01:00 PM', status: 'blacklisted' },
+    { id: 5, organization: 'Flektr', username: 'Emma Vin', email: 'emma@flektr.com', phoneNumber: '07003957771', dateJoined: 'Jan 1, 2020 11:30 AM', status: 'active' },
+    { id: 6, organization: 'Lendstar', username: 'Zara Grace', email: 'zara@lendstar.com', phoneNumber: '07094833345', dateJoined: 'May 20, 2021 09:35 AM', status: 'pending' },
+    { id: 7, organization: 'Amliss', username: 'Excel Adindu', email: 'excel@amliss.com', phoneNumber: '07038474444', dateJoined: 'Apr 15, 2020 10:00 AM', status: 'active' },
+    { id: 8, organization: 'Hexasphere', username: 'Ify Okoye', email: 'ify@hexasphere.com', phoneNumber: '07003957771', dateJoined: 'Jan 1, 2020 11:30 AM', status: 'blacklisted' },
+    { id: 9, organization: 'Agubas', username: 'Max Bonny', email: 'max@agubas.com', phoneNumber: '07038474444', dateJoined: 'Sept 22, 2022 01:00 PM', status: 'inactive' },
+    { id: 10, organization: 'Innova', username: 'Tosin Mark', email: 'tosin@innova.com', phoneNumber: '07094833345', dateJoined: 'Apr 15, 2020 10:00 AM', status: 'pending' },
+]

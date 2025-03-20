@@ -72,7 +72,7 @@ const Tabs = ({start, stop, type}: TabsProps) => {
                     key={item.id}
                     btnText1={item.title}
                     onClick={() => toggleDropdownMenu(item.title)}
-                    classes={`${(isActivePath(item.url) || currentDropdownTab === item.title || currentActiveTab === item.title) ? "text-white bg-blue-600" : "text-textGray bg-transparent border-transparent"} flex-1 flex items-center gap-2 w-full hover:text-white hover:bg-blue-600 py-2 px-3 rounded-radius-4 text-sm transition-all duration-300 ease-in-out`}
+                    classes={`${(isActivePath(item.url) || currentDropdownTab === item.title || currentActiveTab === item.title) ? "text-white bg-primary" : "text-textGray bg-transparent border-transparent"} flex-1 flex items-center gap-2 w-full hover:text-white hover:bg-primary py-2 px-3 rounded-radius-4 text-sm transition-all duration-300 ease-in-out`}
                     icon1={<item.icon style={{fontSize: '16px'}} />}
                     icon2={currentDropdownTab === item.title ? <KeyboardArrowUp style={{fontSize: '16px'}} /> : <KeyboardArrowDown style={{fontSize: '16px'}} />}
                 />
@@ -85,7 +85,7 @@ const Tabs = ({start, stop, type}: TabsProps) => {
                 onClick={() => handleTabNavigation(item.url)}
                 key={item.id}
                 btnText1={item.title}
-                classes={`${isActivePath(item.url) ? "text-white bg-blue-600" : "text-textGray bg-transparent border-transparent"} flex-1 flex items-center gap-2 w-full hover:text-white hover:bg-blue-600 py-2 px-3 rounded-radius-4 text-sm transition-all duration-300 ease-in-out`}
+                classes={`${isActivePath(item.url) ? "text-white bg-primary" : "text-textGray bg-transparent border-transparent"} flex-1 flex items-center gap-2 w-full hover:text-white hover:bg-primary py-2 px-3 rounded-radius-4 text-sm transition-all duration-300 ease-in-out`}
                 icon1={<item.icon style={{fontSize: '16px'}} />}
             />}
 
@@ -94,7 +94,7 @@ const Tabs = ({start, stop, type}: TabsProps) => {
                 href={item.url}
                 key={item.id}
                 btnText1={item.title}
-                classes={`${isActivePath(item.url) ? "text-white bg-blue-600" : "text-textGray bg-transparent border-transparent"} flex-1 flex items-center gap-2 w-full hover:text-white hover:bg-blue-600 py-2 px-3 rounded-radius-4 text-sm transition-all duration-300 ease-in-out`}
+                classes={`${isActivePath(item.url) ? "text-white bg-primary" : "text-textGray bg-transparent border-transparent"} flex-1 flex items-center gap-2 w-full hover:text-white hover:bg-primary py-2 px-3 rounded-radius-4 text-sm transition-all duration-300 ease-in-out`}
                 icon1={<item.icon style={{fontSize: '16px'}} />}
             />}
         </li>

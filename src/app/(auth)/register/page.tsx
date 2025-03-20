@@ -8,6 +8,7 @@ import InputSelect from '@/components/inputs/InputSelect';
 import OTPConfirmModal from '@/components/OTPConfirmModal';
 import Link from 'next/link';
 import React, { useState } from 'react'
+import { Toaster, toast } from 'react-hot-toast';
 
 const RegisterPage = () => {
     const [isOTPOpen, setIsOTPOpen] = useState<boolean>(false);
@@ -24,14 +25,37 @@ const RegisterPage = () => {
             return;
         } else {
             setError('');
+            if (isOTPEntered) {
+                toast.success(`Your email address has been verified!`, {
+                    className: 'custom-toast-success w-fit',
+                    icon: '✅',
+                    duration: 3000,
+                });
+            }
             setIsOTPEntered(true);
             setIsOTPOpen(prev => !prev);
+
         }
 
+    };
+    
+    const cancelEmailVerification = () => {
+        setError('');
+        setIsOTPEntered(false);
+        setIsOTPOpen(false);
+
+        if (isOTPEntered) {
+            toast.error(`Your email address has not been verified!`, {
+                className: 'custom-toast-error w-fit',
+                icon: '❌',
+                duration: 3000,
+            });
+        }
     };
 
   return (
     <div className='h-full min-h-screen w-full flex flex-col md:flex-row '>
+        <Toaster position="top-center" reverseOrder={false} />
         <div className='order-2 md:order-1 w-full md:w-1/2 h-fit py-8 md:h-screen min-h-full flex items-center justify-center'>
             <div className="flex flex-col gap-6 w-[90%] md:w-[85%]">
                 <AuthPagesHeader />
@@ -99,7 +123,7 @@ const RegisterPage = () => {
                 </div>
             </div>
 
-            {isOTPOpen && <OTPConfirmModal handleModalToggle={openOTP} emailAddress={emailAddress} />}
+            {isOTPOpen && <OTPConfirmModal cancelEmailVerification={cancelEmailVerification} handleModalToggle={openOTP} emailAddress={emailAddress} />}
         </div>
 
         <AuthPagesRightSide />

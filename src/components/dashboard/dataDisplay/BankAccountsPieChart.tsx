@@ -39,8 +39,8 @@ const BankAccountsPieChart = () => {
         </div>
 
         <div className="-ml-10">
-          <p className='mb-2 md:mb-6 text-lg md:text-xl font-semibold'>2 Bank Accounts</p>
-          <p className='text-textGray text-sm md:text-base'>Total Current Balance</p>
+          <p className='mb-2 md:mb-6 text-textGray text-lg md:text-xl'>Bank Accounts: <span className='text-textGrayDarker font-semibold'>2</span></p>
+          <p className='text-textGray text-sm md:text-base'>Overall Wallet Balance</p>
           <p className='text-textGrayDarker text-xl md:text-2xl font-semibold'>
             $ <CountUp start={0} end={2698435} duration={2} delay={0} />
           </p>
@@ -48,7 +48,7 @@ const BankAccountsPieChart = () => {
       </div>
 
       <div className="w-full md:w-auto flex items-center justify-center md:justify-end">
-        <ButtonNeutral btnText2='+' btnText1='Add bank' classes='text-blue-700 hover:text-blue-800 text-sm space-x-2 md:my-0 mx-auto md:mx-0' btnText2Classes='text-xl' />
+        <ButtonNeutral btnText2='+' btnText1='Add bank' classes='text-blue-700 hover:text-blue-800 hover:underline font-semibold text-sm space-x-2 md:my-0 mx-auto md:mx-0' btnText2Classes='text-xl' />
       </div>
     </div>
   );

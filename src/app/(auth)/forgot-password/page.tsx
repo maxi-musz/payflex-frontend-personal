@@ -7,7 +7,6 @@ import InputOne from '@/components/inputs/InputOne';
 import OTPConfirmModal from '@/components/OTPConfirmModal';
 import Link from 'next/link';
 import React, { useState } from 'react'
-
 const ForgotPasswordPage = () => {
     const [isOTPOpen, setIsOTPOpen] = useState<boolean>(false);
     const [emailAddress, setEmailAddress] = useState<string>('');
@@ -24,7 +23,11 @@ const ForgotPasswordPage = () => {
             setError('');
             setIsOTPOpen(prev => !prev);
         }
-
+    };
+    
+    const cancelEmailVerification = () => {
+        setError('');
+        setIsOTPOpen(false);
     };
 
   return (
@@ -55,7 +58,7 @@ const ForgotPasswordPage = () => {
                     </div>
                 </div>
                     
-                {isOTPOpen && <OTPConfirmModal handleModalToggle={openOTP} emailAddress={emailAddress} />}
+                {isOTPOpen && <OTPConfirmModal handleModalToggle={openOTP} cancelEmailVerification={cancelEmailVerification}  emailAddress={emailAddress} />}
             </div>
 
             <AuthPagesRightSide />

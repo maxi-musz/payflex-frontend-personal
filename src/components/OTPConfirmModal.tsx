@@ -7,7 +7,13 @@ import { ErrorOutline, Restore } from '@mui/icons-material';
 import ButtonNeutral from './button/ButtonNeutral';
 import { usePathname, useRouter } from 'next/navigation';
 
-const OTPConfirmModal = ({handleModalToggle, emailAddress}: {handleModalToggle: () => void, emailAddress: string}) => {
+interface OtpProps {
+    handleModalToggle: () => void,
+    cancelEmailVerification: () => void,
+    emailAddress: string
+}
+
+const OTPConfirmModal = ({handleModalToggle, cancelEmailVerification, emailAddress}: OtpProps) => {
     const [otpTime, setOTPTime] = useState<number>(60);
     const [otpCode, setOTPCode] = useState<number | null>(null);
         const [error, setError] = useState<string>('');
@@ -42,10 +48,9 @@ const OTPConfirmModal = ({handleModalToggle, emailAddress}: {handleModalToggle: 
         } else {
             setError('');
             if (pathName === '/register') {
-                handleModalToggle();
+                handleModalToggle()
             }else {
-                handleModalToggle();
-                router.push('/change-password');
+                router.push('/change-password')
             };
         };
     }
@@ -72,7 +77,7 @@ const OTPConfirmModal = ({handleModalToggle, emailAddress}: {handleModalToggle: 
                 </div>
                 
                 <div className="w-full flex items-center justify-end gap-3">
-                    <ButtonNeutral onClick={handleModalToggle} classes='py-2 px-8 text-sm border rounded-radius-8' btnText1='Cancel' />
+                    <ButtonNeutral onClick={cancelEmailVerification} classes='py-2 px-8 text-sm border rounded-radius-8' btnText1='Cancel' />
                     <ButtonOne onClick={handleOTPSubmit} classes='py-2 px-8 text-sm' btnText1='Verify' />
                 </div>
             </div>

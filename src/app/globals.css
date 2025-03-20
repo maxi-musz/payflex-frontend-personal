@@ -237,3 +237,39 @@ svg.recharts-surface path.recharts-rectangle {
   background-size: 14px;
 }
 /* custom pagination */
+
+
+
+/* Styles for the toast container */
+.custom-toast-success {
+  background-color: #1a202c;
+  color: white;
+  padding: 1rem;
+  border-radius: 8px;
+  width: fit-content;
+  min-width: fit-content;
+  border-left: 5px solid #48bb78;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.custom-toast-error {
+  background-color: #1a202c;
+  color: white;
+  padding: 1rem;
+  border-radius: 8px;
+  width: fit-content;
+  min-width: fit-content;
+  border-left: 5px solid #d05c79;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Custom icon size */
+.custom-toast .react-hot-toast-icon {
+  font-size: 24px;
+}
+
+
+/* rowDropDownMenu */
+#rowDropDownMenu {
+  z-index: 999999 !important;
+}

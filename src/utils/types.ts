@@ -44,3 +44,19 @@ export interface Product {
     // userName: string,
     // userEmail: string,
 }
+
+export type User = {
+  id: string;
+  customerId: string;
+  organization: string;
+  username: string;
+  email: string;
+  phoneNumber: string;
+  accountNumber: string;
+  dateJoined: string;
+  status: string;
+  ratings: number;
+  amount: string;
+  loanAmount: string;
+  savingsAmount: string;
+};

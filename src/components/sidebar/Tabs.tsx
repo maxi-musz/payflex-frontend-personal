@@ -1,6 +1,6 @@
 'use client;'
 
-import { menuItems } from '@/utils/data';
+import { menuItems } from '../../data/base';
 import React, { useEffect, useState } from 'react'
 import ButtonNeutral from '../button/ButtonNeutral';
 import { usePathname, useRouter } from 'next/navigation';

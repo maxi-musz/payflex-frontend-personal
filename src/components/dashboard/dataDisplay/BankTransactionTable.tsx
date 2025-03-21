@@ -1,7 +1,7 @@
 'use client';
 
 import FullPagination from '@/components/pagination/FullPagination';
-import { cardRequests, recentCardRequestTableHead } from '@/utils/data';
+import { cardRequests, recentCardRequestTableHead } from '../../../data/base';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 

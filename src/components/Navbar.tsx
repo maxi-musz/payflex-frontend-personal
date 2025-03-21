@@ -1,18 +1,23 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Sidebar from './sidebar/Sidebar';
 import ButtonNeutral from './button/ButtonNeutral';
 import MenuIcon from './icons/MenuIcon';
 import { HelpCenterOutlined, NotificationsOutlined, QrCodeScannerOutlined } from '@mui/icons-material';
+import { useGeneralData } from '@/context/GeneralDataContext';
 // import Link from 'next/link';
 // import Image from 'next/image';
 // import { useGeneralData } from '@/context/GeneralDataContext';
 
 const Navbar: React.FC = () => {
   const [open, setOpen] = useState(false);
-      // const {currentData} = useGeneralData();
-      // const userNameArray = currentData.userName.split('').map(item => item.trim()).filter(item => item !== '');
+  const [firstName, setFirstName] = useState('');
+  const {loggedInUser} = useGeneralData();
+
+  useEffect(() => {
+      setFirstName(loggedInUser.first_name);
+  }, [loggedInUser.first_name]);
   
   const closeSidebar = () => setOpen(false);
 
@@ -33,8 +38,7 @@ const Navbar: React.FC = () => {
               </div>
               <p className="font-semibold md:text-3xl lg:text-4xl hidden md:inline">PayFlex</p>
           </Link> */}
-          <h1 className='text-base md:text-xl font-semibold py-1'>Hi, <span className='text-blue-700'>Victor</span></h1>
-          {/* <h1 className='text-base md:text-xl font-semibold py-1'>Hi, <span className='text-blue-700'>{userNameArray[0]}</span></h1> */}
+          <h1 className='text-base md:text-xl font-semibold py-1'>Hi, <span className='text-blue-700'>{firstName || 'Victor'}</span></h1>
         </div>
         
 

@@ -78,6 +78,9 @@ const Dashboard = () => {
         {currentTab === '/sports-and-betting' && <SportsAndBetting />}
         {currentTab === '/connect-bank' && <ConnectBank />}
         {currentTab === '/refer-and-earn' && <ReferAndEarn />}
+        {/* {currentTab === '/api-docs' && <ApiDocs />}
+        {currentTab === '/contact-support' && <ContactSupport />}
+        {currentTab === '/whatsapp' && <ContactSupport />} */}
     </div>
   )
 }

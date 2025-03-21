@@ -1,21 +1,23 @@
 "use client"
 
-import React, { useEffect, useState } from 'react'
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import ButtonOne from './button/ButtonOne';
 import InputOne from './inputs/InputOne';
 import { ErrorOutline, Restore } from '@mui/icons-material';
 import ButtonNeutral from './button/ButtonNeutral';
 import { usePathname, useRouter } from 'next/navigation';
+import { verifyEmail, verifyPasswordReset } from '@/features/auth/actions';
 
 interface OtpProps {
     handleModalToggle: () => void,
     cancelEmailVerification: () => void,
-    emailAddress: string
+    emailAddress: string,
+    setEmailError: Dispatch<SetStateAction<string>>,
 }
 
-const OTPConfirmModal = ({handleModalToggle, cancelEmailVerification, emailAddress}: OtpProps) => {
+const OTPConfirmModal = ({handleModalToggle, cancelEmailVerification, emailAddress, setEmailError}: OtpProps) => {
     const [otpTime, setOTPTime] = useState<number>(60);
-    const [otpCode, setOTPCode] = useState<number | null>(null);
+    const [otpCode, setOTPCode] = useState<string>('');
         const [error, setError] = useState<string>('');
 
     const router = useRouter();
@@ -26,31 +28,37 @@ const OTPConfirmModal = ({handleModalToggle, cancelEmailVerification, emailAddre
             if (otpTime > 0) {
                 setOTPTime(prev => prev-1);
             }
-            if (otpTime === 0) {
+            if (otpTime === 0 && otpCode.length < 4) {
+                setEmailError('OTP error! Verify email please.');
+                // setError('Verification failed! Invalid OTP');
                 handleModalToggle();
             }
         }, 1000)
         return () => clearInterval(interval);
-    }, [otpTime, handleModalToggle]);
+    }, [otpTime, otpCode, handleModalToggle, setEmailError]);
 
     
     const onCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setOTPCode(parseInt(e.target.value));
+        setOTPCode(e.target.value);
     }
 
     const handleOTPSubmit = () => {
         if (!otpCode) {
             setError('Enter the OTP code sent to your email address');
             return;
-        } else if (otpCode < 6) {
+        } else if (otpCode.length < 4) {
             setError('Verification failed! Invalid OTP');
             return;
         } else {
             setError('');
             if (pathName === '/register') {
-                handleModalToggle()
-            }else {
-                router.push('/change-password')
+                verifyEmail(emailAddress, otpCode);
+                handleModalToggle();
+            }
+
+            if (pathName === '/forgot-password') {
+                verifyPasswordReset(emailAddress, otpCode);
+                router.push('/change-password');
             };
         };
     }

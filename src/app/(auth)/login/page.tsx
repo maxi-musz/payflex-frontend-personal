@@ -2,16 +2,56 @@
 
 import AuthPagesHeader from '@/components/AuthPagesHeader';
 import AuthPagesRightSide from '@/components/AuthPagesRightSide';
-import ButtonLinkOne from '@/components/button/ButtonLinkOne';
+import ButtonOne from '@/components/button/ButtonOne';
 import InputOne from '@/components/inputs/InputOne';
+import { useGeneralData } from '@/context/GeneralDataContext';
+import { loginUser } from '@/features/auth/actions';
 import { Key, RemoveRedEyeOutlined } from '@mui/icons-material';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'
 
 const LoginPage = () => {
-    const [isPasswordOpen, setIsPasswordOpen] = useState<boolean>(false);
+    const [isPasswordOpen, setIsPasswordOpen] = useState(false);
+    const [emailAddress, setEmailAddress] = useState('');
+    const [password, setPassword] = useState('');
+    const [emailAddressError, setEmailAddressError] = useState('');
+    const [passwordError, setPasswordError] = useState('');
+    const {currentUserData} = useGeneralData();
+    // console.log(currentUserData);
+
+    const router = useRouter();
 
     const handlePasswordToggle = () => setIsPasswordOpen(prev => !prev);
+    
+    const onFormSubmit = () => {
+        if (password.length < 8) {
+            setPasswordError("Password must be at least 8 characters!");
+        } else if (emailAddress.length < 3 || !emailAddress.includes('@')) {
+            setEmailAddressError("Invalid email address!");
+        } else {
+            if (emailAddress !== currentUserData.email) {
+                setEmailAddressError("Wrong email address!");
+            } else if (password !== currentUserData.password) {
+                setPasswordError("Wrong password!");
+            } else if (emailAddress === currentUserData.email && password === currentUserData.password) {
+                setEmailAddressError("");
+                setPasswordError("");
+                
+                localStorage.setItem('loggedInUserInfo', JSON.stringify({
+                    email: emailAddress,
+                    password: password,
+                    first_name: currentUserData.first_name,
+                    last_name: currentUserData.last_name
+                }));
+
+                loginUser(emailAddress, password);
+    
+                console.log(emailAddress, password);
+                router.push('/');
+            }
+        }
+    };
 
   return (
     <div className='h-full min-h-screen w-full flex flex-col md:flex-row '>
@@ -26,13 +66,14 @@ const LoginPage = () => {
 
                 <div className="w-full">
                     <form className="w-full space-y-3">
-                        <div className="w-full">
-                            <InputOne onChange={(e) => e.target.value} value={''} label='Email' name="email" placeholderText='Enter your email' />
+                        <div className="w-full flex-col">
+                            <InputOne onChange={(e) => setEmailAddress(e.target.value)} value={''} label='Email' name="email" placeholderText='Enter your email' />
+                            {emailAddressError && <p className='text-red-600 text-xs'>{emailAddressError}</p>}
                         </div>
-                        <div className="w-full mb-3">
+                        <div className="w-full mb-3 flex-col">
                             <InputOne
                                 icon2={!isPasswordOpen ? <RemoveRedEyeOutlined style={{fontSize: '19px', }} /> : <Key style={{fontSize: '19px', }} />}
-                                onChange={(e) => e.target.value}
+                                onChange={(e) => setPassword(e.target.value)}
                                 onClick={handlePasswordToggle}
                                 value={''}
                                 type={!isPasswordOpen ? 'password' : 'text'}
@@ -40,12 +81,13 @@ const LoginPage = () => {
                                 name="password"
                                 placeholderText='Enter your password'
                             />
+                            {passwordError && <p className='text-red-600 text-xs'>{passwordError}</p>}
                         </div>
 
                         <div className='my-2 w-full flex items-center justify-end'>
                             <Link href='/forgot-password' className='text-red-600 text-sm'>Forgot password</Link>
                         </div>
-                        <ButtonLinkOne href='/' classes='py-2 px-16 w-full' btnText1='Login' />
+                        <ButtonOne onClick={onFormSubmit} classes='py-2 px-16 w-full' btnText1='Login' />
                         
                         <p className='text-center text-sm'>Don&apos;t have an account? <Link href='/register' className='text-blue-600'>Sign up</Link></p>
                     </form>

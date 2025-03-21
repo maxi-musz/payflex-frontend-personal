@@ -45,18 +45,19 @@ export interface Product {
     // userEmail: string,
 }
 
-export type User = {
-  id: string;
-  customerId: string;
-  organization: string;
-  username: string;
+export interface UserDataProps {
+  first_name: string;
+  last_name: string;
   email: string;
-  phoneNumber: string;
-  accountNumber: string;
-  dateJoined: string;
-  status: string;
-  ratings: number;
-  amount: string;
-  loanAmount: string;
-  savingsAmount: string;
-};
+  phone_number: string;
+  address: {
+    country: string;
+    state: string;
+    city: string;
+    home_address: string;
+  };
+  gender: string;
+  date_of_birth: string;
+  password: string;
+  confirm_password: string;
+}

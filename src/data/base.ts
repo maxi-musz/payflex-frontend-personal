@@ -358,3 +358,22 @@ export const users = [
     { id: 9, organization: 'Agubas', username: 'Max Bonny', email: 'max@agubas.com', phoneNumber: '07038474444', dateJoined: 'Sept 22, 2022 01:00 PM', status: 'inactive' },
     { id: 10, organization: 'Innova', username: 'Tosin Mark', email: 'tosin@innova.com', phoneNumber: '07094833345', dateJoined: 'Apr 15, 2020 10:00 AM', status: 'pending' },
 ]
+
+
+export const currentUserInfo = {
+    first_name: '',
+    last_name: '',
+    email: '',
+    phone_number: '',
+    address: {
+      country: '',
+      state: '',
+      city: '',
+      home_address: '',
+    },
+    gender: '',
+    date_of_birth: '',
+    password: '',
+    confirm_password: '',
+  }
+  

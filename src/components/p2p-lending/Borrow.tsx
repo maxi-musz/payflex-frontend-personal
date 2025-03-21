@@ -1,6 +1,6 @@
 'use client';
 
-import { availableLendersTableHead, availableLenders } from '@/utils/data';
+import { availableLendersTableHead, availableLenders } from '../../data/base';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react'
 import FullPagination from '../pagination/FullPagination';
@@ -8,7 +8,7 @@ import { MoreVertOutlined } from '@mui/icons-material';
 import ButtonNeutral from '../button/ButtonNeutral';
 import RowDropdown from './RowDropdown';
 
-const Borrow = () => {
+const Borrow = ({handleDropDownTabClick}: {handleDropDownTabClick: (tab: string) => void}) => {
   const [openMenuId, setOpenMenuId] = useState<number | null>(null);
   // ============== pagination =================
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -107,7 +107,7 @@ const Borrow = () => {
                   </td>
                   <td className={`relative py-[11px] text-[12px] px-2 text-center whitespace-nowrap w-2`}>
                     <ButtonNeutral onClick={() => handleMenuToggle(item.id)} icon1={<MoreVertOutlined />} />
-                    {openMenuId === item.id && <RowDropdown isOpen={openMenuId === item.id} onClose={() => setOpenMenuId(null)} />}
+                    {openMenuId === item.id && <RowDropdown handleDropDownTabClick={handleDropDownTabClick} isOpen={openMenuId === item.id} onClose={() => setOpenMenuId(null)} />}
                   </td>
                 </tr>
               ))}
@@ -125,7 +125,7 @@ const Borrow = () => {
          />
         </>
         : 
-        <div className='text-center text-xl text-gray-600'>No Products found</div>}
+        <div className='text-center text-xl text-gray-600'>No users found</div>}
       </div>
     </div>
   )

@@ -1,12 +1,20 @@
 "use client"
 
+import Loading from '@/app/loading';
 import AuthPagesHeader from '@/components/AuthPagesHeader';
 import AuthPagesRightSide from '@/components/AuthPagesRightSide';
 import ButtonOne from '@/components/button/ButtonOne';
 import InputOne from '@/components/inputs/InputOne';
-import OTPConfirmModal from '@/components/OTPConfirmModal';
+import { resetPassword } from '@/features/auth/actions';
+// import OTPConfirmModal from '@/components/OTPConfirmModal';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import React, { useState } from 'react'
+
+const OTPConfirmModal = dynamic(() => import("@/components/OTPConfirmModal"), {
+    loading: () => <Loading />,
+  });
+
 const ForgotPasswordPage = () => {
     const [isOTPOpen, setIsOTPOpen] = useState<boolean>(false);
     const [emailAddress, setEmailAddress] = useState<string>('');
@@ -20,6 +28,8 @@ const ForgotPasswordPage = () => {
             setError('Invalid email address');
             return;
         } else {
+            resetPassword(emailAddress);
+            
             setError('');
             setIsOTPOpen(prev => !prev);
         }
@@ -58,7 +68,7 @@ const ForgotPasswordPage = () => {
                     </div>
                 </div>
                     
-                {isOTPOpen && <OTPConfirmModal handleModalToggle={openOTP} cancelEmailVerification={cancelEmailVerification}  emailAddress={emailAddress} />}
+                {isOTPOpen && <OTPConfirmModal handleModalToggle={openOTP} cancelEmailVerification={cancelEmailVerification}  emailAddress={emailAddress} setEmailError={setError} />}
             </div>
 
             <AuthPagesRightSide />

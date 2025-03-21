@@ -1,7 +1,7 @@
 'use client';
 
 import ButtonNeutral from '@/components/button/ButtonNeutral';
-import { availableTransactions, transactionsOptions } from '@/utils/data';
+import { availableTransactions, transactionsOptions } from '../../../data/base';
 import React, { useState, useEffect } from 'react';
 
 const TransactionOptions = () => {

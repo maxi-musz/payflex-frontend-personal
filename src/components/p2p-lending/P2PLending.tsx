@@ -1,4 +1,4 @@
-import { p2pLendingTabs } from '@/utils/data';
+import { p2pLendingTabs } from '../../data/base';
 import React, { useState } from 'react'
 import ButtonOne from '../button/ButtonOne';
 import ButtonNeutral from '../button/ButtonNeutral';
@@ -6,16 +6,45 @@ import Lend from './Lend';
 import History from './History';
 import Borrow from './Borrow';
 import { CampaignOutlined, Tune } from '@mui/icons-material';
+import { Toaster, toast } from 'react-hot-toast';
 
 const P2PLending = () => {
   const [activeTab, setActiveTab] = useState<string>('Lend');
 
-  const handleTabToggle = (tab: string) => {
-    setActiveTab(tab);
+  const handleTabToggle = (tab: string) => setActiveTab(tab);
+
+  const handleDropDownTabClick = (tab: string) => {
+    if (tab === 'Accept') {
+      toast.error(`This user has been accepted!`, {
+          className: 'custom-toast-success w-fit',
+          icon: '✅',
+          duration: 3000,
+      });
+    } else if (tab === 'View User') {
+      // router.push('');
+      toast.error(`This user has been viewed!`, {
+          className: 'custom-toast-success w-fit',
+          icon: '✅',
+          duration: 3000,
+      });
+    } else if (tab === 'Report User') {
+      toast.error(`This user has been reported!`, {
+          className: 'custom-toast-error w-fit',
+          icon: '❌',
+          duration: 3000,
+      });
+    } else if (tab === 'Block User') {
+      toast.error(`This user has been blocked!`, {
+          className: 'custom-toast-error w-fit',
+          icon: '❌',
+          duration: 3000,
+      });
+    }
   };
 
   return (
     <section className='space-y-5'>
+        <Toaster position="top-center" reverseOrder={false} />
       <div className="w-full flex items-center justify-between flex-wrap gap-4">
         <h1 className='text-lg font-semibold'>P2P Lending</h1>
         <div className="flex items-center  gap-2">
@@ -41,9 +70,9 @@ const P2PLending = () => {
         </ul>
 
         <div className="w-full space-y-3 py-4">
-          {activeTab === 'Lend' && <Lend />}
-          {activeTab === 'Borrow' && <Borrow />}
-          {activeTab === 'History' && <History />}
+          {activeTab === 'Lend' && <Lend handleDropDownTabClick={handleDropDownTabClick} />}
+          {activeTab === 'Borrow' && <Borrow handleDropDownTabClick={handleDropDownTabClick} />}
+          {activeTab === 'History' && <History handleDropDownTabClick={handleDropDownTabClick} />}
         </div>
       </div>
     </section>

@@ -2,7 +2,9 @@
 
 import Image from 'next/image';
 import ButtonNeutral from './button/ButtonNeutral';
-import { budgets } from '@/utils/data';
+import { budgets } from '../data/base';
+import { useGeneralData } from '@/context/GeneralDataContext';
+import { useEffect, useState } from 'react';
 // import { useGeneralData } from '@/context/GeneralDataContext';
 
 interface SidebarProps {
@@ -11,7 +13,16 @@ interface SidebarProps {
 }
   
 const SidebarRight: React.FC<SidebarProps> = ({ show = 'hidden', closeSidebar = () => {} }) => {
-    // const {currentData} = useGeneralData();
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [email, setEmail] = useState('');
+    const {loggedInUser} = useGeneralData();
+
+    useEffect(() => {
+        setFirstName(loggedInUser.first_name)
+        setLastName(loggedInUser.last_name)
+        setEmail(loggedInUser.email)
+    }, [loggedInUser.first_name, loggedInUser.last_name, loggedInUser.email]);
     
     return (
         <nav className={`${show === 'block' ? 'fixed md:hidden' : 'hidden'} md:block top-0 left-0 z-50 lg:z-auto w-4/6 sm:w-3/6 md:w-[33.5%] lg:w-[23%] h-full min-h-fit bg-white md:bg-transparent`}>
@@ -39,10 +50,8 @@ const SidebarRight: React.FC<SidebarProps> = ({ show = 'hidden', closeSidebar = 
             </div>
 
             <div className='px-4 mb-6'>
-                <h2 className='font-semibold'>Victor Okoye</h2>
-                <p className='text-textGray text-sm'>victor.c.okoye@gmail.com</p>
-                {/* <h2 className='font-semibold'>{currentData.userName}</h2>
-                <p className='text-textGray text-sm'>{currentData.userEmail}</p> */}
+                <h2 className='font-semibold'>{`${firstName} ${lastName}` || 'Victor Okoye'}</h2>
+                <p className='text-textGray text-sm'>{`${email}` || 'victor.c.okoye@gmail.com'}</p>
             </div>
 
             <div className="divide-y divide-customGray space-y-64">

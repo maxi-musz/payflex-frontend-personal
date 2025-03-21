@@ -1,37 +1,37 @@
 'use client';
 
-import { rowDropdownMenu } from '@/utils/data';
+import { rowDropdownMenu } from '../../data/base';
 import ButtonNeutral from '../button/ButtonNeutral';
-import { useRouter } from 'next/navigation';
-// import { toast } from 'react-toastify';
+// import { useRouter } from 'next/navigation';
 
 
 interface RowDropdownProps {
   isOpen: boolean;
   onClose: () => void;
+  handleDropDownTabClick: (tab: string) => void;
   // item: User;
 }
 
-const RowDropdown: React.FC<RowDropdownProps> = ({ isOpen }) => {
-  // const rowDropdownRef = useRef<HTMLDivElement | null>(null);
-  const router = useRouter();
+const RowDropdown: React.FC<RowDropdownProps> = ({ isOpen, handleDropDownTabClick }) => {
+  // const router = useRouter();
 
   if (!isOpen) return null;
 
   const handleMenuItemClick = (tab: string) => {
-    if (tab === 'Accept') {
-      alert('This user has been activated!');
-    } else if (tab === 'View User') {
-      router.push('');
-    } else if (tab === 'Report User') {
-      alert('This user has been reported!');
-    } else if (tab === 'Block User') {
-      alert('This user has been blocked!');
-    }
+    // if (tab === 'Accept') {
+    //   alert('This user has been activated!');
+    // } else if (tab === 'View User') {
+    //   router.push('');
+    // } else if (tab === 'Report User') {
+    //   alert('This user has been reported!');
+    // } else if (tab === 'Block User') {
+    //   alert('This user has been blocked!');
+    // }
+    handleDropDownTabClick(tab);
   };
 
   return (
-    <ul id='rowDropDownMenu' className={`absolute left-0 top-11 w-fit border py-1 z-50 bg-white shadow-md rounded-radius-4`}>
+    <ul id='rowDropDownMenu' className={`absolute left-0 top-11 w-fit border py-1 z-[999999] bg-white shadow-md rounded-radius-4`}>
         {rowDropdownMenu.map(menuItem => 
             <li key={menuItem.id} className='group w-full whitespace-nowrap p-1'>
                 <ButtonNeutral
@@ -42,54 +42,6 @@ const RowDropdown: React.FC<RowDropdownProps> = ({ isOpen }) => {
             </li>
         )}
     </ul>
-    // <div ref={rowDropdownRef} className={`dataDropDownMenu open`}>
-    //   <ul>
-    //     <li>
-    //       <Link href={`/dashboard/users/${user.id}`} className='' tabIndex={-1}>
-    //         <button className='menuBtn'>
-    //           <div className='menuIcon'>
-    //             <Image
-    //               src="/images/np_view_1214519_000000 1.svg"
-    //               alt="View details"
-    //               fill
-    //               className="object-cover rounded-full"
-    //               sizes="(max-width: 768px) 100vw, 50vw"
-    //             />
-    //           </div>
-    //           <span>View details</span>
-    //         </button>
-    //       </Link>
-    //     </li>
-    //     <li>
-    //       <button className='menuBtn' onClick={handleBlacklistUser}>
-    //         <div className='menuIcon'>
-    //           <Image
-    //             src="/images/np_delete-friend_3248001_000000 1.svg"
-    //             alt="Blacklist user"
-    //             fill
-    //             className="object-cover rounded-full"
-    //             sizes="(max-width: 768px) 100vw, 50vw"
-    //           />
-    //         </div>
-    //         <span>Blacklist user</span>
-    //       </button>
-    //     </li>
-    //     <li>
-    //       <button className='menuBtn' onClick={handleActivateUser}>
-    //         <div className='menuIcon'>
-    //           <Image
-    //             src="/images/np_user_2995993_000000 1.svg"
-    //             alt="Activate user"
-    //             fill
-    //             className="object-cover rounded-full"
-    //             sizes="(max-width: 768px) 100vw, 50vw"
-    //           />
-    //         </div>
-    //         <span>Activate user</span>
-    //       </button>
-    //     </li>
-    //   </ul>
-    // </div>
   );
 };
 

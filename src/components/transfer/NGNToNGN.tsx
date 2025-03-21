@@ -1,16 +1,20 @@
 import React, { useEffect, useRef, useState } from 'react'
 import InputOne from '../inputs/InputOne'
-import { availableBankOptions } from '@/utils/data';
+import { availableBankOptions } from '../../data/base';
 import TextAreaTwo from '../inputs/TextAreaTwo';
 import ButtonNeutral from '../button/ButtonNeutral';
-import TransferSuccessModal from './TransferSuccessModal';
 import Loading from '@/app/loading';
+import dynamic from 'next/dynamic';
+
+const TransferSuccessModal = dynamic(() => import("./TransferSuccessModal"), {
+  loading: () => <Loading/>,
+});
 
 const NGNToNGN = () => {
   // const [bankOptions, setBankOptions] = useState<string[]>([]);
   const [accountName, setAccountName] = useState<string>('');
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading] = useState<boolean>(false);
   const [accountNumber, setAccountNumber] = useState<string>('');
   const [amount, setAmount] = useState<number | null>(null);
   const [accountBalance] = useState<number>(2698435);
@@ -45,11 +49,11 @@ const NGNToNGN = () => {
 
   const handleModalToggle = () => {
     if (isSuccessModalOpen === false) {
-      setIsLoading(true);
-      setTimeout(() => {
+      // setIsLoading(true);
+      // setTimeout(() => {
         setIsSuccessModalOpen(true);
-        setIsLoading(false);
-      }, 1000);
+      //   setIsLoading(false);
+      // }, 1000);
     } else {
       setIsSuccessModalOpen(false);
     }

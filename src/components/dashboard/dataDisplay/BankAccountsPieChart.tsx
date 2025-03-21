@@ -1,7 +1,7 @@
 'use client';
 
 import ButtonNeutral from '@/components/button/ButtonNeutral';
-import { CardStatusDistribution, PIE_COLORS } from '@/utils/data';
+import { CardStatusDistribution, PIE_COLORS } from '../../../data/base';
 import React, { useState, useEffect } from 'react';
 import CountUp from 'react-countup';
 import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts';

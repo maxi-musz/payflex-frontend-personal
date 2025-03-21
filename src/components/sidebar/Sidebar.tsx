@@ -1,12 +1,14 @@
 'use client';
 
-import { menuItems } from '@/utils/data';
+import { menuItems } from '../../data/base';
 import Image from 'next/image';
 import Link from 'next/link';
 import ButtonNeutral from '../button/ButtonNeutral';
 import { useRouter } from 'next/navigation';
 import Tabs from './Tabs';
 import { Logout } from '@mui/icons-material';
+import { useGeneralData } from '@/context/GeneralDataContext';
+import { useEffect, useState } from 'react';
 // import { useGeneralData } from '@/context/GeneralDataContext';
 
 interface SidebarProps {
@@ -15,8 +17,23 @@ interface SidebarProps {
 }
   
 const Sidebar: React.FC<SidebarProps> = ({ show = 'hidden', closeSidebar = () => {} }) => {
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [email, setEmail] = useState('');
+    const {loggedInUser, dropLoggedInUserInfo} = useGeneralData();
+    
     const router = useRouter();
-    // const {currentData} = useGeneralData();
+
+    useEffect(() => {
+        setFirstName(loggedInUser.first_name)
+        setLastName(loggedInUser.last_name)
+        setEmail(loggedInUser.email)
+    }, [loggedInUser.first_name, loggedInUser.last_name, loggedInUser.email]);
+
+    const logout = () => {
+        dropLoggedInUserInfo();
+        router.push('/login');
+    }
 
     return (
         <nav className={`${show === 'block' ? 'fixed lg:hidden' : 'hidden'} px-2 lg:block top-0 left-0 z-50 lg:z-auto w-4/6 sm:w-3/6 lg:w-[21%] xl:w-1/6 h-full min-h-screen bg-white lg:bg-transparent`}>
@@ -67,13 +84,11 @@ const Sidebar: React.FC<SidebarProps> = ({ show = 'hidden', closeSidebar = () =>
                                     />
                                 </div>
                                 <div className='flex flex-col'>
-                                    <p className='capitalize text-[12px] text-textGray font-semibold'>Victor Okoye</p>
-                                    <p className='text-[10px] text-textGray'>victor.c.okoye@gmail.com</p>
-                                    {/* <p className='capitalize text-[12px] text-textGray font-semibold'>{currentData.userName}</p>
-                                    <p className='text-[10px] text-textGray'>{currentData.userEmail}</p> */}
+                                    <p className='capitalize text-[12px] text-textGray font-semibold'>{`${firstName} ${lastName}` || 'Victor Okoye'}</p>
+                                    <p className='text-[10px] text-textGray'>{`${email}` || 'victor.c.okoye@gmail.com'}</p>
                                 </div>
                                 <ButtonNeutral
-                                    onClick={() => router.push('/login')}
+                                    onClick={logout}
                                     classes={`focus:ring-transparent bg-transparent border-transparent hover:bg-[#F6F6F6] border hover:border-customGray p-1 rounded-radius-4 transition-all duration-300 ease-in-out`}
                                     icon1={<Logout style={{fontSize: '20px'}} />}
                                 />

@@ -1,5 +1,6 @@
 "use client"
 
+import Loading from '@/app/loading';
 import AuthPagesHeader from '@/components/AuthPagesHeader';
 import AuthPagesRightSide from '@/components/AuthPagesRightSide';
 import ButtonOne from '@/components/button/ButtonOne';
@@ -18,6 +19,7 @@ const LoginPage = () => {
     const [emailAddressError, setEmailAddressError] = useState('');
     const [passwordError, setPasswordError] = useState('');
     const {currentUserData} = useGeneralData();
+        const [isLoading, setIsLoading] = useState(false);
     // console.log(currentUserData);
 
     const router = useRouter();
@@ -25,6 +27,7 @@ const LoginPage = () => {
     const handlePasswordToggle = () => setIsPasswordOpen(prev => !prev);
     
     const onFormSubmit = () => {
+        setIsLoading(true);
         if (password.length < 8) {
             setPasswordError("Password must be at least 8 characters!");
         } else if (emailAddress.length < 3 || !emailAddress.includes('@')) {
@@ -51,7 +54,10 @@ const LoginPage = () => {
                 router.push('/');
             }
         }
+        setIsLoading(false);
     };
+
+    if (isLoading) <Loading />
 
   return (
     <div className='h-full min-h-screen w-full flex flex-col md:flex-row '>

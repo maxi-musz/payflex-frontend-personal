@@ -54,7 +54,7 @@ export const GeneralDataProvider = ({ children }: { children: ReactNode }) => {
       router.push('/login');
     };
     
-    console.log(loggedInUserData);
+    // console.log(loggedInUserData);
   }, [pathName, router]);
   
   const updateGeneralData = (url: string) => {

@@ -6,7 +6,8 @@ import InputOne from './inputs/InputOne';
 import { ErrorOutline, Restore } from '@mui/icons-material';
 import ButtonNeutral from './button/ButtonNeutral';
 import { usePathname, useRouter } from 'next/navigation';
-import { verifyEmail, verifyPasswordReset } from '@/features/auth/actions';
+import { requestEmailOTP, resetPassword, verifyEmail, verifyPasswordReset } from '@/features/auth/actions';
+import Loading from '@/app/loading';
 
 interface OtpProps {
     handleModalToggle: () => void,
@@ -16,9 +17,10 @@ interface OtpProps {
 }
 
 const OTPConfirmModal = ({handleModalToggle, cancelEmailVerification, emailAddress, setEmailError}: OtpProps) => {
-    const [otpTime, setOTPTime] = useState<number>(60);
-    const [otpCode, setOTPCode] = useState<string>('');
-        const [error, setError] = useState<string>('');
+    const [otpTime, setOTPTime] = useState(60);
+    const [otpCode, setOTPCode] = useState('');
+    const [error, setError] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     const router = useRouter();
     const pathName = usePathname();
@@ -30,19 +32,33 @@ const OTPConfirmModal = ({handleModalToggle, cancelEmailVerification, emailAddre
             }
             if (otpTime === 0 && otpCode.length < 4) {
                 setEmailError('OTP error! Verify email please.');
-                // setError('Verification failed! Invalid OTP');
-                handleModalToggle();
             }
         }, 1000)
         return () => clearInterval(interval);
     }, [otpTime, otpCode, handleModalToggle, setEmailError]);
 
-    
-    const onCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setOTPCode(e.target.value);
+    const resendOTP = () => {
+        setOTPTime(60);
+
+        if (pathName === '/register') {
+            requestEmailOTP(emailAddress);
+        }
+        if (pathName === '/forgot-password') {
+            resetPassword(emailAddress);
+        }
+
+        const interval = setInterval(() => {
+            if (otpTime > 0) {
+                setOTPTime(prev => prev-1);
+            }
+        }, 1000)
+        return () => clearInterval(interval);
     }
+    
+    const onCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => setOTPCode(e.target.value);
 
     const handleOTPSubmit = () => {
+        setIsLoading(true);
         if (!otpCode) {
             setError('Enter the OTP code sent to your email address');
             return;
@@ -61,7 +77,10 @@ const OTPConfirmModal = ({handleModalToggle, cancelEmailVerification, emailAddre
                 router.push('/change-password');
             };
         };
+        setIsLoading(false);
     }
+
+    if (isLoading) <Loading />
 
   return (
     <section className="fixed inset-0 -top-5 bg-gray-800 bg-opacity-80 flex justify-center items-center p-2 z-[999999]">
@@ -76,9 +95,19 @@ const OTPConfirmModal = ({handleModalToggle, cancelEmailVerification, emailAddre
                     <p className='text-sm'>A confirmation code has been sent to your email address at <strong>{emailAddress || 'my.info@example.com'}</strong></p>
                     <div className="w-full space-y-2">
                         <InputOne label='Enter confirmation code' required={true} onChange={onCodeChange} value={''} name="OTPConfirmationCode" classes='placeholder:text-center placeholder:text-xs placeholder:text-red-700' placeholderText={error ? error : ''} />
-                        <div className="w-full flex items-center justify-center gap-2">
-                            <Restore style={{fontSize: '16px'}} />
-                            <p>Resend confirmation code in <strong>{otpTime === 60 ? '01:00' : otpTime}</strong></p>
+                        <div className="w-full flex items-center justify-start gap-2">
+                            <p className='flex-1 flex items-center justify-between gap-3'>
+                                {otpTime === 0 ?
+                                <>
+                                    <span>OTP code has expired.</span>
+                                    <button onClick={resendOTP} className='cursor-pointer text-textGrayDarker underline flex items-center gap-1 text-sm font-semibold'>
+                                        <Restore style={{fontSize: '16px'}} />
+                                        Resend OTP
+                                    </button>
+                                </>
+                                : 
+                                <span>Confirmation code expires in <strong>{otpTime === 60 ? '01:00' : otpTime}</strong></span>}
+                            </p>
                         </div>
                     </div>
 

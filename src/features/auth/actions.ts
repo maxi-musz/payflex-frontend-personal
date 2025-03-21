@@ -19,6 +19,7 @@ export const requestEmailOTP = async (emailAddress: string) => {
 };
 
 export const verifyEmail = async (email: string, code: string) => {
+    console.log(email, code);
     const response = await sendApiRequest(
         'post',
         `${process.env.PAYFLEX_API_URL}/${AUTH_URL}/verify-email`,
@@ -59,6 +60,7 @@ export const loginUser = async (emailAddress: string, password: string) => {
 };
 
 export const resetPassword = async (emailAddress: string) => {
+    console.log(emailAddress);
     const response = await sendApiRequest(
         'post',
         `${process.env.PAYFLEX_API_URL}/${AUTH_URL}/password-reset-otp`,

@@ -1,5 +1,3 @@
-'use server';
-
 import axios from 'axios';
 
 export const sendApiRequest = async <T>(

@@ -1,5 +1,6 @@
 "use client"
 
+import Loading from '@/app/loading';
 import AuthPagesHeader from '@/components/AuthPagesHeader';
 import AuthPagesRightSide from '@/components/AuthPagesRightSide';
 import ButtonOne from '@/components/button/ButtonOne';
@@ -46,59 +47,44 @@ const RegisterPage = () => {
     const [dobError, setDobError] = useState('');
     const [passwordError, setPasswordError] = useState('');
     const [confirmPasswordError, setConfirmPasswordError] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     const router = useRouter();
 
-    // const UserData = {
-    //     first_name: '',
-    //     last_name: '',
-    //     email: '',
-    //     phone_number: '',
-    //     address: {
-    //       country: '',
-    //       state: '',
-    //       city: '',
-    //       home_address: '',
-    //     },
-    //     gender: '',
-    //     date_of_birth: '',
-    //     password: '',
-    //     confirm_password: '',
-    // }
-      
-    
-    const openOTP = () => {
-        if (emailAddressError) setIsOTPEntered(false);
-
-        if (!emailAddress) {
-            setEmailAddressError('Enter the email address you registered with');
-            return;
-        } else if (emailAddress.length < 4 || !emailAddress.includes('@')) {
-            setEmailAddressError('Invalid email address');
-            return;
-        } else if (!isOTPEntered && emailAddress.length < 4) {
-            setEmailAddressError('Make sure your email address is correct.');
-            // setIsOTPEntered(true);
-            return;
-        } else {
-            requestEmailOTP(emailAddress);
-            
-            // console.log(emailAddressError);
-            if (isOTPEntered && emailAddressError === '') {
-                toast.success(`Your email address has been verified!`, {
-                    className: 'custom-toast-success w-fit',
-                    icon: '✅',
-                    duration: 3000,
-                });
-            }
-            // console.log(emailAddressError);
-            
-            setEmailAddressError('');
-            setIsOTPEntered(true);
-            setIsOTPOpen(prev => !prev);
-
+    const confirmOTP = () => {
+        if (isOTPEntered && emailAddressError === '') {
+            toast.success(`Your email address has been verified!`, {
+                className: 'custom-toast-success w-fit',
+                icon: '✅',
+                duration: 3000,
+            });
         }
+        // console.log(emailAddressError);
+        
+        setEmailAddressError('');
+        setIsOTPEntered(true);
+    };
+    
+    const toggleOTPModal = () => {
+        setIsLoading(true);
+        if (!isOTPOpen) {
+            if (emailAddressError) setIsOTPEntered(false);
 
+            if (!emailAddress) {
+                setEmailAddressError('Enter the email address you registered with');
+                return;
+            } else if (emailAddress.length < 4 || !emailAddress.includes('@')) {
+                setEmailAddressError('Invalid email address');
+                return;
+            } else {
+                requestEmailOTP(emailAddress);
+                setIsOTPOpen(true);
+            }
+            setIsLoading(false);
+        } else {
+            setIsOTPOpen(false);
+            confirmOTP();
+        }
     };
     
     const cancelEmailVerification = () => {
@@ -178,8 +164,7 @@ const RegisterPage = () => {
             setPasswordError('');
             setConfirmPasswordError('');
 
-            
-            console.log(UserData);
+            // console.log(UserData);
             router.push('/login');
         }
 
@@ -202,6 +187,7 @@ const RegisterPage = () => {
     //   console.log(currentUserInfo);
     // });
   
+    if (isLoading) <Loading />
 
   return (
     <div className='h-full min-h-screen w-full flex flex-col md:flex-row '>
@@ -237,7 +223,7 @@ const RegisterPage = () => {
                                 <div className="flex items-center justify-between">
                                     {emailAddressError ? <p className='text-center text-xs text-red-700'>{emailAddressError}</p>
                                     : (emailAddress && !isOTPEntered) && <p className='text-center text-xs text-neutral-600'>Click the &apos;verify&apos; button to verify email</p>}
-                                    {((emailAddress && !isOTPEntered) || emailAddressError) && <button type='button' onClick={openOTP} className='px-2 text-sm'>Verify</button>}
+                                    {((emailAddress && !isOTPEntered) || emailAddressError) && <button type='button' onClick={toggleOTPModal} className='px-2 text-sm'>Verify</button>}
                                 </div>
                             </div>
 
@@ -304,7 +290,7 @@ const RegisterPage = () => {
                 </div>
             </div>
 
-            {isOTPOpen && <OTPConfirmModal cancelEmailVerification={cancelEmailVerification} handleModalToggle={openOTP} emailAddress={emailAddress} setEmailError={setEmailAddressError} />}
+            {isOTPOpen && <OTPConfirmModal cancelEmailVerification={cancelEmailVerification} handleModalToggle={toggleOTPModal} emailAddress={emailAddress} setEmailError={setEmailAddressError} />}
         </div>
 
         <AuthPagesRightSide />

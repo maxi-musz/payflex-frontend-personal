@@ -79,8 +79,8 @@ const LoginPage = () => {
                         <div className="w-full mb-3 flex-col">
                             <InputOne
                                 icon2={!isPasswordOpen ? <RemoveRedEyeOutlined style={{fontSize: '19px', }} /> : <Key style={{fontSize: '19px', }} />}
-                                onChange={(e) => setPassword(e.target.value)}
                                 onClick={handlePasswordToggle}
+                                onChange={(e) => setPassword(e.target.value)}
                                 value={''}
                                 type={!isPasswordOpen ? 'password' : 'text'}
                                 label='Password'

@@ -1,4 +1,4 @@
-import { ContactPhoneOutlined, WhatsApp, AccountCircleOutlined, SnippetFolderOutlined, MonetizationOnOutlined, CreditCardOutlined, NetworkWifiOutlined, AssuredWorkloadOutlined, ShoppingBagOutlined, SendTimeExtensionOutlined, ArrowUpward, SendOutlined, ConnectWithoutContact, BarChart, SettingsCell, CameraRear, SportsSoccer, ConnectedTv, Wallet, HistoryEdu, Category, CardGiftcardOutlined, CardMembershipOutlined, HomeOutlined, CurrencyExchangeOutlined } from '@mui/icons-material';
+import { ContactPhoneOutlined, WhatsApp, AccountCircleOutlined, SnippetFolderOutlined, MonetizationOnOutlined, CreditCardOutlined, NetworkWifiOutlined, AssuredWorkloadOutlined, ShoppingBagOutlined, SendTimeExtensionOutlined, ArrowUpward, SendOutlined, ConnectWithoutContact, BarChart, SettingsCell, CameraRear, SportsSoccer, ConnectedTv, Wallet, HistoryEdu, Category, CardGiftcardOutlined, CardMembershipOutlined, HomeOutlined, CurrencyExchangeOutlined, Add, RestartAlt, Send, PersonAdd } from '@mui/icons-material';
 
 export const menuItems = [
     {
@@ -376,4 +376,44 @@ export const currentUserInfo = {
     password: '',
     confirm_password: '',
   }
-  
+ 
+
+  export const walletBalanceInfo = [
+    {
+        id: 1,
+        currency: '£',
+        currencyInitials: 'GBP',
+        currencyFlag: 'canada.svg.webp',
+        balance: '1234565.46'
+    },
+    {
+        id: 2,
+        currency: '$',
+        currencyInitials: 'USD',
+        currencyFlag: 'us.jpg',
+        balance: '2024344.90'
+    },
+];
+
+export const quickActions = [
+    {
+        id: 1,
+        icon: Add,
+        text: 'Fund Wallet',
+    },
+    {
+        id: 2,
+        icon: RestartAlt,
+        text: 'Convert',
+    },
+    {
+        id: 3,
+        icon: Send,
+        text: 'Pay',
+    },
+    {
+        id: 4,
+        icon: PersonAdd,
+        text: '+Beneficiary',
+    },
+];

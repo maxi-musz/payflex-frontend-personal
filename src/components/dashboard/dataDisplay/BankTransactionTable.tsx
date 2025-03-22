@@ -16,17 +16,17 @@ const BankTransactionTable = () => {
         setTransactionPerPage(2);
       } else {
         if (window.innerHeight <= 731) {
-          setTransactionPerPage(6);
+          setTransactionPerPage(4);
         } else if (window.innerHeight <= 810) {
-          setTransactionPerPage(7);
+          setTransactionPerPage(5);
         } else if (window.innerHeight <= 1180) {
-          setTransactionPerPage(10)
+          setTransactionPerPage(8)
         // } else if (window.innerHeight <= 1085) {
         //   setTransactionPerPage(8)
         // } else if (window.innerHeight <= 1180) {
         //   setTransactionPerPage(10)
         } else {
-          setTransactionPerPage(15);
+          setTransactionPerPage(13);
         }
       }
     };

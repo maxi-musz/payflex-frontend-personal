@@ -1,6 +1,5 @@
 'use client';
 
-import BankAccountsPieChart from './dataDisplay/BankAccountsPieChart';
 import ButtonNeutral from '../button/ButtonNeutral';
 import BankTransactionTable from './dataDisplay/BankTransactionTable';
 import TransactionOptions from './dataDisplay/TransactionOptions';
@@ -30,15 +29,37 @@ import ReferAndEarn from '../refer-and-earn/ReferAndEarn';
 import VirtualCards from '../virtual-cards/VirtualCards';
 import RedeemGiftcard from '../redeem-giftcard/RedeemGiftcard';
 import P2PLending from '../p2p-lending/P2PLending';
+import WalletBallanceCard from './dataDisplay/WalletBallanceCard';
+import { quickActions, walletBalanceInfo } from '@/data/base';
+import QuickAction from './dataDisplay/QuickAction';
 
 const Dashboard = () => {
   const {currentTab} = useGeneralData();
 
   return (
     <div className='w-full pt-2 pb-4 space-y-2 md:space-y-5'>
-        <div className='w-full rounded-radius-12 py- pl-1 pr-3 bg-white border border-customGray'>
+        {/* <div className='w-full rounded-radius-12 py- pl-1 pr-3 bg-white border border-customGray'>
             <BankAccountsPieChart />
+        </div> */}
+
+        <div className="flex items-center gap-6">
+          {walletBalanceInfo.map(item =>
+            <WalletBallanceCard key={item.id} item={item} />
+          )}
         </div>
+
+        <div className="space-y-2 md:space-y-5 py-2">
+          <div className="flex items-center justify-between">
+            <h2 className='text-base font-semibold'>Quick Actions</h2>
+          </div>
+
+          <div className="flex items-center gap-6">
+            {quickActions.map(item =>
+              <QuickAction key={item.id} item={item} />
+            )}
+          </div>
+        </div>
+        
 
         {currentTab === '/' && 
         <>

@@ -36,7 +36,7 @@ const WalletBallanceCard: React.FC<WalletBalanceInfoProps> = ({item}) => {
             {item.currency}
             {!isBalanceOpen ? <CountUp start={0} end={parseInt(item.balance)} duration={2} delay={0} decimal='true' /> : "******"}
           </p>
-          <button onClick={handleBalanceToggle}>
+          <button onClick={handleBalanceToggle} className='hover:bg-blue-300 rounded-full size-8 flex items-center justify-center border hover:border-transparent transition-all duration-300 ease-in-out'>
             {isBalanceOpen ?
             <RemoveRedEyeOutlined style={{fontSize: '19px', }} /> :
             <Key style={{fontSize: '19px', }} />}

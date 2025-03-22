@@ -65,7 +65,7 @@ const CurrencyConverter = () => {
             </div>
         </div>
 
-        <ButtonOne btnText1='Convert' classes='w-full py-2' />
+        <ButtonOne btnText1='Convert' classes='w-full py-2 transition-all duration-300 ease-in-out' />
     </div>
   )
 }

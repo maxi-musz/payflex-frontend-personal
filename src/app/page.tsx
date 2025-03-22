@@ -1,7 +1,7 @@
 import Dashboard from "@/components/dashboard/Dashboard";
 import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/sidebar/Sidebar";
-import SidebarRight from "@/components/SidebarRight";
+import SidebarRight from "@/components/sidebar-right/SidebarRight";
 
 const HomePage: React.FC = () => {
 

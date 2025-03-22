@@ -1,7 +1,7 @@
 
 import Navbar from '@/components/Navbar';
 import Sidebar from '@/components/sidebar/Sidebar';
-import SidebarRight from '@/components/SidebarRight';
+import SidebarRight from '@/components/sidebar-right/SidebarRight';
 import { ReactNode } from 'react';
 
 export const metadata = {

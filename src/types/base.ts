@@ -1,3 +1,5 @@
+import { SvgIconTypeMap } from "@mui/material";
+import { OverridableComponent } from "@mui/material/OverridableComponent";
 
 export interface Product {
     id: string;
@@ -37,12 +39,10 @@ export interface Product {
       barcode: string;
       qrCode: string;
     };
-  }
+}
   
-  export type GeneralDataProps = {
-    currentTab: string,
-    // userName: string,
-    // userEmail: string,
+export type GeneralDataProps = {
+  currentTab: string,
 }
 
 export interface UserDataProps {
@@ -60,4 +60,22 @@ export interface UserDataProps {
   date_of_birth: string;
   password: string;
   confirm_password: string;
+}
+
+export interface WalletBalanceInfoProps {
+  item: {
+    id: number;
+    currency: string;
+    currencyFlag: string;
+    currencyInitials: string;
+    balance: string;
+  };
+}
+
+export interface QuickActionsProps {
+  item: {
+    id: number;
+    icon: OverridableComponent<SvgIconTypeMap<object, "svg">>;
+    text: string;
+  };
 }

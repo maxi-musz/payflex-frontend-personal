@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useEffect, useRef, useState } from 'react'
 import InputOne from '../inputs/InputOne'
 import { availableBankOptions } from '../../data/base';

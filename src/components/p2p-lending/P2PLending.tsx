@@ -1,3 +1,5 @@
+'use client';
+
 import { p2pLendingTabs } from '../../data/base';
 import React, { useState } from 'react'
 import ButtonOne from '../button/ButtonOne';

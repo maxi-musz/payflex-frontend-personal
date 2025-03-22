@@ -53,7 +53,7 @@ const Dashboard = () => {
             <h2 className='text-base font-semibold'>Quick Actions</h2>
           </div>
 
-          <div className="flex items-center gap-6">
+          <div className="w-full flex items-center gap-8 flex-wrap">
             {quickActions.map(item =>
               <QuickAction key={item.id} item={item} />
             )}

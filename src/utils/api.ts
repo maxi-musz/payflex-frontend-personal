@@ -5,12 +5,21 @@ export const sendApiRequest = async <T>(
   url: string,
   data: T,
 ) => {
-  
-  axios({method, url, data, maxBodyLength: Infinity})
-  .then(function (response) {
-    console.log(JSON.stringify(response.data));
-  })
-  .catch(function (error) {
-    console.log(error);
-  });
-}
+  try {
+    const response = await axios({
+      method,
+      url,
+      data,
+      maxBodyLength: Infinity
+    });
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error(error.message);
+      throw new Error(error.response?.data?.message || 'Something went wrong');
+    } else {
+      console.error('An unexpected error occurred');
+      throw new Error('Something went wrong');
+    }
+  }
+};

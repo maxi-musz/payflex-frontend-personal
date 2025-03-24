@@ -4,76 +4,77 @@ import Loading from '@/app/loading';
 import AuthPagesHeader from '@/components/AuthPagesHeader';
 import AuthPagesRightSide from '@/components/AuthPagesRightSide';
 import ButtonOne from '@/components/button/ButtonOne';
-import InputOne from '@/components/inputs/InputOne';
+import { showToast } from '@/components/HotToast';
+import InputFieldFloatingLabel from '@/components/inputs/InputFieldFloatingLabel';
 import { resetPassword } from '@/features/auth/actions';
-// import OTPConfirmModal from '@/components/OTPConfirmModal';
+import { passwordRecoverySchema, PasswordRecoveryType } from '@/features/auth/validations';
+import { zodResolver } from '@hookform/resolvers/zod';
+import axios from 'axios';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import React, { useState } from 'react'
-import { Toaster, toast } from 'react-hot-toast';
+import { useForm } from 'react-hook-form';
+import { Toaster } from 'react-hot-toast';
 
 const OTPConfirmModal = dynamic(() => import("@/components/OTPConfirmModal"), {
     loading: () => <Loading />,
   });
 
-const ForgotPasswordPage = () => {
+  interface ForgotPasswordProps {
+    data?: PasswordRecoveryType;
+}
+
+const ForgotPasswordPage: React.FC<ForgotPasswordProps> = ({ data }) => {
     const [isOTPOpen, setIsOTPOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+        const [isVerified, setIsVerified] = useState(false);
     const [emailAddress, setEmailAddress] = useState('');
-    const [error, setError] = useState('');
     
     
-    const confirmOTP = () => {
-        if (isOTPOpen) {
-            toast.success(`Your email address has been verified!`, {
-                className: 'custom-toast-success w-fit',
-                icon: '✅',
-                duration: 3000,
-            });
-        }
+    const closeOTPModal = () => {
+        setIsOTPOpen(false);
         
-        setError('');
-        setIsOTPOpen(true);
+        if (!isOTPOpen && !isVerified) {
+            showToast(`Your email address has not been verified!`);
+        }
     };
-    
-    const toggleOTPModal = () => {
-        setIsLoading(true);
-        if (!isOTPOpen) {
-            if (error && !emailAddress) return;
-            if (emailAddress) setError('');
 
-            if (!emailAddress) {
-                setError('Enter the email address you registered with');
-                return;
-            } else if (emailAddress.length < 4 || !emailAddress.includes('@')) {
-                setError('Invalid email address');
-                return;
-            } else {
-                resetPassword(emailAddress);
+    
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        } = useForm<PasswordRecoveryType>({
+        resolver: zodResolver(passwordRecoverySchema),
+        defaultValues: data,
+    });
+    
+    const onFormSubmit = handleSubmit(async (data) => {
+        console.log('zod form data', data);
+        try {
+            setIsLoading(true);
+            const res = await resetPassword(data.email);
+            console.log('res data', res);
+            
+            if (res.success) {
+                showToast(`${res.message}`);
                 setIsOTPOpen(true);
             }
             setIsLoading(false);
-        } else {
-            confirmOTP();
-            setIsOTPOpen(false);
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                console.error(error.message);
+                throw new Error(error.response?.data?.message || 'Something went wrong');
+            } else {
+                console.error('An unexpected error occurred');
+                throw new Error('Something went wrong');
+            }
         }
-    };
-    
-    
-    const cancelEmailVerification = () => {
-        setError('');
-        setIsOTPOpen(false);
+    });
 
-        if (!isOTPOpen) {
-            toast.error(`Your email address has not been verified!`, {
-                className: 'custom-toast-error w-fit',
-                icon: '❌',
-                duration: 3000,
-            });
-        }
+    if (isLoading) {
+        return <Loading />;
     };
-
-    if (isLoading) <Loading />
 
   return (
     <div className='h-full min-h-screen w-full flex flex-col md:flex-row '>
@@ -89,22 +90,34 @@ const ForgotPasswordPage = () => {
                     </div>
 
                     <div className="w-full">
-                        <form className="w-full space-y-3">
+                        <form onSubmit={onFormSubmit} className="w-full space-y-3">
                             <div className="w-full flex items-center gap-2">
-                                <div className="w-[80%]">
-                                    <InputOne required={true} onChange={(e) => setEmailAddress(e.target.value)} value={''} name="email" placeholderText='Enter your email' />
+                                <div className="w-[75%]">
+                                    <InputFieldFloatingLabel
+                                        {...register("email")}
+                                        floatingLabel="Enter your email address"
+                                        error={errors.email}
+                                        required
+                                        classes='w-full'
+                                        onChange={(e) => setEmailAddress(e.target.value)}
+                                    />                                    
                                 </div>
                                 
-                                <ButtonOne onClick={toggleOTPModal} classes='py-2 px-2 w-[20%] text-sm rounded-' btnText1='Verify' />
+                                <ButtonOne type='submit' classes='py-[10px] px-2 w-[25%] text-sm text-center rounded-xl' btnText1='Verify' />
                             </div>
                             
-                            {error && <p className='text-center text-xs text-red-700'>{error}</p>}
                             <p className='text-center text-sm'>Don&apos;t have an account? <Link href='/register' className='text-blue-600'>Sign up</Link></p>
                         </form>
                     </div>
                 </div>
-                    
-                {isOTPOpen && <OTPConfirmModal handleModalToggle={toggleOTPModal} cancelEmailVerification={cancelEmailVerification}  emailAddress={emailAddress} setEmailError={setError} />}
+
+                {isOTPOpen && 
+                <OTPConfirmModal
+                    cancelEmailVerification={closeOTPModal}
+                    handleModalToggle={closeOTPModal}
+                    emailAddress={emailAddress} 
+                    setIsVerified={setIsVerified} 
+                />}
             </div>
 
             <AuthPagesRightSide />

@@ -1,58 +1,77 @@
-'use client';
+"use client";
 
+import { ReactNode, forwardRef } from "react";
 import { FieldError } from "react-hook-form";
 
-type InputProps = {
+type SelectInputProps = React.SelectHTMLAttributes<HTMLSelectElement> & {
   key?: number;
-  classes?: string;
-  valueArray?: string[];
-  name?: string;
   label?: string;
-  disabled?: boolean;
-  autoFocus?: boolean;
+  placeholderText?: string;
+  classes?: string;
+  valueArray: string[]; // Options for the select input
   error?: FieldError;
-  defaultValue?: string;
-  // register: any;
-  inputProps?: React.InputHTMLAttributes<HTMLInputElement>;
-  onChange?: (e: React.ChangeEvent<HTMLOptionElement>) => void;
+  icon2?: ReactNode;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
-const InputSelectField: React.FC<InputProps> = ({
-  // key = null,
-  // classes = '',
-  // valueArray = [''],
-  name="",
-  label="",
-  // disabled = false,
-  // autoFocus = false,
-  // error,
-  // defaultValue,
-  // // register,
-  // inputProps,
-  // onChange = () => {},
-}) => {
-
-  return (
-    <div className="flex flex-col">
-      <label htmlFor={name} className="text-sm text-neutral-700">{label}</label>
-      <div className="px-2 bg-white border border-customGray flex items-center justify-between rounded-radius-8 focus-within:ring-1 focus-within:ring-primary hover:ring-primary">
-        {/* <select
-          name={name}
-          id={name}
-          defaultValue={defaultValue}
-          {...inputProps}
-          // {...register(name)}
-          className={`bg-transparent w-full py-[10px] pr-1 border-0 text-xs focus:outline-0 focus:ring-0 capitalize text-[#666666] ${classes}`}
+const SelectInputField = forwardRef<HTMLSelectElement, Omit<SelectInputProps, "ref">>(
+  (
+    {
+      placeholderText = "",
+      classes = "",
+      label = "",
+      valueArray = [],
+      icon2 = null,
+      error,
+      onClick = () => {},
+      ...props
+    },
+    ref
+  ) => {
+    return (
+      <div className="flex flex-col">
+        <label htmlFor={props.name} className="text-sm text-neutral-700">
+          {label}
+        </label>
+        <div
+          className={`${
+            props.disabled
+              ? "opacity-50 border-neutral-400 cursor-not-allowed"
+              : "border-customGray"
+          } w-full bg-white border pl-2 pr-4 flex items-center justify-between rounded-xl focus-within:ring-1 focus-within:ring-primary hover:ring-primary`}
         >
-          {valueArray.map((item, index) => (
-            <option disabled={disabled} autoFocus={autoFocus} onChange={onChange} key={key || index} value={item}>{item}</option>
-          ))}
-        </select> */}
-      </div>
-      
-      {/* {error?.message && <p className='text-red-600 text-xs'>{error.message.toString()}</p>} */}
-    </div>
-  );
-};
+          <select
+            ref={ref}
+            id={props.name}
+            className={`${classes} ${
+              props.disabled ? "opacity-40 cursor-not-allowed" : ""
+            } bg-transparent w-full py-[10px] rounded-xl border-0 text-xs focus:outline-0 focus:ring-0 text-[#666666]`}
+            {...props}
+          >
+            <option value="" disabled hidden>
+              {placeholderText}
+            </option>
+            {valueArray.map((item, index) => (
+              <option key={index} value={item}>
+                {item}
+              </option>
+            ))}
+          </select>
+          {icon2 && (
+            <button type="button" onClick={onClick} className="border-l px-2">
+              {icon2}
+            </button>
+          )}
+        </div>
 
-export default InputSelectField;
+        {error?.message && (
+          <p className="text-red-600 text-xs">{error.message.toString()}</p>
+        )}
+      </div>
+    );
+  }
+);
+
+SelectInputField.displayName = "SelectInputField";
+
+export default SelectInputField;

@@ -2,24 +2,29 @@
 
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import ButtonOne from './button/ButtonOne';
-import InputOne from './inputs/InputOne';
 import { ErrorOutline, Restore } from '@mui/icons-material';
 import ButtonNeutral from './button/ButtonNeutral';
 import { usePathname, useRouter } from 'next/navigation';
 import { requestEmailOTP, resetPassword, verifyEmail, verifyPasswordReset } from '@/features/auth/actions';
 import Loading from '@/app/loading';
+import { useForm } from 'react-hook-form';
+import { otpSchema, OTPType } from '@/features/auth/validations';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { showToast } from './HotToast';
+import InputFieldFloatingLabel from './inputs/InputFieldFloatingLabel';
+import axios from 'axios';
 
 interface OtpProps {
+    data?: OTPType,
     handleModalToggle: () => void,
     cancelEmailVerification: () => void,
     emailAddress: string,
-    setEmailError: Dispatch<SetStateAction<string>>,
+    setIsVerified: Dispatch<SetStateAction<boolean>>,
 }
 
-const OTPConfirmModal = ({handleModalToggle, cancelEmailVerification, emailAddress, setEmailError}: OtpProps) => {
+const OTPConfirmModal = ({data, handleModalToggle, cancelEmailVerification, emailAddress, setIsVerified}: OtpProps) => {
     const [otpTime, setOTPTime] = useState(60);
     const [otpCode, setOTPCode] = useState('');
-    const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
     const router = useRouter();
@@ -30,61 +35,109 @@ const OTPConfirmModal = ({handleModalToggle, cancelEmailVerification, emailAddre
             if (otpTime > 0) {
                 setOTPTime(prev => prev-1);
             }
-            if (otpTime === 0 && otpCode.length < 4) {
-                setEmailError('OTP error! Verify email please.');
-            }
         }, 1000)
         return () => clearInterval(interval);
-    }, [otpTime, otpCode, handleModalToggle, setEmailError]);
+    }, [otpTime, otpCode]);
 
-    const resendOTP = () => {
+    const resendOTP = async () => {
         setOTPTime(60);
 
-        if (pathName === '/register') {
-            requestEmailOTP(emailAddress);
-        }
-        if (pathName === '/forgot-password') {
-            resetPassword(emailAddress);
-        }
-
-        const interval = setInterval(() => {
-            if (otpTime > 0) {
-                setOTPTime(prev => prev-1);
+        try {
+            if (pathName === '/register') {
+                const res = await requestEmailOTP(emailAddress);
+                console.log('res data', res);
+                
+                if (res.success) {
+                    showToast(`${res.message}`);
+                }
             }
-        }, 1000)
-        return () => clearInterval(interval);
+            
+            if (pathName === '/forgot-password') {
+                const res = await resetPassword(emailAddress);
+                console.log('res data', res);
+                
+                if (res.success) {
+                    showToast(`${res.message}`);
+                }   
+            }
+            
+            const interval = setInterval(() => {
+                if (otpTime > 0) {
+                    setOTPTime(prev => prev-1);
+                }
+            }, 1000)
+            return () => clearInterval(interval);
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                console.error(error.message);
+                throw new Error(error.response?.data?.message || 'Something went wrong');
+            } else {
+                console.error('An unexpected error occurred');
+                throw new Error('Something went wrong');
+            }
+        }
     }
     
     const onCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => setOTPCode(e.target.value);
-
-    const handleOTPSubmit = () => {
-        setIsLoading(true);
-        if (!otpCode) {
-            setError('Enter the OTP code sent to your email address');
-            return;
-        } else if (otpCode.length < 4) {
-            setError('Verification failed! Invalid OTP');
-            return;
-        } else {
-            setError('');
+    
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        } = useForm<OTPType>({
+        resolver: zodResolver(otpSchema),
+        defaultValues: data,
+    });
+    
+    const onFormSubmit = handleSubmit(async (data) => {
+        // console.log('zod form data', data);
+        try {
             if (pathName === '/register') {
-                verifyEmail(emailAddress, otpCode);
-                handleModalToggle();
+                setIsLoading(true);
+                // console.log(emailAddress, data.otp_code);
+                const res = await verifyEmail(emailAddress, data.otp_code);
+                console.log('res data', res);
+            
+                if (res.success) {
+                    showToast(`${res.message}`);
+                    setIsVerified(true);
+                    handleModalToggle();
+                }
+                setIsLoading(false);
             }
-
+            
             if (pathName === '/forgot-password') {
-                verifyPasswordReset(emailAddress, otpCode);
-                router.push('/change-password');
+                setIsLoading(true);
+                const res = await verifyPasswordReset(emailAddress, data.otp_code);
+                console.log('res data', res);
+                
+                if (res.success === true) {
+                    router.push('/change-password');
+                    showToast(`${res.message}`);
+                }
+                setIsLoading(false);
             };
-        };
-        setIsLoading(false);
-    }
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                showToast(`${error.message}`, 'error');
+                // console.error('Error logging in:', error.message);
+                setIsLoading(false);
+                throw new Error(error.response?.data?.message || 'Something went wrong');
+            } else {
+                showToast(`Something went wrong`, 'error');
+                console.error('An unexpected error occurred');
+                throw new Error('Something went wrong');
+            }
+        }
+    });
 
-    if (isLoading) <Loading />
+    if (isLoading) {
+        return <Loading />;
+    };
 
   return (
     <section className="fixed inset-0 -top-5 bg-gray-800 bg-opacity-80 flex justify-center items-center p-2 z-[999999]">
-        <div className="bg-white w-[27rem] rounded-radius-12 shadow-lg flex flex-col justify-center items-center">
+        <form onSubmit={onFormSubmit} className="bg-white w-[27rem] rounded-radius-12 shadow-lg flex flex-col justify-center items-center">
             <div className="w-full p-6 flex flex-col items-start justify-between gap-4 rounded-radius-12">
                 <div className='rounded-radius-12 size-10 border border-gray-200 flex items-center justify-center'>
                     <span className='text-yellow-500'><ErrorOutline /></span>
@@ -94,7 +147,15 @@ const OTPConfirmModal = ({handleModalToggle, cancelEmailVerification, emailAddre
                     <h3 className='text-textGrayDarker text-2xl font-semibold'>Enter OTP</h3>
                     <p className='text-sm'>A confirmation code has been sent to your email address at <strong>{emailAddress || 'my.info@example.com'}</strong></p>
                     <div className="w-full space-y-2">
-                        <InputOne label='Enter confirmation code' required={true} onChange={onCodeChange} value={''} name="OTPConfirmationCode" classes='placeholder:text-center placeholder:text-xs placeholder:text-red-700' placeholderText={error ? error : ''} />
+                        <InputFieldFloatingLabel
+                            {...register("otp_code")}
+                            floatingLabel="OTP Code"
+                            error={errors.otp_code}
+                            required
+                            classes='w-full'
+                            onChange={onCodeChange}
+                            className='placeholder:text-center placeholder:text-xs placeholder:text-red-700'
+                        />
                         <div className="w-full flex items-center justify-start gap-2">
                             <p className='flex-1 flex items-center justify-between gap-3'>
                                 {otpTime === 0 ?
@@ -107,6 +168,7 @@ const OTPConfirmModal = ({handleModalToggle, cancelEmailVerification, emailAddre
                                 </>
                                 : 
                                 <span>Confirmation code expires in <strong>{otpTime === 60 ? '01:00' : otpTime}</strong></span>}
+                                {/* <span>Confirmation code expires in <strong>{otpTime === 60 ? '01:00' : <CountDownTimer/>}</strong></span>} */}
                             </p>
                         </div>
                     </div>
@@ -115,10 +177,10 @@ const OTPConfirmModal = ({handleModalToggle, cancelEmailVerification, emailAddre
                 
                 <div className="w-full flex items-center justify-end gap-3">
                     <ButtonNeutral onClick={cancelEmailVerification} classes='py-2 px-8 text-sm border rounded-radius-8' btnText1='Cancel' />
-                    <ButtonOne onClick={handleOTPSubmit} classes='py-2 px-8 text-sm' btnText1='Verify' />
+                    <ButtonOne type='submit' classes='py-2 px-8 text-sm' btnText1='Verify' />
                 </div>
             </div>
-        </div>
+        </form>
     </section>
   )
 }

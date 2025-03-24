@@ -4,190 +4,144 @@ import Loading from '@/app/loading';
 import AuthPagesHeader from '@/components/AuthPagesHeader';
 import AuthPagesRightSide from '@/components/AuthPagesRightSide';
 import ButtonOne from '@/components/button/ButtonOne';
-import InputOne from '@/components/inputs/InputOne';
-import InputSelect from '@/components/inputs/InputSelect';
+import { showToast } from '@/components/HotToast';
+import InputField from '@/components/inputs/InputField';
+import InputFieldFloatingLabel from '@/components/inputs/InputFieldFloatingLabel';
+import InputSelectField from '@/components/inputs/InputSelectField';
 import OTPConfirmModal from '@/components/OTPConfirmModal';
 import { registerUser, requestEmailOTP } from '@/features/auth/actions';
-// import { registerSchema, RegisterType } from '@/features/auth/validations';
-// import { zodResolver } from '@hookform/resolvers/zod';
+import { registerSchema, RegisterType } from '@/features/auth/validations';
+import { zodResolver } from '@hookform/resolvers/zod';
+import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'
-// import { useForm } from 'react-hook-form';
-import { Toaster, toast } from 'react-hot-toast';
+import { useForm } from 'react-hook-form';
+import { Toaster } from 'react-hot-toast';
 
 
-// const RegisterPage = ({data}: {data?: any}) => {
-const RegisterPage = () => {
+interface RegisterProps {
+    data?: RegisterType;
+}
+
+const RegisterPage: React.FC<RegisterProps> = ({ data }) => {
     const [isOTPOpen, setIsOTPOpen] = useState(false);
     const [isOTPEntered, setIsOTPEntered] = useState(false);
-
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [emailAddress, setEmailAddress] = useState('');
-    const [phoneNumber, setPhoneNumber] = useState('');
-    const [country, setCountry] = useState('');
-    const [state, setState] = useState('');
-    const [city, setCity] = useState('');
-    const [homeAddress, setHomeAddress] = useState('');
-    const [gender, setGender] = useState('');
-    const [dob, setDob] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    
-    const [firstNameError, setFirstNameError] = useState('');
-    const [lastNameError, setLastNameError] = useState('');
-    const [emailAddressError, setEmailAddressError] = useState('');
-    const [phoneNumberError, setPhoneNumberError] = useState('');
-    const [countryError, setCountryError] = useState('');
-    const [stateError, setStateError] = useState('');
-    const [cityError, setCityError] = useState('');
-    const [homeAddressError, setHomeAddressError] = useState('');
-    const [genderError, setGenderError] = useState('');
-    const [dobError, setDobError] = useState('');
-    const [passwordError, setPasswordError] = useState('');
-    const [confirmPasswordError, setConfirmPasswordError] = useState('');
+    const [isVerified, setIsVerified] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [emailAddress, setEmailAddress] = useState('');
 
     const router = useRouter();
-
-    const confirmOTP = () => {
-        if (isOTPEntered && emailAddressError === '') {
-            toast.success(`Your email address has been verified!`, {
-                className: 'custom-toast-success w-fit',
-                icon: '✅',
-                duration: 3000,
-            });
-        }
-        // console.log(emailAddressError);
-        
-        setEmailAddressError('');
-        setIsOTPEntered(true);
-    };
     
-    const toggleOTPModal = () => {
+    const requestOTP = async () => {
+        setIsLoading(true);
+        try {
+            const res = await requestEmailOTP(emailAddress);
+            
+            if (res.success) {
+                console.log(res);
+                setIsLoading(false);
+            }
+            setIsLoading(false);
+            showToast(`${res.message}`);
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                showToast(`${error.message}`);
+                // console.error(error.message);
+                setIsLoading(false);
+                throw new Error(error.response?.data?.message || 'Something went wrong');
+            } else {
+                showToast(`Something went wrong`);
+                // console.error('An unexpected error occurred');
+                setIsLoading(false);
+                throw new Error('Something went wrong');
+            }
+        }
+        setIsLoading(false);
+    };
+
+    const toggleOTPModal = async () => {
         setIsLoading(true);
         if (!isOTPOpen) {
-            if (emailAddressError) setIsOTPEntered(false);
-
-            if (!emailAddress) {
-                setEmailAddressError('Enter the email address you registered with');
-                return;
-            } else if (emailAddress.length < 4 || !emailAddress.includes('@')) {
-                setEmailAddressError('Invalid email address');
-                return;
-            } else {
-                requestEmailOTP(emailAddress);
-                setIsOTPOpen(true);
-            }
+            await requestOTP();
+            setIsOTPOpen(true);
             setIsLoading(false);
         } else {
             setIsOTPOpen(false);
-            confirmOTP();
+            setIsLoading(false);
         }
     };
     
     const cancelEmailVerification = () => {
-        // setEmailAddress('');
         setIsOTPEntered(false);
         setIsOTPOpen(false);
 
         if (isOTPEntered) {
-            toast.error(`Your email address has not been verified!`, {
-                className: 'custom-toast-error w-fit',
-                icon: '❌',
-                duration: 3000,
-            });
+            showToast(`Your email address has not been verified!`, 'error');
         }
     };
 
-    // const {register, handleSubmit, formState: {errors}, } = useForm<RegisterType>({resolver: zodResolver(registerSchema)});
 
-    const onFormSubmit = () => {
-        if (!firstName) {
-            setFirstNameError('First Name must not be empty!');
-        } else if (!lastName) {
-            setLastNameError('Last Name must not be empty!');
-        } else if (!emailAddress) {
-            setEmailAddressError('Email address must not be empty!');
-        } else if (!phoneNumber) {
-            setPhoneNumberError('Phone number must not be empty!');
-        } else if (!country) {
-            setCountryError('Country field must not be empty!');
-        } else if (!state) {
-            setStateError('State field must not be empty!');
-        } else if (!city) {
-            setCityError('City field must not be empty!');
-        } else if (!homeAddress) {
-            setHomeAddressError('Home address field must not be empty!');
-        } else if (!gender) {
-            setGenderError('You must select a gender!');
-        } else if (!dob) {
-            setDobError('Date of Birth must not be empty!');
-        } else if (!password) {
-            setPasswordError('Password must not be empty!');
-        } else if (!confirmPassword) {
-            setConfirmPasswordError('Enter password again!');
-        } else if (password !== confirmPassword) {
-            setConfirmPasswordError('Passwords must match!');
-        } else {
-            const UserData = {
-                first_name: firstName,
-                last_name: lastName,
-                email: emailAddress,
-                phone_number: phoneNumber,
-                address: {
-                    country: country,
-                    state: state,
-                    city: city,
-                    home_address: homeAddress,
-                },
-                gender: gender,
-                date_of_birth: dob,
-                password: password,
-                confirm_password: confirmPassword,
-            }
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+      } = useForm<RegisterType>({
+        resolver: zodResolver(registerSchema),
+        defaultValues: data,
+      });
     
-            registerUser(UserData);
-            localStorage.setItem('userData', JSON.stringify(UserData));
-
-            setFirstNameError('');
-            setLastNameError('');
-            setEmailAddressError('');
-            setPhoneNumberError('');
-            setCountryError('');
-            setStateError('');
-            setCityError('');
-            setHomeAddressError('');
-            setGenderError('');
-            setDobError('');
-            setPasswordError('');
-            setConfirmPasswordError('');
-
-            // console.log(UserData);
-            router.push('/login');
+      const onFormSubmit = handleSubmit(async (data) => {
+        console.log('zod form data', data);
+        
+        const UserData = {
+            first_name: data.first_name,
+            last_name: data.last_name,
+            email: data.email,
+            phone_number: data.phone_number,
+            address: {
+                country: data.country,
+                state: data.state,
+                city: data.city,
+                home_address: data.home_address,
+            },
+            gender: data.gender,
+            date_of_birth: data.date_of_birth,
+            password: data.password,
+            confirm_password: data.confirm_password,
         }
 
-    };
+        try {
+            setIsLoading(true);
+            
+            const res = await registerUser(UserData);
+            console.log('res data', res);
+            
+            if (res.success === true) {
+                // localStorage.setItem('userData', JSON.stringify(res.data));
+                router.push('/login');
+                // showToast(`${res.message}`);
+                setIsLoading(false);
+            }
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                showToast(`${error.message}`, 'error');
+                // console.error('Error logging in:', error.message);
+                setIsLoading(false);
+                throw new Error(error.response?.data?.message || 'Something went wrong');
+            } else {
+                showToast(`Something went wrong`, 'error');
+                // console.error('An unexpected error occurred');
+                setIsLoading(false);
+                throw new Error('Something went wrong');
+            }
+        }
+    });
 
-    // const onFormSubmit = handleSubmit(data => {
-    //     if (data) {
-    //         registerUser({
-    //             ...data,
-    //             address: {
-    //                 country: data.country,
-    //                 state: data.state,
-    //                 city: data.city,
-    //                 home_address: data.home_address,
-    //             },
-    //         });
-    //         console.log(currentUserInfo);
-    //     }
-    //     registerUser(currentUserInfo);
-    //   console.log(currentUserInfo);
-    // });
-  
-    if (isLoading) <Loading />
+      
+    if (isLoading) {
+        return <Loading />;
+    };
 
   return (
     <div className='h-full min-h-screen w-full flex flex-col md:flex-row '>
@@ -202,95 +156,158 @@ const RegisterPage = () => {
                 </div>
 
                 <div className="w-full">
-                    <form className="w-full space-y-2 md:space-y-3">
+                    <form onSubmit={onFormSubmit} className="w-full space-y-2 md:space-y-3">
                         <div className="w-full flex flex-col md:flex-row items-center gap-2 md:gap-3">
                             <div className="w-full md:w-1/2">
-                                {/* <InputField register={register} defaultValue={data?.first_name} label='First Name' name='first_name' error={errors.first_name} /> */}
-                                <InputOne onChange={(e) => setFirstName(e.target.value)} value={firstName} label='First Name' name="firstName" placeholderText='ex: John' />
-                                {firstNameError && <p className='text-red-600 text-xs'>{firstNameError}</p>}
+                                <InputFieldFloatingLabel
+                                    {...register("first_name")}
+                                    floatingLabel="Enter your first name"
+                                    error={errors.first_name}
+                                    required
+                                    classes='w-full'
+                                />
                             </div>
                             <div className="w-full md:w-1/2">
-                                {/* <InputField register={register} defaultValue={data?.last_name} label='Last Name' name='last_name' error={errors.last_name} /> */}
-                                <InputOne onChange={(e) => setLastName(e.target.value)} value={lastName} label='Last Name' name="lastName" placeholderText='ex: Doe' />
-                                {lastNameError && <p className='text-red-600 text-xs'>{lastNameError}</p>}
+                                <InputFieldFloatingLabel
+                                    {...register("last_name")}
+                                    floatingLabel="Enter your last name"
+                                    error={errors.last_name}
+                                    required
+                                    classes='w-full'
+                                />
                             </div>
                         </div>
 
                         <div className="w-full flex flex-col md:flex-row items-center gap-2 md:gap-3">
                             <div className="w-full md:w-1/2">
-                                {/* <InputField register={register} defaultValue={data?.email} onChange={(e) => setEmailAddress(e.target.value)} type='email' label='Email' name='email' error={errors.email} /> */}
-                                <InputOne required={true} disabled={isOTPEntered && !emailAddressError} onChange={(e) => setEmailAddress(e.target.value)} value={emailAddress} label='Email' name="email" placeholderText='Enter your email address' />
+                                <InputFieldFloatingLabel
+                                    disabled={isVerified}
+                                    {...register("email")}
+                                    floatingLabel="Enter your email address"
+                                    error={errors.email}
+                                    required
+                                    value={emailAddress}
+                                    onChange={(e) => setEmailAddress(e.target.value)}
+                                    classes='w-full'
+                                />
+                                {(emailAddress && !errors.email && !isOTPEntered) && 
                                 <div className="flex items-center justify-between">
-                                    {emailAddressError ? <p className='text-center text-xs text-red-700'>{emailAddressError}</p>
-                                    : (emailAddress && !isOTPEntered) && <p className='text-center text-xs text-neutral-600'>Click the &apos;verify&apos; button to verify email</p>}
-                                    {((emailAddress && !isOTPEntered) || emailAddressError) && <button type='button' onClick={toggleOTPModal} className='px-2 text-sm'>Verify</button>}
-                                </div>
+                                    <p className='text-center text-xs text-neutral-600'>Click the &apos;verify&apos; button to verify email</p>
+                                    <button type='button' onClick={toggleOTPModal} className='px-2 text-sm'>Verify</button>
+                                </div>}
                             </div>
 
-                            <div className={`w-full md:w-1/2 ${!isOTPEntered && emailAddress ? 'pb-5': ''}`}>
-                                {/* <InputField register={register} defaultValue={data?.phone_number} label='Phone Number' name='phone_number' error={errors.phone_number} /> */}
-                                <InputOne onChange={(e) => setPhoneNumber(e.target.value)} value={phoneNumber} label='Phone Number' name="phoneNumber" placeholderText='Enter your phone number' />
-                                {phoneNumberError && <p className='text-red-600 text-xs'>{phoneNumberError}</p>}
+                            <div className={`${emailAddress ? 'mb-4' : ''} w-full md:w-1/2`}>
+                                <InputFieldFloatingLabel
+                                    {...register("phone_number")}
+                                    floatingLabel="Enter your phone number"
+                                    error={errors.phone_number}
+                                    required
+                                    classes='w-full'
+                                />
                             </div>
                         </div>
                         
                         <div className="w-full flex flex-col md:flex-row items-center gap-2 md:gap-3">
-                            <div className="w-full md:w-1/3 flex-col">
-                                {/* <InputField register={register} defaultValue={data?.city} label='City' name='city' error={errors.city} /> */}
-                                <InputOne onChange={(e) => setCity(e.target.value)} value={city} label='City' name="city" placeholderText='ex: NY City' />
-                                {cityError && <p className='text-red-600 text-xs'>{cityError}</p>}
+                            <div className="w-full md:w-1/3">
+                                <InputFieldFloatingLabel
+                                    {...register("city")}
+                                    floatingLabel="Your City"
+                                    error={errors.city}
+                                    required
+                                    classes='w-full'
+                                />
                             </div>
-                            <div className="w-full md:w-1/3 flex-col">
-                                {/* <InputField register={register} defaultValue={data?.state} label='State' name='state' error={errors.state} /> */}
-                                <InputOne onChange={(e) => setState(e.target.value)} value={state} label='State' name="state" placeholderText='ex: NY' />
-                                {stateError && <p className='text-red-600 text-xs'>{stateError}</p>}
+                            <div className="w-full md:w-1/3">
+                                <InputFieldFloatingLabel
+                                    {...register("state")}
+                                    floatingLabel="Your State"
+                                    error={errors.state}
+                                    required
+                                    classes='w-full'
+                                />
                             </div>
-                            <div className="w-full md:w-1/3 flex-col">
-                                {/* <InputField register={register} defaultValue={data?.country} label='Country' name='country' error={errors.country} /> */}
-                                <InputOne onChange={(e) => setCountry(e.target.value)} value={country} label='Country' name="country" placeholderText='Enter your country' />
-                                {countryError && <p className='text-red-600 text-xs'>{countryError}</p>}
+                            <div className="w-full md:w-1/3">
+                                <InputFieldFloatingLabel
+                                    {...register("country")}
+                                    floatingLabel="Your Country"
+                                    error={errors.country}
+                                    required
+                                    classes='w-full'
+                                />
                             </div>
                         </div>
 
-                        <div className="w-full flex-col">
-                            {/* <InputField register={register} defaultValue={data?.home_address} label='Home Address' name='home_address' error={errors.home_address} /> */}
-                            <InputOne onChange={(e) => setHomeAddress(e.target.value)} value={homeAddress} label='Home Address' name="homeAddress" placeholderText='Enter your home address' />
-                            {homeAddressError && <p className='text-red-600 text-xs'>{homeAddressError}</p>}
+                        <div className="w-full">
+                            <InputFieldFloatingLabel
+                                {...register("home_address")}
+                                floatingLabel="Your Home Address"
+                                error={errors.home_address}
+                                required
+                                classes='w-full'
+                            />
                         </div>
 
                         <div className="w-full flex items-center gap-2 md:gap-3">
-                            <div className="w-1/2 flex-col">
-                                {/* <InputSelectField register={register} defaultValue={data?.gender} label='Gender' name='gender' error={errors.gender} valueArray={['male', 'female']} /> */}
-                                <InputSelect onChange={(e) => setGender(e.target.value)} valueArray={['Select Gender', 'Male', 'Female']} value={gender} label='Gender' name="gender" />
-                                {genderError && <p className='text-red-600 text-xs'>{genderError}</p>}
+                            <div className="w-1/2">
+                                <InputSelectField
+                                    {...register("gender")}
+                                    placeholderText='Select gender'
+                                    defaultValue={data?.gender}
+                                    label="Gender"
+                                    name="gender"
+                                    error={errors.gender}
+                                    valueArray={["male", "female"]}
+                                />
                             </div>
-                            <div className="w-1/2 flex-col">
-                                {/* <InputField register={register} defaultValue={data?.date_of_birth} type='date' label='Date of Birth' name='date_of_birth' error={errors.date_of_birth} /> */}
-                                <InputOne onChange={(e) => setDob(e.target.value)} value={dob} label='Date of Birth' name="dob" placeholderText='yyyy-mm-dd' />
-                                {dobError && <p className='text-red-600 text-xs'>{dobError}</p>}
+                            <div className="w-1/2">
+                                <InputField
+                                    {...register("date_of_birth")}
+                                    placeholder="dd-mm-yyyy"
+                                    // type="date"
+                                    label="Date of Birth"
+                                    error={errors.date_of_birth}
+                                />
                             </div>
                         </div>
 
                         <div className="w-full flex items-center gap-2 md:gap-3">
-                            <div className="w-1/2 flex-col">
-                                <InputOne type='password' onChange={(e) => setPassword(e.target.value)} value={password} label='Password' name="password" placeholderText='Enter your password' />
-                                {passwordError && <p className='text-red-600 text-xs'>{passwordError}</p>}
+                            <div className="w-1/2">
+                                <InputFieldFloatingLabel
+                                    type="password"
+                                    {...register("password")}
+                                    floatingLabel="Password"
+                                    error={errors.password}
+                                    required
+                                    classes='w-full'
+                                />
                             </div>
-                            <div className="w-1/2 flex-col">
-                                {/* <InputField register={register} defaultValue={data?.date_of_birth} type='date' label='Date of Birth' name='date_of_birth' error={errors.date_of_birth} /> */}
-                                <InputOne type='password' onChange={(e) => setConfirmPassword(e.target.value)} value={confirmPassword} label='Confirm password' name="confirmPassword" placeholderText='Confirm your password' />
-                                {confirmPasswordError && <p className='text-red-600 text-xs'>{confirmPasswordError}</p>}
+                            <div className="w-1/2">
+                                <InputFieldFloatingLabel
+                                    type="password"
+                                    {...register("confirm_password")}
+                                    floatingLabel="Confirm Password"
+                                    error={errors.confirm_password}
+                                    required
+                                    classes='w-full'
+                                />
                             </div>
                         </div>
                         
-                        <ButtonOne onClick={onFormSubmit} classes='py-2 px-16 w-full' btnText1='Sign up' />
+                        <ButtonOne type='submit' classes='py-2 px-16 w-full' btnText1='Sign up' />
                         
                         <p className='text-center text-sm'>Already have an account? <Link href='/login' className='text-blue-600'>Login</Link></p>
                     </form>
                 </div>
             </div>
 
-            {isOTPOpen && <OTPConfirmModal cancelEmailVerification={cancelEmailVerification} handleModalToggle={toggleOTPModal} emailAddress={emailAddress} setEmailError={setEmailAddressError} />}
+            {isOTPOpen && 
+            <OTPConfirmModal
+                cancelEmailVerification={cancelEmailVerification}
+                handleModalToggle={toggleOTPModal} 
+                emailAddress={emailAddress} 
+                setIsVerified={setIsVerified} 
+            />}
         </div>
 
         <AuthPagesRightSide />

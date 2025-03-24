@@ -1,16 +1,18 @@
 import BasicPagination from './Pagination'
 
 interface FullPaginationProps {
-    transactionPerPage: number,
-    handleRowsPerPageChange: (event: React.ChangeEvent<HTMLSelectElement>) => void,
-    totalTransactions: number,
+    // transactionPerPage: number,
+    // handleRowsPerPageChange: (event: React.ChangeEvent<HTMLSelectElement>) => void,
+    // totalTransactions: number,
     totalPages: number,
     paginate: (page: number) => void,
     currentPage: number,
 }
 
-const FullPagination = ({transactionPerPage, handleRowsPerPageChange, totalTransactions, totalPages, paginate, currentPage}: FullPaginationProps) => {  
-    console.log(transactionPerPage, handleRowsPerPageChange, totalTransactions);
+const FullPagination = ({totalPages, paginate, currentPage}: FullPaginationProps) => {  
+// const FullPagination = ({transactionPerPage, handleRowsPerPageChange, totalTransactions, totalPages, paginate, currentPage}: FullPaginationProps) => {  
+    // console.log(transactionPerPage, handleRowsPerPageChange, totalTransactions);
+
   return (
     // <div className='pagination w-full flex flex-col md:flex-row items-center justify-center'>
     <div className='pagination w-full flex flex-col items-center justify-center'>

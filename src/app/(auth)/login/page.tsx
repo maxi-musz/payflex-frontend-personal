@@ -41,13 +41,13 @@ const LoginPage: React.FC<LoginProps> = ({ data }) => {
         
     
     const onFormSubmit = handleSubmit(async (data) => {
-        console.log('zod form data', data);
+        // console.log('zod form data', data);
         try {
             setIsLoading(true);
             const res = await loginUser(data.email, data.password);
             
             if (res.success) {
-                console.log('res data', res);
+                // console.log('res data', res);
                 localStorage.setItem('loggedInUserInfo', JSON.stringify({
                     email: res.data.email,
                     first_name: res.data.first_name,

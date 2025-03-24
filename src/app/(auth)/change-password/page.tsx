@@ -24,7 +24,7 @@ const ChangenewPasswordPage: React.FC<ChangenewPasswordPageProps> = ({ data }) =
     const [isPasswordOpen, setIsPasswordOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
-    
+
     const handlePasswordToggle = () => setIsPasswordOpen(prev => !prev);
     
     const {
@@ -37,11 +37,11 @@ const ChangenewPasswordPage: React.FC<ChangenewPasswordPageProps> = ({ data }) =
     });
     
     const onFormSubmit = handleSubmit(async (data) => {
-        console.log('zod form data', data);
+        // console.log('zod form data', data);
         try {
             setIsLoading(true);
             const res = await updatePassword(data.email, data.new_password);
-            console.log('res data', res);
+            // console.log('res data', res);
             
             if (res.success) {
                 router.push('/login');

@@ -49,10 +49,10 @@ const Borrow = ({handleDropDownTabClick}: {handleDropDownTabClick: (tab: string)
   
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
   
-  const handleRowsPerPageChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setTransactionPerPage(Number(event.target.value));
-    setCurrentPage(1);
-  };
+  // const handleRowsPerPageChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  //   setTransactionPerPage(Number(event.target.value));
+  //   setCurrentPage(1);
+  // };
   // ============== pagination =================
   
   const handleMenuToggle = (id: number) => {
@@ -116,10 +116,10 @@ const Borrow = ({handleDropDownTabClick}: {handleDropDownTabClick: (tab: string)
         </div>
         
         <FullPagination
-          transactionPerPage={transactionPerPage}
-          handleRowsPerPageChange={handleRowsPerPageChange}
+          // transactionPerPage={transactionPerPage}
+          // handleRowsPerPageChange={handleRowsPerPageChange}
+          // totalTransactions={availableLenders.length}
           totalPages={totalPages}
-          totalTransactions={availableLenders.length}
           paginate={paginate}
           currentPage={currentPage}
          />

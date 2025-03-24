@@ -4,52 +4,67 @@ import Loading from '@/app/loading';
 import AuthPagesHeader from '@/components/AuthPagesHeader';
 import AuthPagesRightSide from '@/components/AuthPagesRightSide';
 import ButtonOne from '@/components/button/ButtonOne';
-import InputOne from '@/components/inputs/InputOne';
-import { useGeneralData } from '@/context/GeneralDataContext';
+import { showToast } from '@/components/HotToast';
+import InputFieldFloatingLabel from '@/components/inputs/InputFieldFloatingLabel';
 import { updatePassword } from '@/features/auth/actions';
+import { newPasswordSchema, NewPasswordType } from '@/features/auth/validations';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Key, RemoveRedEyeOutlined } from '@mui/icons-material';
+import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'
+import { useForm } from 'react-hook-form';
 
-const ChangenewPasswordPage = () => {
+interface ChangenewPasswordPageProps {
+    data?: NewPasswordType;
+}
+
+const ChangenewPasswordPage: React.FC<ChangenewPasswordPageProps> = ({ data }) => {
     const [isPasswordOpen, setIsPasswordOpen] = useState(false);
-    const [emailAddress, setEmailAddress] = useState('');
-    const [newPassword, setNewPassword] = useState('');
-    const [emailAddressError, setEmailAddressError] = useState('');
-    const [newPasswordError, setNewPasswordError] = useState('');
-    const {currentUserData, setCurrentUserData} = useGeneralData();
     const [isLoading, setIsLoading] = useState(false);
-
     const router = useRouter();
-
-    const onFormSubmit = () => {
-        setIsLoading(true);
-        if (newPassword.length < 8) {
-            setNewPasswordError("New Password must be at least 8 characters!");
-        } else if (emailAddress.length < 3 || !emailAddress.includes('@')) {
-            setEmailAddressError("Invalid email address!");
-        } else if (emailAddress !== currentUserData.email) {
-            setEmailAddressError("Wrong email address! Check your email.");
-        } else {
-            setEmailAddressError("");
-            setNewPasswordError("");
-
-            localStorage.setItem('userData', JSON.stringify({...currentUserData, password: newPassword}));
-            setCurrentUserData({...currentUserData, password: newPassword});
-            // console.log(currentUserData);
-            updatePassword(emailAddress, newPassword);
-            
-            // console.log(emailAddress, newPassword);
-            router.refresh();
-            router.push('/login');
-        }
-        setIsLoading(false);
-    };
     
     const handlePasswordToggle = () => setIsPasswordOpen(prev => !prev);
-
-    if (isLoading) <Loading />
+    
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        } = useForm<NewPasswordType>({
+        resolver: zodResolver(newPasswordSchema),
+        defaultValues: data,
+    });
+    
+    const onFormSubmit = handleSubmit(async (data) => {
+        console.log('zod form data', data);
+        try {
+            setIsLoading(true);
+            const res = await updatePassword(data.email, data.new_password);
+            console.log('res data', res);
+            
+            if (res.success) {
+                router.push('/login');
+                showToast(`${res.message}`);
+            }
+            setIsLoading(false);
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                showToast(`${error.message}`, 'error');
+                setIsLoading(false);
+                // console.error(error.message);
+                // throw new Error(error.response?.data?.message || 'Something went wrong');
+            } else {
+                showToast(`Something went wrong`, 'error');
+                console.error('An unexpected error occurred');
+                throw new Error('Something went wrong');
+            }
+        }
+    });
+    
+    if (isLoading) {
+        return <Loading />;
+    };
     
   return (
     <div className='h-full min-h-screen w-full flex flex-col md:flex-row '>
@@ -63,26 +78,30 @@ const ChangenewPasswordPage = () => {
                 </div>
 
                 <div className="w-full">
-                    <form className="w-full space-y-3">
-                        <div className="w-full mb-3 flex flex-col">
-                            <InputOne onChange={(e) => setEmailAddress(e.target.value)} value={''} label='Email Address' name="email" placeholderText='Enter your email address' />
-                            {emailAddressError && <p className='text-red-600 text-xs'>{emailAddressError}</p>}
-                        </div>
-                        <div className="w-full mb-3 flex-col">
-                            <InputOne
-                                icon2={!isPasswordOpen ? <RemoveRedEyeOutlined style={{fontSize: '19px', }} /> : <Key style={{fontSize: '19px', }} />}
-                                onChange={(e) => setNewPassword(e.target.value)}
-                                onClick={handlePasswordToggle}
-                                value={''}
-                                type={!isPasswordOpen ? 'password' : 'text'}
-                                label='New Password'
-                                name="newPassword"
-                                placeholderText='Enter your new password'
+                    <form onSubmit={onFormSubmit} className="w-full space-y-5">
+                        <div className="w-full mb-3">
+                            <InputFieldFloatingLabel
+                                {...register("email")}
+                                floatingLabel="Email Address"
+                                error={errors.email}
+                                required
+                                classes='w-full'
                             />
-                            {newPasswordError && <p className='text-red-600 text-xs'>{newPasswordError}</p>}
+                        </div>
+                        <div className="w-full mb-3">
+                            <InputFieldFloatingLabel
+                                floatingLabel='Your New Password'
+                                icon2={!isPasswordOpen ? <RemoveRedEyeOutlined style={{fontSize: '19px', }} /> : <Key style={{fontSize: '19px', }} />}
+                                onClick={handlePasswordToggle}
+                                type={!isPasswordOpen ? 'password' : 'text'}
+                                {...register("new_password")}
+                                error={errors.new_password}
+                                required
+                                classes='w-full'
+                            />
                         </div>
 
-                        <ButtonOne onClick={onFormSubmit} classes='py-2 px-16 w-full' btnText1='Change Password' />
+                        <ButtonOne type='submit' classes='py-2 px-16 w-full' btnText1='Change Password' />
                         
                         <p className='text-center text-sm'>Don&apos;t have an account? <Link href='/register' className='text-blue-600'>Sign up</Link></p>
                     </form>

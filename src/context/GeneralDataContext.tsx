@@ -42,14 +42,17 @@ export const GeneralDataProvider = ({ children }: { children: ReactNode }) => {
     if (storedData) {
       setCurrentData(JSON.parse(storedData));
     }
+
     const currentUserData = localStorage.getItem('userData');
     if (currentUserData) {
       setCurrentUserData(JSON.parse(currentUserData));
     }
+
     const loggedInUserData = localStorage.getItem('loggedInUserInfo');
     if (loggedInUserData) {
       setLoggedInUser(JSON.parse(loggedInUserData));
     }
+    
     if ((pathName === '/' || pathName === '/api-docs' || pathName === '/contact-support' || pathName === '/whatsapp') && !loggedInUserData) {
       router.push('/login');
     };

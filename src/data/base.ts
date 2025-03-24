@@ -361,6 +361,7 @@ export const users = [
 
 
 export const currentUserInfo = {
+    id: '',
     first_name: '',
     last_name: '',
     email: '',
@@ -375,6 +376,9 @@ export const currentUserInfo = {
     date_of_birth: '',
     password: '',
     confirm_password: '',
+    role: 'user',
+    createdAt: '2025-03-23T16:12:51.656Z',
+    updatedAt: '2025-03-23T16:12:51.656Z',
   }
  
 

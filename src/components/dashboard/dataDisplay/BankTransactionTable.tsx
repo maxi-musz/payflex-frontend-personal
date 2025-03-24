@@ -45,10 +45,10 @@ const BankTransactionTable = () => {
   
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
   
-  const handleRowsPerPageChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setTransactionPerPage(Number(event.target.value));
-    setCurrentPage(1);
-  };
+  // const handleRowsPerPageChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  //   setTransactionPerPage(Number(event.target.value));
+  //   setCurrentPage(1);
+  // };
   // ============== pagination =================
 
   return (
@@ -108,10 +108,10 @@ const BankTransactionTable = () => {
         </div>
         
         <FullPagination
-          transactionPerPage={transactionPerPage}
-          handleRowsPerPageChange={handleRowsPerPageChange}
+          // transactionPerPage={transactionPerPage}
+          // handleRowsPerPageChange={handleRowsPerPageChange}
+          // totalTransactions={cardRequests.length}
           totalPages={totalPages}
-          totalTransactions={cardRequests.length}
           paginate={paginate}
           currentPage={currentPage}
          />

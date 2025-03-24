@@ -50,11 +50,11 @@ const ForgotPasswordPage: React.FC<ForgotPasswordProps> = ({ data }) => {
     });
     
     const onFormSubmit = handleSubmit(async (data) => {
-        console.log('zod form data', data);
+        // console.log('zod form data', data);
         try {
             setIsLoading(true);
             const res = await resetPassword(data.email);
-            console.log('res data', res);
+            // console.log('res data', res);
             
             if (res.success) {
                 showToast(`${res.message}`);
@@ -63,7 +63,7 @@ const ForgotPasswordPage: React.FC<ForgotPasswordProps> = ({ data }) => {
             setIsLoading(false);
         } catch (error) {
             if (axios.isAxiosError(error)) {
-                console.error(error.message);
+                // console.error(error.message);
                 throw new Error(error.response?.data?.message || 'Something went wrong');
             } else {
                 console.error('An unexpected error occurred');

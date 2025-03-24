@@ -45,7 +45,7 @@ const OTPConfirmModal = ({data, handleModalToggle, cancelEmailVerification, emai
         try {
             if (pathName === '/register') {
                 const res = await requestEmailOTP(emailAddress);
-                console.log('res data', res);
+                // console.log('res data', res);
                 
                 if (res.success) {
                     showToast(`${res.message}`);
@@ -54,7 +54,7 @@ const OTPConfirmModal = ({data, handleModalToggle, cancelEmailVerification, emai
             
             if (pathName === '/forgot-password') {
                 const res = await resetPassword(emailAddress);
-                console.log('res data', res);
+                // console.log('res data', res);
                 
                 if (res.success) {
                     showToast(`${res.message}`);
@@ -96,7 +96,7 @@ const OTPConfirmModal = ({data, handleModalToggle, cancelEmailVerification, emai
                 setIsLoading(true);
                 // console.log(emailAddress, data.otp_code);
                 const res = await verifyEmail(emailAddress, data.otp_code);
-                console.log('res data', res);
+                // console.log('res data', res);
             
                 if (res.success) {
                     showToast(`${res.message}`);
@@ -109,7 +109,7 @@ const OTPConfirmModal = ({data, handleModalToggle, cancelEmailVerification, emai
             if (pathName === '/forgot-password') {
                 setIsLoading(true);
                 const res = await verifyPasswordReset(emailAddress, data.otp_code);
-                console.log('res data', res);
+                // console.log('res data', res);
                 
                 if (res.success === true) {
                     router.push('/change-password');

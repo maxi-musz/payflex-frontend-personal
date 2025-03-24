@@ -39,7 +39,7 @@ const RegisterPage: React.FC<RegisterProps> = ({ data }) => {
             const res = await requestEmailOTP(emailAddress);
             
             if (res.success) {
-                console.log(res);
+                // console.log(res);
                 setIsLoading(false);
             }
             setIsLoading(false);
@@ -92,7 +92,7 @@ const RegisterPage: React.FC<RegisterProps> = ({ data }) => {
       });
     
       const onFormSubmit = handleSubmit(async (data) => {
-        console.log('zod form data', data);
+        // console.log('zod form data', data);
         
         const UserData = {
             first_name: data.first_name,
@@ -115,7 +115,7 @@ const RegisterPage: React.FC<RegisterProps> = ({ data }) => {
             setIsLoading(true);
             
             const res = await registerUser(UserData);
-            console.log('res data', res);
+            // console.log('res data', res);
             
             if (res.success === true) {
                 // localStorage.setItem('userData', JSON.stringify(res.data));

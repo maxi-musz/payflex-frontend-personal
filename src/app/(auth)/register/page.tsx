@@ -184,17 +184,20 @@ const RegisterPage: React.FC<RegisterProps> = ({ data }) => {
                                     disabled={isVerified}
                                     {...register("email")}
                                     floatingLabel="Enter your email address"
-                                    error={errors.email}
+                                    // error={errors.email}
                                     required
                                     value={emailAddress}
                                     onChange={(e) => setEmailAddress(e.target.value)}
                                     classes='w-full'
                                 />
-                                {(emailAddress && !errors.email && !isOTPEntered) && 
+                                {
+                                // (emailAddress && !errors.email && !isOTPEntered) && 
+                                (emailAddress && !isOTPEntered) && 
                                 <div className="flex items-center justify-between">
                                     <p className='text-center text-xs text-neutral-600'>Click the &apos;verify&apos; button to verify email</p>
                                     <button type='button' onClick={toggleOTPModal} className='px-2 text-sm'>Verify</button>
-                                </div>}
+                                </div>
+                                }
                             </div>
 
                             <div className={`${emailAddress ? 'mb-4' : ''} w-full md:w-1/2`}>

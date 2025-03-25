@@ -81,7 +81,9 @@ const RegisterPage: React.FC<RegisterProps> = ({ data }) => {
     const cancelEmailVerification = () => {
         setIsOTPEntered(false);
         setIsOTPOpen(false);
-        showToast(`Your email address has not been verified!`, 'error');
+        setTimeout(() => {
+            showToast(`Your email address has not been verified!`, 'error');
+        }, 500);
     };
 
 
@@ -96,6 +98,7 @@ const RegisterPage: React.FC<RegisterProps> = ({ data }) => {
     
       const onFormSubmit = handleSubmit(async (data) => {        
         setIsLoading(true);
+        // console.log(data);
         const UserData = {
             first_name: data.first_name,
             last_name: data.last_name,
@@ -115,14 +118,20 @@ const RegisterPage: React.FC<RegisterProps> = ({ data }) => {
 
         try {
             const res = await registerUser(UserData);
+            console.log(res);
             if (res.success) {
                 setIsLoading(false);
                 router.push('/login');
+                setTimeout(() => {
+                    showToast(`${res.message}`);
+                }, 500);
                 // localStorage.setItem('userData', JSON.stringify(res.data));
             }
         } catch (error) {
             setIsLoading(false);
-            showToast(`Error: ${(error as Error).message || 'An unexpected error occurred'}`, 'error');
+            setTimeout(() => {
+                showToast(`Error: ${(error as Error).message || 'An unexpected error occurred'}`, 'error');
+            }, 500);
         }
     });
 

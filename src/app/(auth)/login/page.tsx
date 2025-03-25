@@ -44,13 +44,7 @@ const LoginPage: React.FC<LoginProps> = ({ data }) => {
             const res = await loginUser(data.email, data.password);
             
             if (res.success) {
-                setIsLoading(false);
-                router.push('/');
-
-                setTimeout(() => {
-                    showToast(`${res.message}`);
-                }, 500);
-
+                
                 const { accessToken, data } = res;
                 // Store accessToken in a cookie (HTTP-Only for SSR)
                 setCookie(null, 'accessToken', accessToken, {
@@ -71,6 +65,12 @@ const LoginPage: React.FC<LoginProps> = ({ data }) => {
                 password: ''
             }));
             
+            setIsLoading(false);
+            router.push('/');
+
+            setTimeout(() => {
+                showToast(`${res.message}`);
+            }, 500);
         } catch (error) {
             setIsLoading(false);
             setTimeout(() => {

@@ -162,6 +162,7 @@ const RegisterPage: React.FC<RegisterProps> = ({ data }) => {
                                     error={errors.first_name}
                                     required
                                     classes='w-full'
+                                    placeholderText='eg. Mikel'
                                 />
                             </div>
                             <div className="w-full md:w-1/2">
@@ -171,6 +172,7 @@ const RegisterPage: React.FC<RegisterProps> = ({ data }) => {
                                     error={errors.last_name}
                                     required
                                     classes='w-full'
+                                    placeholderText='eg. Adeyemi'
                                 />
                             </div>
                         </div>
@@ -186,6 +188,7 @@ const RegisterPage: React.FC<RegisterProps> = ({ data }) => {
                                     value={emailAddress}
                                     onChange={(e) => setEmailAddress(e.target.value)}
                                     classes='w-full'
+                                    placeholderText='eg. mikel.adeyemi@gmail.com'
                                 />
                                 {
                                 // (emailAddress && !errors.email && !isOTPEntered) && 
@@ -204,6 +207,7 @@ const RegisterPage: React.FC<RegisterProps> = ({ data }) => {
                                     error={errors.phone_number}
                                     required
                                     classes='w-full'
+                                    placeholderText='eg. +2348037746378'
                                 />
                             </div>
                         </div>
@@ -216,6 +220,7 @@ const RegisterPage: React.FC<RegisterProps> = ({ data }) => {
                                     error={errors.city}
                                     required
                                     classes='w-full'
+                                    placeholderText='eg. Lagos'
                                 />
                             </div>
                             <div className="w-full md:w-1/3">
@@ -225,6 +230,7 @@ const RegisterPage: React.FC<RegisterProps> = ({ data }) => {
                                     error={errors.state}
                                     required
                                     classes='w-full'
+                                    placeholderText='eg. Lagos'
                                 />
                             </div>
                             <div className="w-full md:w-1/3">
@@ -234,6 +240,7 @@ const RegisterPage: React.FC<RegisterProps> = ({ data }) => {
                                     error={errors.country}
                                     required
                                     classes='w-full'
+                                    placeholderText='eg. Nigeria'
                                 />
                             </div>
                         </div>
@@ -245,6 +252,7 @@ const RegisterPage: React.FC<RegisterProps> = ({ data }) => {
                                 error={errors.home_address}
                                 required
                                 classes='w-full'
+                                placeholderText='eg. No.7 Azikiwe Close, Maitama Abuja Nigeria'
                             />
                         </div>
 

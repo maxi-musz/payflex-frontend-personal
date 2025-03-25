@@ -105,6 +105,7 @@ const LoginPage: React.FC<LoginProps> = ({ data }) => {
                                 error={errors.email}
                                 required
                                 classes='w-full'
+                                placeholderText='eg. mikel.adeyemi@gmail.com'
                             />
                         </div>
                         

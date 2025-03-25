@@ -172,7 +172,7 @@ const RegisterPage: React.FC<RegisterProps> = ({ data }) => {
                                     disabled={isVerified}
                                     {...register("email")}
                                     label="Email Address"
-                                    error={errors.email}
+                                    // error={errors.email}
                                     required
                                     value={emailAddress}
                                     onChange={(e) => setEmailAddress(e.target.value)}

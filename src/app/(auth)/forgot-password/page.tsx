@@ -5,11 +5,10 @@ import AuthPagesHeader from '@/components/AuthPagesHeader';
 import AuthPagesRightSide from '@/components/AuthPagesRightSide';
 import ButtonOne from '@/components/button/ButtonOne';
 import { showToast } from '@/components/HotToast';
-import InputFieldFloatingLabel from '@/components/inputs/InputFieldFloatingLabel';
+import InputField from '@/components/inputs/InputField';
 import { resetPassword } from '@/features/auth/actions';
 import { passwordRecoverySchema, PasswordRecoveryType } from '@/features/auth/validations';
 import { zodResolver } from '@hookform/resolvers/zod';
-import axios from 'axios';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import React, { useState } from 'react'
@@ -27,9 +26,8 @@ const OTPConfirmModal = dynamic(() => import("@/components/OTPConfirmModal"), {
 const ForgotPasswordPage: React.FC<ForgotPasswordProps> = ({ data }) => {
     const [isOTPOpen, setIsOTPOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-        const [isVerified, setIsVerified] = useState(false);
+    const [isVerified, setIsVerified] = useState(false);
     const [emailAddress, setEmailAddress] = useState('');
-    
     
     const closeOTPModal = () => {
         setIsOTPOpen(false);
@@ -39,7 +37,6 @@ const ForgotPasswordPage: React.FC<ForgotPasswordProps> = ({ data }) => {
         }
     };
 
-    
     const {
         register,
         handleSubmit,
@@ -50,25 +47,23 @@ const ForgotPasswordPage: React.FC<ForgotPasswordProps> = ({ data }) => {
     });
     
     const onFormSubmit = handleSubmit(async (data) => {
-        // console.log('zod form data', data);
+        setIsLoading(true);
         try {
-            setIsLoading(true);
             const res = await resetPassword(data.email);
-            // console.log('res data', res);
             
             if (res.success) {
-                showToast(`${res.message}`);
+                setIsLoading(false);
                 setIsOTPOpen(true);
+                setTimeout(() => {
+                    showToast(`${res.message}`);
+                }, 500);
             }
-            setIsLoading(false);
         } catch (error) {
-            if (axios.isAxiosError(error)) {
-                // console.error(error.message);
-                throw new Error(error.response?.data?.message || 'Something went wrong');
-            } else {
-                console.error('An unexpected error occurred');
-                throw new Error('Something went wrong');
-            }
+            setIsLoading(false);
+            setIsOTPOpen(true);
+            setTimeout(() => {
+                showToast(`Error: ${(error as Error).message || 'An unexpected error occurred'}`, 'error');
+            }, 500);
         }
     });
 
@@ -92,10 +87,10 @@ const ForgotPasswordPage: React.FC<ForgotPasswordProps> = ({ data }) => {
                     <div className="w-full">
                         <form onSubmit={onFormSubmit} className="w-full space-y-3">
                             <div className="w-full flex items-center gap-2">
-                                <div className="w-[75%]">
-                                    <InputFieldFloatingLabel
+                                <div className="w-[80%]">
+                                    <InputField
                                         {...register("email")}
-                                        floatingLabel="Enter your email address"
+                                        placeholder="Enter your email address"
                                         error={errors.email}
                                         required
                                         classes='w-full'
@@ -103,7 +98,7 @@ const ForgotPasswordPage: React.FC<ForgotPasswordProps> = ({ data }) => {
                                     />                                    
                                 </div>
                                 
-                                <ButtonOne type='submit' classes='py-[10px] px-2 w-[25%] text-sm text-center rounded-xl' btnText1='Verify' />
+                                <ButtonOne type='submit' classes='py-[8px] px-2 w-[20%] text-sm text-center rounded-xl' btnText1='Verify' />
                             </div>
                             
                             <p className='text-center text-sm'>Don&apos;t have an account? <Link href='/register' className='text-blue-600'>Sign up</Link></p>

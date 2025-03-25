@@ -9,7 +9,7 @@ import Tabs from './Tabs';
 import { Logout } from '@mui/icons-material';
 import { useGeneralData } from '@/context/GeneralDataContext';
 import { useEffect, useState } from 'react';
-// import { useGeneralData } from '@/context/GeneralDataContext';
+import { destroyCookie } from 'nookies';
 
 interface SidebarProps {
     show?: string;
@@ -20,7 +20,7 @@ const Sidebar: React.FC<SidebarProps> = ({ show = 'hidden', closeSidebar = () =>
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
-    const {loggedInUser, dropLoggedInUserInfo} = useGeneralData();
+    const {loggedInUser} = useGeneralData();
     
     const router = useRouter();
 
@@ -30,8 +30,9 @@ const Sidebar: React.FC<SidebarProps> = ({ show = 'hidden', closeSidebar = () =>
         setEmail(loggedInUser.email)
     }, [loggedInUser.first_name, loggedInUser.last_name, loggedInUser.email]);
 
-    const logout = () => {
-        dropLoggedInUserInfo();
+    const logout = () => {       
+        destroyCookie(null, 'accessToken');
+        destroyCookie(null, 'role');
         router.push('/login');
     }
 

@@ -4,6 +4,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { currentUserInfo, INITIAL_GENERAL_DATA } from '../data/base';
 import { GeneralDataProps, UserDataProps } from '../types/base';
 import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
+// import {jwtDecode} from 'jwt-decode';
 
 interface GeneralDataContextType {
   currentData: GeneralDataProps;
@@ -53,9 +54,9 @@ export const GeneralDataProvider = ({ children }: { children: ReactNode }) => {
       setLoggedInUser(JSON.parse(loggedInUserData));
     }
     
-    if ((pathName === '/' || pathName === '/api-docs' || pathName === '/contact-support' || pathName === '/whatsapp') && !loggedInUserData) {
-      router.push('/login');
-    };
+    // if ((pathName === '/' || pathName === '/api-docs' || pathName === '/contact-support' || pathName === '/whatsapp') && !loggedInUserData) {
+    //   router.push('/login');
+    // };
     
     // console.log(loggedInUserData);
   }, [pathName, router]);
@@ -76,6 +77,24 @@ export const GeneralDataProvider = ({ children }: { children: ReactNode }) => {
     localStorage.removeItem('loggedInUserInfo');
   };
 
+  // const getCurrentUser = () => {
+  //   // Retrieve the token from the cookies (you can use a package like 'cookie' or 'nookies')
+  //   const token = document.cookie.split('; ').find(row => row.startsWith('accessToken='))?.split('=')[1];
+
+  //   if (!token) return null;
+
+  //   try {
+  //     const decoded: DecodedToken = jwtDecode(token);
+  //     return decoded; // This will return the decoded token with user details
+  //   } catch (error) {
+  //     console.error('Error decoding token:', error);
+  //     return null;
+  //   }
+  // };
+
+  // const currentUser = getCurrentUser();
+  // console.log(currentUser);
+
   return (
     <GeneralDataContext.Provider
       value={{
@@ -88,6 +107,7 @@ export const GeneralDataProvider = ({ children }: { children: ReactNode }) => {
         currentTab: currentData.currentTab,
         updateGeneralData,
         dropLoggedInUserInfo,
+        // currentUser,
       }}
     >
       {children}

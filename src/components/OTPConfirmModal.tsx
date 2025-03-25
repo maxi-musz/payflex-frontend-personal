@@ -12,7 +12,7 @@ import { otpSchema, OTPType } from '@/features/auth/validations';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { showToast } from './HotToast';
 import InputFieldFloatingLabel from './inputs/InputFieldFloatingLabel';
-import axios from 'axios';
+import { Toaster } from 'react-hot-toast';
 
 interface OtpProps {
     data?: OTPType,
@@ -45,8 +45,6 @@ const OTPConfirmModal = ({data, handleModalToggle, cancelEmailVerification, emai
         try {
             if (pathName === '/register') {
                 const res = await requestEmailOTP(emailAddress);
-                // console.log('res data', res);
-                
                 if (res.success) {
                     showToast(`${res.message}`);
                 }
@@ -54,8 +52,6 @@ const OTPConfirmModal = ({data, handleModalToggle, cancelEmailVerification, emai
             
             if (pathName === '/forgot-password') {
                 const res = await resetPassword(emailAddress);
-                // console.log('res data', res);
-                
                 if (res.success) {
                     showToast(`${res.message}`);
                 }   
@@ -68,13 +64,8 @@ const OTPConfirmModal = ({data, handleModalToggle, cancelEmailVerification, emai
             }, 1000)
             return () => clearInterval(interval);
         } catch (error) {
-            if (axios.isAxiosError(error)) {
-                console.error(error.message);
-                throw new Error(error.response?.data?.message || 'Something went wrong');
-            } else {
-                console.error('An unexpected error occurred');
-                throw new Error('Something went wrong');
-            }
+            showToast(`Error: ${(error as Error).message || 'An unexpected error occurred'}`, 'error');
+            setIsLoading(false);
         }
     }
     
@@ -90,44 +81,36 @@ const OTPConfirmModal = ({data, handleModalToggle, cancelEmailVerification, emai
     });
     
     const onFormSubmit = handleSubmit(async (data) => {
-        // console.log('zod form data', data);
+        setIsLoading(true);
         try {
             if (pathName === '/register') {
-                setIsLoading(true);
-                // console.log(emailAddress, data.otp_code);
                 const res = await verifyEmail(emailAddress, data.otp_code);
-                // console.log('res data', res);
             
                 if (res.success) {
+                    setIsLoading(false);
                     showToast(`${res.message}`);
                     setIsVerified(true);
                     handleModalToggle();
                 }
-                setIsLoading(false);
             }
             
             if (pathName === '/forgot-password') {
-                setIsLoading(true);
                 const res = await verifyPasswordReset(emailAddress, data.otp_code);
-                // console.log('res data', res);
                 
-                if (res.success === true) {
+                if (res.success) {
+                    setIsLoading(false);
+                    // setIsVerified(true);
+                    handleModalToggle();
                     router.push('/change-password');
-                    showToast(`${res.message}`);
                 }
-                setIsLoading(false);
+                    
+                setTimeout(() => {
+                    showToast(`${res.message}`);
+                }, 500);
             };
         } catch (error) {
-            if (axios.isAxiosError(error)) {
-                showToast(`${error.message}`, 'error');
-                // console.error('Error logging in:', error.message);
-                setIsLoading(false);
-                throw new Error(error.response?.data?.message || 'Something went wrong');
-            } else {
-                showToast(`Something went wrong`, 'error');
-                console.error('An unexpected error occurred');
-                throw new Error('Something went wrong');
-            }
+            setIsLoading(false);
+            showToast(`Error: ${(error as Error).message || 'An unexpected error occurred'}`, 'error');
         }
     });
 
@@ -137,6 +120,7 @@ const OTPConfirmModal = ({data, handleModalToggle, cancelEmailVerification, emai
 
   return (
     <section className="fixed inset-0 -top-5 bg-gray-800 bg-opacity-80 flex justify-center items-center p-2 z-[999999]">
+        <Toaster position="top-center" reverseOrder={false} />
         <form onSubmit={onFormSubmit} className="bg-white w-[27rem] rounded-radius-12 shadow-lg flex flex-col justify-center items-center">
             <div className="w-full p-6 flex flex-col items-start justify-between gap-4 rounded-radius-12">
                 <div className='rounded-radius-12 size-10 border border-gray-200 flex items-center justify-center'>

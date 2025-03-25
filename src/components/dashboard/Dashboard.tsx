@@ -32,12 +32,14 @@ import P2PLending from '../p2p-lending/P2PLending';
 import WalletBallanceCard from './dataDisplay/WalletBallanceCard';
 import { quickActions, walletBalanceInfo } from '@/data/base';
 import QuickAction from './dataDisplay/QuickAction';
+import { Toaster } from 'react-hot-toast';
 
 const Dashboard = () => {
   const {currentTab} = useGeneralData();
 
   return (
     <div className='w-full pt-2 pb-4 space-y-2 md:space-y-5'>
+        <Toaster position="top-center" reverseOrder={false} />
         {/* <div className='w-full rounded-radius-12 py- pl-1 pr-3 bg-white border border-customGray'>
             <BankAccountsPieChart />
         </div> */}

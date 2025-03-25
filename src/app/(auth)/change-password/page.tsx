@@ -5,16 +5,16 @@ import AuthPagesHeader from '@/components/AuthPagesHeader';
 import AuthPagesRightSide from '@/components/AuthPagesRightSide';
 import ButtonOne from '@/components/button/ButtonOne';
 import { showToast } from '@/components/HotToast';
-import InputFieldFloatingLabel from '@/components/inputs/InputFieldFloatingLabel';
+import InputField from '@/components/inputs/InputField';
 import { updatePassword } from '@/features/auth/actions';
 import { newPasswordSchema, NewPasswordType } from '@/features/auth/validations';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Key, RemoveRedEyeOutlined } from '@mui/icons-material';
-import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form';
+import { Toaster } from 'react-hot-toast';
 
 interface ChangenewPasswordPageProps {
     data?: NewPasswordType;
@@ -37,28 +37,23 @@ const ChangenewPasswordPage: React.FC<ChangenewPasswordPageProps> = ({ data }) =
     });
     
     const onFormSubmit = handleSubmit(async (data) => {
-        // console.log('zod form data', data);
+        setIsLoading(true);
         try {
-            setIsLoading(true);
             const res = await updatePassword(data.email, data.new_password);
-            // console.log('res data', res);
             
             if (res.success) {
-                router.push('/login');
-                showToast(`${res.message}`);
-            }
-            setIsLoading(false);
-        } catch (error) {
-            if (axios.isAxiosError(error)) {
-                showToast(`${error.message}`, 'error');
                 setIsLoading(false);
-                // console.error(error.message);
-                // throw new Error(error.response?.data?.message || 'Something went wrong');
-            } else {
-                showToast(`Something went wrong`, 'error');
-                console.error('An unexpected error occurred');
-                throw new Error('Something went wrong');
+                router.push('/login');
             }
+
+            setTimeout(() => {
+                showToast(`${res.message}`);
+            }, 500);
+        } catch (error) {
+            setIsLoading(false);
+            setTimeout(() => {
+                showToast(`Error: ${(error as Error).message || 'An unexpected error occurred'}`, 'error');
+            }, 500);
         }
     });
     
@@ -68,6 +63,7 @@ const ChangenewPasswordPage: React.FC<ChangenewPasswordPageProps> = ({ data }) =
     
   return (
     <div className='h-full min-h-screen w-full flex flex-col md:flex-row '>
+        <Toaster position="top-center" reverseOrder={false} />
         <div className='order-2 md:order-1 w-full md:w-1/2 h-fit py-8 md:h-screen min-h-full flex items-center justify-center'>
             <div className="flex flex-col gap-6 w-[90%] md:w-[50%]">
                 <AuthPagesHeader />
@@ -80,17 +76,17 @@ const ChangenewPasswordPage: React.FC<ChangenewPasswordPageProps> = ({ data }) =
                 <div className="w-full">
                     <form onSubmit={onFormSubmit} className="w-full space-y-5">
                         <div className="w-full mb-3">
-                            <InputFieldFloatingLabel
+                            <InputField
                                 {...register("email")}
-                                floatingLabel="Email Address"
+                                label="Email Address"
                                 error={errors.email}
                                 required
                                 classes='w-full'
                             />
                         </div>
                         <div className="w-full mb-3">
-                            <InputFieldFloatingLabel
-                                floatingLabel='Your New Password'
+                            <InputField
+                                label='New Password'
                                 icon2={!isPasswordOpen ? <RemoveRedEyeOutlined style={{fontSize: '19px', }} /> : <Key style={{fontSize: '19px', }} />}
                                 onClick={handlePasswordToggle}
                                 type={!isPasswordOpen ? 'password' : 'text'}

@@ -25,7 +25,7 @@ export type RegisterType = z.infer<typeof registerSchema>;
 // Login
 export const loginSchema = z.object({
     email: z.string().email({message: 'Invalid email address!'}),
-    password: z.string().min(8, { message: 'Wrong password!' }),
+    password: z.string().min(8, { message: 'Password must be up to 8 characters!' }),
 
 });
 

@@ -100,3 +100,12 @@ export interface QuickActionsProps {
     text: string;
   };
 }
+
+export interface DecodedToken {
+  userId: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  exp: number; // token expiration time (optional)
+  iat: number; // token issued at time (optional)
+}

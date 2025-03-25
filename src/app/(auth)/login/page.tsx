@@ -5,14 +5,14 @@ import AuthPagesHeader from '@/components/AuthPagesHeader';
 import AuthPagesRightSide from '@/components/AuthPagesRightSide';
 import ButtonOne from '@/components/button/ButtonOne';
 import { showToast } from '@/components/HotToast';
-import InputFieldFloatingLabel from '@/components/inputs/InputFieldFloatingLabel';
+import InputField from '@/components/inputs/InputField';
 import { loginUser } from '@/features/auth/actions';
 import { loginSchema, LoginType } from '@/features/auth/validations';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Key, RemoveRedEyeOutlined } from '@mui/icons-material';
-import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { setCookie } from 'nookies';
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form';
 import { Toaster } from 'react-hot-toast';
@@ -24,7 +24,6 @@ interface LoginProps {
 const LoginPage: React.FC<LoginProps> = ({ data }) => {
     const [isPasswordOpen, setIsPasswordOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    // console.log(currentUserData);
 
     const router = useRouter();
 
@@ -38,37 +37,45 @@ const LoginPage: React.FC<LoginProps> = ({ data }) => {
         resolver: zodResolver(loginSchema),
         defaultValues: data,
     });
-        
     
     const onFormSubmit = handleSubmit(async (data) => {
-        // console.log('zod form data', data);
         try {
             setIsLoading(true);
             const res = await loginUser(data.email, data.password);
             
             if (res.success) {
-                // console.log('res data', res);
-                localStorage.setItem('loggedInUserInfo', JSON.stringify({
-                    email: res.data.email,
-                    first_name: res.data.first_name,
-                    last_name: res.data.last_name,
-                    password: ''
-                }));
-
-                router.push('/');
-            }
-            setIsLoading(false);
-        } catch (error) {
-            if (axios.isAxiosError(error)) {
-                showToast(`${error.message}`, 'error');
-                // console.error('Error logging in:', error.message);
                 setIsLoading(false);
-                throw new Error(error.response?.data?.message || 'Something went wrong');
-            } else {
-                showToast(`Something went wrong`, 'error');
-                console.error('An unexpected error occurred');
-                throw new Error('Something went wrong');
+                router.push('/');
+
+                setTimeout(() => {
+                    showToast(`${res.message}`);
+                }, 500);
+
+                const { accessToken, data } = res;
+                // Store accessToken in a cookie (HTTP-Only for SSR)
+                setCookie(null, 'accessToken', accessToken, {
+                    maxAge: 30 * 24 * 60 * 60,
+                    path: '/',
+                });
+                
+                setCookie(null, 'role', data.role, {
+                    maxAge: 30 * 24 * 60 * 60,
+                    path: '/',
+                });
             }
+
+            localStorage.setItem('loggedInUserInfo', JSON.stringify({
+                email: res.data.email,
+                first_name: res.data.first_name,
+                last_name: res.data.last_name,
+                password: ''
+            }));
+            
+        } catch (error) {
+            setIsLoading(false);
+            setTimeout(() => {
+                showToast(`Error: ${(error as Error).message || 'An unexpected error occurred'}`, 'error');
+            }, 500);
         }
     });
 
@@ -90,11 +97,11 @@ const LoginPage: React.FC<LoginProps> = ({ data }) => {
                 </div>
 
                 <div className="w-full">
-                    <form onSubmit={onFormSubmit} className="w-full space-y-5">
+                    <form onSubmit={onFormSubmit} className="w-full space-y-3">
                         <div className="w-full flex-col">
-                            <InputFieldFloatingLabel
+                            <InputField
                                 {...register("email")}
-                                floatingLabel="Your email address"
+                                label="Email Address"
                                 error={errors.email}
                                 required
                                 classes='w-full'
@@ -102,8 +109,8 @@ const LoginPage: React.FC<LoginProps> = ({ data }) => {
                         </div>
                         
                         <div className="w-full mb-3 flex-col">
-                            <InputFieldFloatingLabel
-                                floatingLabel='Your password'
+                            <InputField
+                                label='Password'
                                 icon2={!isPasswordOpen ? <RemoveRedEyeOutlined style={{fontSize: '19px', }} /> : <Key style={{fontSize: '19px', }} />}
                                 onClick={handlePasswordToggle}
                                 type={!isPasswordOpen ? 'password' : 'text'}

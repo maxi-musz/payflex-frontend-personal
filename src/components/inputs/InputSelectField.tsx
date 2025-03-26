@@ -45,12 +45,13 @@ const SelectInputField = forwardRef<HTMLSelectElement, Omit<SelectInputProps, "r
             id={props.name}
             className={`${classes} ${
               props.disabled ? "opacity-40 cursor-not-allowed" : ""
-            } bg-transparent w-full py-[10px] rounded-xl border-0 text-xs focus:outline-0 focus:ring-0 text-[#666666]`}
+            } bg-transparent w-full py-[10px] rounded-xl capitalize border-0 text-xs outline-0 ring-0 text-[#666666]`}
             {...props}
           >
-            <option value="" disabled hidden>
-              {placeholderText}
+            <option value="" disabled className="text-center">
+              -- {placeholderText} --
             </option>
+            <hr />
             {valueArray.map((item, index) => (
               <option key={index} value={item}>
                 {item}

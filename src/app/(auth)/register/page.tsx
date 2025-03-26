@@ -260,7 +260,7 @@ const RegisterPage: React.FC<RegisterProps> = ({ data }) => {
                             <div className="w-1/2">
                                 <InputSelectField
                                     {...register("gender")}
-                                    placeholderText='Select gender'
+                                    placeholderText='Select your gender'
                                     defaultValue={data?.gender}
                                     label="Gender"
                                     name="gender"

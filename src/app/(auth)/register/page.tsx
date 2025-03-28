@@ -30,29 +30,6 @@ const RegisterPage: React.FC<RegisterProps> = ({ data }) => {
     const [emailAddress, setEmailAddress] = useState('');
 
     const router = useRouter();
-    
-    // const requestOTP = async () => {
-    //     setIsLoading(true);
-    //     try {
-    //         const res = await requestEmailOTP(emailAddress);
-    //         console.log(res);
-            
-    //         // if (!res.success) {
-    //             // showToast(`${res.message}. ${res.errors[0].message}`);
-    //         // } else {
-    //         //     setIsLoading(false);
-    //         // }
-    //         showToast(`${res.message}`);
-    //     } catch (errors) {
-    //         if (axios.isAxiosError(errors)) {
-    //             showToast(`${errors.message}`);
-    //         } else {
-    //             showToast(`Something went wrong`);
-    //             // showToast(`${errors.message}. ${errors[0].message}`);
-    //         }
-    //         setIsLoading(false);
-    //     }
-    // };
 
     const toggleOTPModal = async () => {
         if (!isOTPOpen) {
@@ -134,7 +111,6 @@ const RegisterPage: React.FC<RegisterProps> = ({ data }) => {
             }, 500);
         }
     });
-
       
     if (isLoading) {
         return <Loading />;

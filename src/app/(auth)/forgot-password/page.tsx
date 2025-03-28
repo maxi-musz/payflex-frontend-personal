@@ -60,7 +60,6 @@ const ForgotPasswordPage: React.FC<ForgotPasswordProps> = ({ data }) => {
             }
         } catch (error) {
             setIsLoading(false);
-            setIsOTPOpen(true);
             setTimeout(() => {
                 showToast(`Error: ${(error as Error).message || 'An unexpected error occurred'}`, 'error');
             }, 500);

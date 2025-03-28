@@ -44,7 +44,7 @@ const Dashboard = () => {
             <BankAccountsPieChart />
         </div> */}
 
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-2 md:gap-4 xl:gap-6 flex-wrap">
           {walletBalanceInfo.map(item =>
             <WalletBallanceCard key={item.id} item={item} />
           )}

@@ -13,7 +13,7 @@ const WalletBallanceCard: React.FC<WalletBalanceInfoProps> = ({item}) => {
   const handleBalanceToggle = () => setIsBalanceOpen(prev => !prev);
     
   return (
-    <div className='w-80 h-40 py-6 pl-5 pr-3 bg-blue-200 rounded-3xl flex flex-col justify-between'>
+    <div className='w-72 flex-1 h-40 py-6 pl-5 pr-3 bg-blue-200 rounded-3xl flex flex-col justify-between'>
 
       <div className="w-full flex items-center justify-end gap-1">
         <p className='font-semibold text-xl'>{item.currencyInitials}</p>

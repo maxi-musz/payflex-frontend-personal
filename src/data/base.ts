@@ -385,13 +385,20 @@ export const currentUserInfo = {
   export const walletBalanceInfo = [
     {
         id: 1,
+        currency: '₦',
+        currencyInitials: 'NGN',
+        currencyFlag: 'nigerian_flag.jpg',
+        balance: '22345974.37'
+    },
+    {
+        id: 2,
         currency: '£',
         currencyInitials: 'GBP',
         currencyFlag: 'canada.svg.webp',
         balance: '1234565.46'
     },
     {
-        id: 2,
+        id: 3,
         currency: '$',
         currencyInitials: 'USD',
         currencyFlag: 'us.jpg',

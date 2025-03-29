@@ -401,14 +401,14 @@ export const currentUserInfo = {
         currency: '£',
         currencyInitials: 'GBP',
         currencyFlag: 'canada.svg.webp',
-        balance: '1234565.46'
+        balance: '4234565.46'
     },
     {
         id: 3,
         currency: '$',
         currencyInitials: 'USD',
         currencyFlag: 'us.jpg',
-        balance: '2024344.90'
+        balance: '7024344.90'
     },
 ];
 

@@ -300,6 +300,12 @@ export const p2pLendingTabs = [
     {id: 3, title: "History"},
 ];
 
+export const dashboardTabs = [
+    {id: 1, title: "General"},
+    {id: 2, title: "VTU"},
+    {id: 3, title: "Bills"},
+];
+
 export const availableLendersTableHead = [
     {id: 1, title: "S/N"},
     {id: 2, title: "Image"},
@@ -414,13 +420,13 @@ export const quickActions = [
     },
     {
         id: 2,
-        icon: RestartAlt,
-        text: 'Convert',
+        icon: Send,
+        text: 'Transfer',
     },
     {
         id: 3,
-        icon: Send,
-        text: 'Pay',
+        icon: RestartAlt,
+        text: 'Convert',
     },
     {
         id: 4,

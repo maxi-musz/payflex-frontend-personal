@@ -16,7 +16,7 @@ const NGNToNGN = () => {
   // const [bankOptions, setBankOptions] = useState<string[]>([]);
   const [accountName, setAccountName] = useState<string>('');
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState<boolean>(false);
-  const [isLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [accountNumber, setAccountNumber] = useState<string>('');
   const [amount, setAmount] = useState<number | null>(null);
   const [accountBalance] = useState<number>(2698435);
@@ -51,14 +51,14 @@ const NGNToNGN = () => {
 
   const handleModalToggle = () => {
     if (isSuccessModalOpen === false) {
-      // setIsLoading(true);
+      setIsLoading(true);
       // setTimeout(() => {
         setIsSuccessModalOpen(true);
-      //   setIsLoading(false);
-      // }, 1000);
-    } else {
-      setIsSuccessModalOpen(false);
-    }
+        // }, 1000);
+      } else {
+        setIsSuccessModalOpen(false);
+      }
+    setIsLoading(false);
   };
   
   if (isLoading) {

@@ -22,7 +22,7 @@ const TransferSuccessModal = ({handleModalToggle}: {handleModalToggle: () => voi
                 </div>
                 
                 <div className="w-full flex items-center justify-end gap-3">
-                    <ButtonNeutral onClick={handleModalToggle} classes='py-2 px-8 text-sm border rounded-radius-8' btnText1='Cancel' />
+                    <ButtonNeutral onClick={handleModalToggle} classes='py-2 px-8 text-sm border rounded-xl' btnText1='Cancel' />
                     <ButtonOne onClick={handleModalToggle} classes='py-2 px-8 text-sm' btnText1='Continue' />
                 </div>
             </div>

@@ -8,7 +8,8 @@ import Lend from './Lend';
 import History from './History';
 import Borrow from './Borrow';
 import { CampaignOutlined, Tune } from '@mui/icons-material';
-import { Toaster, toast } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
+import { showToast } from '../HotToast';
 
 const P2PLending = () => {
   const [activeTab, setActiveTab] = useState<string>('Lend');
@@ -17,36 +18,19 @@ const P2PLending = () => {
 
   const handleDropDownTabClick = (tab: string) => {
     if (tab === 'Accept') {
-      toast.error(`This user has been accepted!`, {
-          className: 'custom-toast-success w-fit',
-          icon: '✅',
-          duration: 3000,
-      });
+      showToast(`This user has been accepted!`);
     } else if (tab === 'View User') {
-      // router.push('');
-      toast.error(`This user has been viewed!`, {
-          className: 'custom-toast-success w-fit',
-          icon: '✅',
-          duration: 3000,
-      });
+      showToast(`This user has been viewed!`);
     } else if (tab === 'Report User') {
-      toast.error(`This user has been reported!`, {
-          className: 'custom-toast-error w-fit',
-          icon: '❌',
-          duration: 3000,
-      });
+      showToast(`This user has been reported!`, 'error');
     } else if (tab === 'Block User') {
-      toast.error(`This user has been blocked!`, {
-          className: 'custom-toast-error w-fit',
-          icon: '❌',
-          duration: 3000,
-      });
+      showToast(`This user has been blocked!`, 'error');
     }
   };
 
   return (
     <section className='space-y-5'>
-        <Toaster position="top-center" reverseOrder={false} />
+      <Toaster position="top-center" reverseOrder={false} />
       <div className="w-full flex items-center justify-between flex-wrap gap-4">
         <h1 className='text-lg font-semibold'>P2P Lending</h1>
         <div className="flex items-center  gap-2">

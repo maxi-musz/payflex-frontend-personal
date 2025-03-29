@@ -12,7 +12,7 @@ interface SidebarProps {
 const SidebarRight: React.FC<SidebarProps> = ({ show = 'hidden', closeSidebar = () => {} }) => {
     
     return (
-        <nav className={`${show === 'block' ? 'fixed md:hidden' : 'hidden'} md:block top-0 left-0 z-50 lg:z-auto w-4/6 sm:w-3/6 md:w-[33.5%] lg:w-[23%] h-full min-h-fit bg-white md:bg-transparent`}>
+        <nav className={`${show === 'block' ? 'fixed md:hidden' : 'hidden'} md:block top-0 left-0 lg:z-auto w-4/6 sm:w-3/6 md:w-[33.5%] lg:w-[23%] h-full min-h-fit bg-white md:bg-transparent`}>
             <div className="divide-y divide-customGray">
                 <UserSection />
 

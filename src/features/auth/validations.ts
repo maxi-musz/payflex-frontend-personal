@@ -59,3 +59,12 @@ export const newPasswordSchema = z.object({
 export type NewPasswordType = z.infer<typeof newPasswordSchema>;
 
 
+
+// Fund wallet amount
+export const fundWalletAmountSchema = z.object({
+    amount: z.string().min(1, { message: "Amount must be at least 1 number long!" }),
+});
+
+export type FundWalletAmountType = z.infer<typeof fundWalletAmountSchema>;
+
+

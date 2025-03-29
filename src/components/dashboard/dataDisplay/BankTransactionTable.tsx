@@ -16,7 +16,7 @@ const BankTransactionTable = () => {
         setTransactionPerPage(2);
       } else {
         if (window.innerHeight <= 731) {
-          setTransactionPerPage(4);
+          setTransactionPerPage(3);
         } else if (window.innerHeight <= 810) {
           setTransactionPerPage(5);
         } else if (window.innerHeight <= 1180) {

@@ -34,7 +34,7 @@ const NGNToNGN = () => {
         setAccountNumberError('Invalid account number. Should be 10 digits');
         setAccountName('');
         return;
-      } else if (amount && amount < accountBalance) {
+      } else if (amount && amount > accountBalance) {
         setAmountError('Insufficient balance');
         return;
       } else {
@@ -95,9 +95,8 @@ const NGNToNGN = () => {
                     <InputOne required={true} type='number' onChange={(e) => setAmount(parseInt(e.target.value))} value={''} name="amount" placeholderText='Amount to be sent' />
                     {amountError && <p className='text-center text-xs text-red-700'>{amountError}</p>}
                   </div>
-                  <div className="w-full">
-                    <TextAreaTwo floatingLabel='Remark' required={true} onChange={(e) => setRemark(e.target.value)} value={remark} name="remark" placeholderText='Any remarks? (Optional)' classes='w-full placeholder:text-center' />
-                  </div>
+                  
+                  <TextAreaTwo floatingLabel='Remark' required={true} onChange={(e) => setRemark(e.target.value)} value={remark} name="remark" placeholderText='Any remarks? (Optional)' classes='w-full placeholder:text-center placeholder:pt-4' />
                   
                   <ButtonNeutral onClick={handleModalToggle} btnText1='Confirm' classes={`w-full py-2 px-3 text-white hover:text-green-700 bg-green-700 hover:bg-transparent border border-transparent hover:border-green-700 rounded-radius-8 cursor-pointer shadow-xl focus:ring-2 focus:ring-green-700 focus:ring-offset-2 outline-none`} />
               </div>

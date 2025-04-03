@@ -21,7 +21,6 @@ export const registerSchema = z.object({
 
 export type RegisterType = z.infer<typeof registerSchema>;
 
-
 // Login
 export const loginSchema = z.object({
     email: z.string().email({message: 'Invalid email address!'}),

@@ -4,13 +4,13 @@ import { AssuredWorkload, AttachMoneyOutlined } from '@mui/icons-material';
 import ButtonNeutral from '../button/ButtonNeutral';
 import ButtonOne from '../button/ButtonOne';
 import InputField from '../inputs/InputField';
-import { fundWalletAmountSchema, FundWalletAmountType } from '@/features/auth/validations';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import Loading from '@/app/loading';
 import { useState } from 'react';
 import { useGeneralData } from '@/context/GeneralDataContext';
 import { formatCurrency, parseFormattedAmount } from '@/utils/numberFormatter';
+import { fundWalletAmountSchema, FundWalletAmountType } from '@/features/auth/validations';
 
 interface FundsProps {
     data?: FundWalletAmountType,
@@ -83,7 +83,6 @@ const FundsModal = ({ data, handleModalToggle, whichModal }: FundsProps) => {
 
             handleModalToggle();
         }
-
     }
 
     if (isLoading) {

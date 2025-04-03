@@ -36,10 +36,18 @@ import { Toaster } from 'react-hot-toast';
 import { useState } from 'react';
 import VTU from './dataDisplay/VTU';
 import Bills from './dataDisplay/Bills';
+import Image from 'next/image';
+import CountUp from 'react-countup';
+import { Key, RemoveRedEyeOutlined } from '@mui/icons-material';
+import { parseFormattedAmount } from '@/utils/numberFormatter';
 
 const Dashboard = () => {
-  const {currentTab} = useGeneralData();
   const [activeTab, setActiveTab] = useState<string>('General');
+  const [isBalanceOpen, setIsBalanceOpen] = useState(false);
+  const {currentTab, accounts} = useGeneralData();
+
+  const handleBalanceToggle = () => setIsBalanceOpen(prev => !prev);
+    
 
   const handleTabToggle = (tab: string) => setActiveTab(tab);
 
@@ -51,7 +59,43 @@ const Dashboard = () => {
         </div> */}
 
         <div className="flex items-center gap-2 md:gap-4 xl:gap-6 flex-wrap">
-          {walletBalanceInfo.map(item =>
+        {walletBalanceInfo.slice(0,1).map(item =>
+          <div key={item.id} className='w-72 flex-1 h-40 py-6 pl-5 pr-3 bg-blue-200 rounded-3xl flex flex-col justify-between'>
+            <div className="w-full flex items-center justify-end gap-1">
+              <p className='font-semibold text-xl'>{item.currencyInitials}</p>
+              <div className="relative size-8 rounded-full">
+                <Image
+                  src={`/images/${item.currencyFlag}`}
+                  alt="Currency's country logo"
+                  fill
+                  priority
+                  className="object-cover rounded-full"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <p className="text-neutral-700 text-base font-semibold">Wallet Balance</p>
+              <div className="w-full flex items-center justify-between">
+                <p className='text-textGrayDarker text-xl md:text-2xl font-bold space-x-1'>
+                  <span className={`${item.currency === '₦' ? 'text-green-600' : item.currency === '£' ? 'text-red-600' : 'text-blue-800'} font-extrabold`}>{item.currency}</span>
+                  {accounts?.slice(0,1).map(acc => 
+                  <span key={acc.id}>
+                    {!isBalanceOpen ? <CountUp start={0} end={parseFormattedAmount(acc.balance) || parseInt(item.balance)} duration={2} delay={0} decimal='true' /> : "******"}
+                  </span>
+                  )}
+                </p>
+                <button onClick={handleBalanceToggle} className='hover:bg-blue-300 rounded-full size-8 flex items-center justify-center border hover:border-transparent transition-all duration-300 ease-in-out'>
+                  {isBalanceOpen ?
+                  <RemoveRedEyeOutlined style={{fontSize: '19px', }} /> :
+                  <Key style={{fontSize: '19px', }} />}
+                </button>
+              </div>
+            </div>
+          </div>)}
+
+          {walletBalanceInfo.slice(1,3).map(item =>
             <WalletBallanceCard key={item.id} item={item} />
           )}
         </div>

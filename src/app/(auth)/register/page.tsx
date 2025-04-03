@@ -97,6 +97,7 @@ const RegisterPage: React.FC<RegisterProps> = ({ data }) => {
             const res = await registerUser(UserData);
             console.log(res);
             if (res.success) {
+                // const { user } = res.data;
                 setIsLoading(false);
                 router.push('/login');
                 setTimeout(() => {
@@ -246,6 +247,7 @@ const RegisterPage: React.FC<RegisterProps> = ({ data }) => {
                             </div>
                             <div className="w-1/2">
                                 <InputField
+                                    type='date'
                                     {...register("date_of_birth")}
                                     placeholder="dd-mm-yyyy"
                                     label="Date of Birth"

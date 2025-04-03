@@ -1,25 +1,34 @@
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 
 export const sendApiRequest = async <T>(
   method: 'post' | 'get' | 'put',
   url: string,
-  data: T,
+  data?: T,
+  config?: AxiosRequestConfig,
+  // maxRedirects?: number,
 ) => {
+  // console.log("Method:", method);
+  // console.log("URL:", url);
+  // console.log("Data:", data);
+  // console.log("Config:", config);
+  // console.log("MaxRedirects:", maxRedirects);
+
   try {
     const response = await axios({
       method,
       url,
       data,
-      maxBodyLength: Infinity
+      ...config,
+      maxBodyLength: Infinity,
+      // maxRedirects,
     });
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      console.error(error.message);
-      throw new Error(error.response?.data?.message || 'Something went wrong');
+      const message = error.response?.data?.message || error.message || 'Something went wrong';
+      throw new Error(message);
     } else {
-      console.error('An unexpected error occurred');
-      throw new Error('Something went wrong');
+      throw new Error('An unexpected error occurred');
     }
   }
 };

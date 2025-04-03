@@ -236,12 +236,12 @@ export const CardStatusDistribution = [
   
 export const PIE_COLORS = ['#1d4ed8', '#3b82f6', '#60a5fa', '#93c5fd', '#dbeafe'];
 
-export const recentCardRequestTableHead = [
-    {id: 1, title: "Transaction"},
+export const currentRecentTransactionsTableHead = [
+    {id: 1, title: "Description"},
     {id: 2, title: "Amount"},
     {id: 3, title: "Status"},
-    {id: 4, title: "Date"},
-    {id: 5, title: "Category"},
+    {id: 4, title: "Type"},
+    {id: 5, title: "Date"},
 ];
 
 export const cardRequests = [

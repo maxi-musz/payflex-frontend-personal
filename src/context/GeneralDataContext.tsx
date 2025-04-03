@@ -4,6 +4,9 @@ import { usePathname, useRouter } from 'next/navigation';
 import { currentUserInfo, INITIAL_GENERAL_DATA } from '../data/base';
 import { GeneralDataProps, UserDataProps } from '../types/base';
 import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
+import { parseCookies } from 'nookies';
+import { getUserDashboard } from '@/features/dashboard/actions';
+import { showToast } from '@/components/HotToast';
 // import {jwtDecode} from 'jwt-decode';
 
 interface GeneralDataContextType {
@@ -16,6 +19,9 @@ interface GeneralDataContextType {
   currentTab: string;
   updateGeneralData: (url: string) => void;
   dropLoggedInUserInfo: () => void;
+  user: {id: string, name: string, email: string, profileImage: string | null} | null;
+  accounts: {id: string, account_number: string, account_type: string, balance: string, bank_name: string, bank_code: string}[] | null;
+  transactionHistory: {id: string, amount: string, type: string, description: string, status: string, date: string, sender: string, icon: string}[] | null;
 }
 
 const GeneralDataContext = createContext<GeneralDataContextType | undefined>(undefined);
@@ -35,10 +41,42 @@ export const GeneralDataProvider = ({ children }: { children: ReactNode }) => {
     last_name: ''
   });
   
+  const [user, setUser] = useState(null);
+  const [accounts, setAccounts] = useState(null);
+  const [transactionHistory, setTransactionHistory] = useState(null);
+  
   const router = useRouter();
   const pathName = usePathname();  
+  const cookies = parseCookies();
+  
+  // useEffect(() => {
+  // }, []);
 
   useEffect(() => {
+    const fetchUser = async () => {
+        const token = cookies.accessToken;
+        
+        try {
+            const res = await getUserDashboard(token);
+            const {user, accounts, transactionHistory} = res.data;
+
+            if (!res.success) {
+                showToast('No data was gotten', 'error');
+            } else {
+                setUser(user);
+                setAccounts(accounts);
+                setTransactionHistory(transactionHistory);
+            }
+        } catch (error) {
+          // setIsLoading(false);
+          setTimeout(() => {
+              showToast(`Error: ${(error as Error).message || 'An unexpected error occurred'}`, 'error');
+          }, 500);
+        }
+    };
+
+    fetchUser();
+
     const storedData = localStorage.getItem('currentData');
     if (storedData) {
       setCurrentData(JSON.parse(storedData));
@@ -54,12 +92,7 @@ export const GeneralDataProvider = ({ children }: { children: ReactNode }) => {
       setLoggedInUser(JSON.parse(loggedInUserData));
     }
     
-    // if ((pathName === '/' || pathName === '/api-docs' || pathName === '/contact-support' || pathName === '/whatsapp') && !loggedInUserData) {
-    //   router.push('/login');
-    // };
-    
-    // console.log(loggedInUserData);
-  }, [pathName, router]);
+  }, [pathName, router, cookies.accessToken]);
   
   const updateGeneralData = (url: string) => {
     // setCurrentData({currentTab: url});
@@ -76,24 +109,10 @@ export const GeneralDataProvider = ({ children }: { children: ReactNode }) => {
 
     localStorage.removeItem('loggedInUserInfo');
   };
-
-  // const getCurrentUser = () => {
-  //   // Retrieve the token from the cookies (you can use a package like 'cookie' or 'nookies')
-  //   const token = document.cookie.split('; ').find(row => row.startsWith('accessToken='))?.split('=')[1];
-
-  //   if (!token) return null;
-
-  //   try {
-  //     const decoded: DecodedToken = jwtDecode(token);
-  //     return decoded; // This will return the decoded token with user details
-  //   } catch (error) {
-  //     console.error('Error decoding token:', error);
-  //     return null;
-  //   }
-  // };
-
-  // const currentUser = getCurrentUser();
-  // console.log(currentUser);
+  
+  // console.log('User state', user);
+  // console.log('User Account state', accounts);
+  // console.log('User Transaction History state', transactionHistory);
 
   return (
     <GeneralDataContext.Provider
@@ -108,6 +127,9 @@ export const GeneralDataProvider = ({ children }: { children: ReactNode }) => {
         updateGeneralData,
         dropLoggedInUserInfo,
         // currentUser,
+        user,
+        accounts,
+        transactionHistory,
       }}
     >
       {children}

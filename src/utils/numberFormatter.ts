@@ -22,3 +22,28 @@ export const parseFormattedAmount = (formattedAmount: string) => {
     const numericValue = formattedAmount.replace(/,/g, ''); // Remove commas
     return parseFloat(numericValue);
 };
+
+
+export const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+  };
+
+ export const formatPrice = (price: string | number): { integerPart: number; decimalPart: number } => {
+    const numericPrice = typeof price === 'string' ? parseFloat(price) : price;
+  
+    if (isNaN(numericPrice)) {
+      return { integerPart: 0, decimalPart: 0 };
+    }
+  
+    const [integerPart, decimalPart] = numericPrice.toFixed(2).split('.');
+  
+    return { 
+      integerPart: parseInt(integerPart, 10), 
+      decimalPart: parseInt(decimalPart, 10) 
+    };
+  };

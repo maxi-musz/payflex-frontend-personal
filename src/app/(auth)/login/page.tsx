@@ -42,28 +42,29 @@ const LoginPage: React.FC<LoginProps> = ({ data }) => {
         try {
             setIsLoading(true);
             const res = await loginUser(data.email, data.password);
+            console.log(res);
             
             if (res.success) {
-                
-                const { accessToken, data } = res;
+                const { access_token, user } = res.data;
                 // Store accessToken in a cookie (HTTP-Only for SSR)
-                setCookie(null, 'accessToken', accessToken, {
+                setCookie(null, 'accessToken', access_token, {
                     maxAge: 30 * 24 * 60 * 60,
                     path: '/',
                 });
                 
-                setCookie(null, 'role', data.role, {
+                setCookie(null, 'role', user.role, {
                     maxAge: 30 * 24 * 60 * 60,
                     path: '/',
                 });
+                
+                localStorage.setItem('loggedInUserInfo', JSON.stringify({
+                    email: user.email,
+                    first_name: user.first_name,
+                    last_name: user.last_name,
+                    password: ''
+                }));
             }
 
-            localStorage.setItem('loggedInUserInfo', JSON.stringify({
-                email: res.data.email,
-                first_name: res.data.first_name,
-                last_name: res.data.last_name,
-                password: ''
-            }));
             
             setIsLoading(false);
             router.push('/');

@@ -14,7 +14,6 @@ const WalletBallanceCard: React.FC<WalletBalanceInfoProps> = ({item}) => {
     
   return (
     <div className='w-72 flex-1 h-40 py-6 pl-5 pr-3 bg-blue-200 rounded-3xl flex flex-col justify-between'>
-
       <div className="w-full flex items-center justify-end gap-1">
         <p className='font-semibold text-xl'>{item.currencyInitials}</p>
         <div className="relative size-8 rounded-full">

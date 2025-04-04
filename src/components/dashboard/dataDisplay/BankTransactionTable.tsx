@@ -100,7 +100,7 @@ const BankTransactionTable = ({transactionHistory}: {transactionHistory: Transac
                     </span>
                   </td>
                   <td className={`relative ${+item.amount < 1000  ? 'text-orange-700' : 'text-green-700'} py-[11px] text-[12px] px-2 text-center whitespace-nowrap w-2`}>
-                    {+item.amount < 2500  ? '-' : '+'} ${item.amount}
+                    {+item.amount < 2500  ? '-' : '+'} ₦{item.amount}
                   </td>
                   <td className={`relative py-[11px] text-[12px] px-2 text-center whitespace-nowrap w-2 capitalize`}>
                     <span className={`w-fit flex items-center gap-1 px-1 mx-auto ${item.status === 'success' ? 'text-green-700 border-green-300 bg-green-100' : item.status === 'cancelled' ? 'text-yellow-700 border-yellow-300 bg-yellow-100' : item.status === 'failed' ? 'text-red-700 border-red-300 bg-red-100' : 'text-gray-700 border-gray-300 bg-gray-100'} border rounded-full`}>

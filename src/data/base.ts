@@ -10,13 +10,20 @@ export const menuItems = [
     },
     {
         id: 2,
+        title: "Virtual Cards",
+        url: '/virtual-cards',
+        icon: CardMembershipOutlined,
+        dropdownMenu: [],
+    },
+    {
+        id: 3,
         title: "Connect Bank",
         url: '/connect-bank',
         icon: AssuredWorkloadOutlined,
         dropdownMenu: [],
     },
     {
-        id: 3,
+        id: 4,
         title: "Transfer",
         url: '',
         icon: SendTimeExtensionOutlined,
@@ -34,17 +41,10 @@ export const menuItems = [
         ],
     },
     {
-        id: 4,
+        id: 5,
         title: "P2P Lending 🔥",
         url: '/p2p-lending',
         icon: CurrencyExchangeOutlined,
-        dropdownMenu: [],
-    },
-    {
-        id: 5,
-        title: "Virtual Cards",
-        url: '/virtual-cards',
-        icon: CardMembershipOutlined,
         dropdownMenu: [],
     },
     {

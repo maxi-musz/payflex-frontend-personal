@@ -12,7 +12,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Key, RemoveRedEyeOutlined } from '@mui/icons-material';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { setCookie } from 'nookies';
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form';
 import { Toaster } from 'react-hot-toast';
@@ -42,20 +41,12 @@ const LoginPage: React.FC<LoginProps> = ({ data }) => {
         try {
             setIsLoading(true);
             const res = await loginUser(data.email, data.password);
-            // console.log(res);
             
             if (res.success) {
                 const { access_token, user } = res.data;
-                // Store accessToken in a cookie (HTTP-Only for SSR)
-                setCookie(null, 'accessToken', access_token, {
-                    maxAge: 30 * 24 * 60 * 60,
-                    path: '/',
-                });
-                
-                setCookie(null, 'role', user.role, {
-                    maxAge: 30 * 24 * 60 * 60,
-                    path: '/',
-                });
+                sessionStorage.setItem("accessToken", access_token);
+                sessionStorage.setItem("role", user.role);
+
                 router.push('/');
                 
                 localStorage.setItem('loggedInUserInfo', JSON.stringify({
@@ -78,7 +69,6 @@ const LoginPage: React.FC<LoginProps> = ({ data }) => {
             }, 500);
         }
     });
-
 
     if (isLoading) {
         return <Loading />;

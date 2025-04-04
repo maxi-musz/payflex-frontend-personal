@@ -45,39 +45,6 @@ export const loginUser = async (emailAddress: string, password: string) => {
     );
 };
 
-// {
-//     "success": true,
-//     "message": "Welcome back",
-//     "data": {
-//       "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkNzExOTdhNC1kNjJjLTQzMzQtOWJkYi04ODJhNzBmOGNiMzMiLCJlbWFpbCI6ImJlcm5hcmRtYXlvd2FhQGdtYWlsLmNvbSIsImlhdCI6MTc0MzY3OTIxOCwiZXhwIjoxNzQzNjgwMTE4fQ.WHyEjnkm-8SBhstpOI38aar9MOxNESsntTkucSRw3R0",
-//       "user": {
-//         "id": "d71197a4-d62c-4334-9bdb-882a70f8cb33",
-//         "first_name": "Mayowa",
-//         "last_name": "Bernard",
-//         "email": "bernardmayowaa@gmail.com",
-//         "hash": "$argon2id$v=19$m=65536,t=3,p=4$w6DONU18NeoT91/lV3HV6g$0PFqfzWEvBPInzep/tW/B5FRtqHWZG4YOdRzYx8MSIU",
-//         "phone_number": "08146694787",
-//         "password": "$argon2id$v=19$m=65536,t=3,p=4$w6DONU18NeoT91/lV3HV6g$0PFqfzWEvBPInzep/tW/B5FRtqHWZG4YOdRzYx8MSIU",
-//         "otp": null,
-//         "otp_expires_at": "2025-04-02T16:51:38.436Z",
-//         "role": "user",
-//         "gender": "male",
-//         "date_of_birth": "1990-01-01T00:00:00.000Z",
-//         "is_email_verified": true,
-//         "createdAt": "2025-04-02T16:46:38.438Z",
-//         "updatedAt": "2025-04-02T16:50:18.461Z",
-//         "address": {
-//           "id": "4fdfc083-0855-4eeb-9af0-d9e251bcdc70",
-//           "userId": "d71197a4-d62c-4334-9bdb-882a70f8cb33",
-//           "city": "San Francisco",
-//           "state": "California",
-//           "country": "United States",
-//           "home_address": "123 Main St"
-//         }
-//       }
-//     }
-//   }
-
 export const resetPassword = async (emailAddress: string) => {
     return await sendApiRequest(
         'post',

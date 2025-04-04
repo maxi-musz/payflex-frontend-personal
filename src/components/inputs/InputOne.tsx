@@ -65,7 +65,7 @@ const InputOne: React.FC<InputProps> = ({
     :
     <>
     <label htmlFor={name} className="text-sm text-neutral-700">{label}</label>
-    <div className="w-full bg-white border border-customGray flex items-center justify-between rounded-radius-8 focus-within:ring-1 focus-within:ring-primary hover:ring-primary">
+    <div className={`${disabled ? 'opacity-50 border-neutral-400 cursor-not-allowed' : 'border-customGray'} w-full bg-white border flex items-center justify-between rounded-radius-8 focus-within:ring-1 focus-within:ring-primary hover:ring-primary`}>
       <input
         key={key}
         id={name}
@@ -78,7 +78,7 @@ const InputOne: React.FC<InputProps> = ({
         // value={value}
         disabled={disabled}
         onChange={onChange}
-        className={`${classes} bg-transparent w-full py-[10px] px-3 rounded-radius-8 border-0 text-xs focus:outline-0 focus:ring-0 text-[#666666]`}
+        className={`${classes} ${disabled ? 'opacity-40 cursor-not-allowed' : ''} bg-transparent w-full py-[10px] px-3 rounded-radius-8 border-0 text-xs focus:outline-0 focus:ring-0 text-[#666666]`}
       />
       {icon2 && <button type="button" onClick={onClick} className="border-l px-2">{icon2}</button>}
     </div>

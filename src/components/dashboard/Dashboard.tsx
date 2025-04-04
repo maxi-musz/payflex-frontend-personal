@@ -33,23 +33,65 @@ import WalletBallanceCard from './dataDisplay/WalletBallanceCard';
 import { dashboardTabs, quickActions, walletBalanceInfo } from '@/data/base';
 import QuickAction from './dataDisplay/QuickAction';
 import { Toaster } from 'react-hot-toast';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import VTU from './dataDisplay/VTU';
 import Bills from './dataDisplay/Bills';
 import Image from 'next/image';
 import CountUp from 'react-countup';
 import { Key, RemoveRedEyeOutlined } from '@mui/icons-material';
 import { parseFormattedAmountToNumber } from '@/utils/formatters';
+import { getUserDashboard } from '@/features/dashboard/actions';
+import { parseCookies } from 'nookies';
+import { showToast } from '../HotToast';
+
+interface AccountsProps {
+  id: string,
+  account_number: string,
+  account_type: string,
+  balance: string,
+  bank_name: string,
+  bank_code: string
+}
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState<string>('General');
   const [isBalanceOpen, setIsBalanceOpen] = useState(false);
-  const {currentTab, accounts} = useGeneralData();
+  const [accounts, setAccounts] = useState<AccountsProps[] | null>(null);
+  const [transactionHistory, setTransactionHistory] = useState(null);
+  
+  const {currentTab} = useGeneralData();
+  const cookies = parseCookies();
+    
+  useEffect(() => {
+    const token = cookies.accessToken;
+    const fetchUser = async () => {
+      if (token) {
+        try {
+            const res = await getUserDashboard(token);
+            const {accounts, transactionHistory} = res.data;
+
+            if (!res.success) {
+                showToast('No data was gotten', 'error');
+            } else {
+                setAccounts(accounts);
+                setTransactionHistory(transactionHistory);
+            }
+        } catch (error) {
+          // setIsLoading(false);
+          setTimeout(() => {
+              showToast(`Error: ${(error as Error).message || 'An unexpected error occurred'}`, 'error');
+          }, 500);
+        }
+      };
+    }
+  
+    fetchUser();
+  }, [cookies.accessToken]);
 
   const handleBalanceToggle = () => setIsBalanceOpen(prev => !prev);
     
-
   const handleTabToggle = (tab: string) => setActiveTab(tab);
+
 
   return (
     <div className='w-full pt-2 pb-4 space-y-2 md:space-y-5'>
@@ -138,7 +180,7 @@ const Dashboard = () => {
               )}
             </ul>
 
-            {activeTab === 'General' && <BankTransactionTable />}
+            {activeTab === 'General' && <BankTransactionTable transactionHistory={transactionHistory} />}
             {activeTab === 'VTU' && <VTU />}
             {activeTab === 'Bills' && <Bills />}
           </div>

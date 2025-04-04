@@ -56,6 +56,7 @@ const LoginPage: React.FC<LoginProps> = ({ data }) => {
                     maxAge: 30 * 24 * 60 * 60,
                     path: '/',
                 });
+                router.push('/');
                 
                 localStorage.setItem('loggedInUserInfo', JSON.stringify({
                     email: user.email,
@@ -64,15 +65,13 @@ const LoginPage: React.FC<LoginProps> = ({ data }) => {
                     password: ''
                 }));
             }
-
-            
             setIsLoading(false);
-            router.push('/');
 
             setTimeout(() => {
                 showToast(`${res.message}`);
             }, 500);
         } catch (error) {
+            // console.log((error as Error).message);
             setIsLoading(false);
             setTimeout(() => {
                 showToast(`Error: ${(error as Error).message || 'An unexpected error occurred'}`, 'error');

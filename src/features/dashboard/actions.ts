@@ -11,7 +11,7 @@ export const getUserDashboard = async (token: string) => {
 
     return await sendApiRequest(
         'get',
-        `${process.env.PAYFLEX_API_URL}/${AUTH_URL}/fetch-user-dashboard`,
+        `${process.env.NEXT_PUBLIC_PAYFLEX_API_URL}/${AUTH_URL}/fetch-user-dashboard`,
         null,
         { headers: { Authorization: `Bearer ${token}` }, withCredentials: true },
         // 0

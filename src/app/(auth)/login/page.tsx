@@ -60,13 +60,13 @@ const LoginPage: React.FC<LoginProps> = ({ data }) => {
 
             setTimeout(() => {
                 showToast(`${res.message}`);
-            }, 500);
+            }, 500);            
         } catch (error) {
             // console.log((error as Error).message);
             setIsLoading(false);
             setTimeout(() => {
                 showToast(`Error: ${(error as Error).message || 'An unexpected error occurred'}`, 'error');
-            }, 500);
+            }, 500);            
         }
     });
 

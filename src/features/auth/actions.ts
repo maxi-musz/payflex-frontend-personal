@@ -8,7 +8,7 @@ const AUTH_URL = 'api/v1/auth';
 export const requestEmailOTP = async (emailAddress: string) => {
     return await sendApiRequest(
         'post',
-        `${process.env.PAYFLEX_API_URL}/${AUTH_URL}/request-email-otp`,
+        `${process.env.NEXT_PUBLIC_PAYFLEX_API_URL}/${AUTH_URL}/request-email-otp`,
         {
             "email": emailAddress
         }
@@ -18,7 +18,7 @@ export const requestEmailOTP = async (emailAddress: string) => {
 export const verifyEmail = async (email: string, code: string) => {
     return await sendApiRequest(
         'post',
-        `${process.env.PAYFLEX_API_URL}/${AUTH_URL}/verify-email-otp`,
+        `${process.env.NEXT_PUBLIC_PAYFLEX_API_URL}/${AUTH_URL}/verify-email-otp`,
         {
             "email": email,
             "otp": code
@@ -29,7 +29,7 @@ export const verifyEmail = async (email: string, code: string) => {
 export const registerUser = async (userData: UserDataProps) => {
     return await sendApiRequest(
         'post',
-        `${process.env.PAYFLEX_API_URL}/${AUTH_URL}/signup`,
+        `${process.env.NEXT_PUBLIC_PAYFLEX_API_URL}/${AUTH_URL}/signup`,
         userData
     );
 };
@@ -37,7 +37,7 @@ export const registerUser = async (userData: UserDataProps) => {
 export const loginUser = async (emailAddress: string, password: string) => {
     return await sendApiRequest(
         'post',
-        `${process.env.PAYFLEX_API_URL}/${AUTH_URL}/signin`,
+        `${process.env.NEXT_PUBLIC_PAYFLEX_API_URL}/${AUTH_URL}/signin`,
         {
             "email": emailAddress,
             "password": password
@@ -48,7 +48,7 @@ export const loginUser = async (emailAddress: string, password: string) => {
 export const resetPassword = async (emailAddress: string) => {
     return await sendApiRequest(
         'post',
-        `${process.env.PAYFLEX_API_URL}/${AUTH_URL}/request-password-reset-email`,
+        `${process.env.NEXT_PUBLIC_PAYFLEX_API_URL}/${AUTH_URL}/request-password-reset-email`,
         {
             "email": emailAddress,
         }
@@ -58,7 +58,7 @@ export const resetPassword = async (emailAddress: string) => {
 export const verifyPasswordReset = async (emailAddress: string, code: string) => {
     return await sendApiRequest(
         'post',
-        `${process.env.PAYFLEX_API_URL}/${AUTH_URL}/verify-password-reset-email`,
+        `${process.env.NEXT_PUBLIC_PAYFLEX_API_URL}/${AUTH_URL}/verify-password-reset-email`,
         {
             "email": emailAddress,
             "otp": code
@@ -69,7 +69,7 @@ export const verifyPasswordReset = async (emailAddress: string, code: string) =>
 export const updatePassword = async (emailAddress: string, new_password: string) => {
     return await sendApiRequest(
         'post',
-        `${process.env.PAYFLEX_API_URL}/${AUTH_URL}/reset-password`,
+        `${process.env.NEXT_PUBLIC_PAYFLEX_API_URL}/${AUTH_URL}/reset-password`,
         {
             "email": emailAddress,
             "new_password": new_password

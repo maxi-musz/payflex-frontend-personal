@@ -46,17 +46,17 @@ const LoginPage: React.FC<LoginProps> = ({ data }) => {
                 const { access_token, user } = res.data;
                 sessionStorage.setItem("accessToken", access_token);
                 sessionStorage.setItem("role", user.role);
-
-                router.push('/');
-                
+                    
                 localStorage.setItem('loggedInUserInfo', JSON.stringify({
                     email: user.email,
                     first_name: user.first_name,
                     last_name: user.last_name,
                     password: ''
                 }));
+                
+                setIsLoading(false);
+                router.push('/');
             }
-            setIsLoading(false);
 
             setTimeout(() => {
                 showToast(`${res.message}`);

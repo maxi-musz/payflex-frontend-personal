@@ -4,14 +4,24 @@ import FullPagination from '@/components/pagination/FullPagination';
 import { currentRecentTransactionsTableHead } from '../../../data/base';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import { useGeneralData } from '@/context/GeneralDataContext';
 import { parseDateIntoMonthDayYear } from '@/utils/formatters';
 
-const BankTransactionTable = () => {
+interface TransactionHistoryProps {
+  id: string,
+  amount: string,
+  type: string,
+  description: string,
+  status: string,
+  date: string,
+  sender: string,
+  icon: string
+}
+
+const BankTransactionTable = ({transactionHistory}: {transactionHistory: TransactionHistoryProps[] | null}) => {
   // ============== pagination =================
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [transactionPerPage, setTransactionPerPage] = useState<number>(0);
-    const {transactionHistory} = useGeneralData();
+    // const {transactionHistory} = useGeneralData();
 
   useEffect(() => {
     const handleResize = () => { 

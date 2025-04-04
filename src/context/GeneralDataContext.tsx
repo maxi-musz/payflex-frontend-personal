@@ -4,10 +4,6 @@ import { usePathname, useRouter } from 'next/navigation';
 import { currentUserInfo, INITIAL_GENERAL_DATA } from '../data/base';
 import { GeneralDataProps, UserDataProps } from '../types/base';
 import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
-import { parseCookies } from 'nookies';
-import { getUserDashboard } from '@/features/dashboard/actions';
-import { showToast } from '@/components/HotToast';
-// import {jwtDecode} from 'jwt-decode';
 
 interface GeneralDataContextType {
   currentData: GeneralDataProps;
@@ -19,9 +15,6 @@ interface GeneralDataContextType {
   currentTab: string;
   updateGeneralData: (url: string) => void;
   dropLoggedInUserInfo: () => void;
-  user: {id: string, name: string, email: string, profileImage: string | null} | null;
-  accounts: {id: string, account_number: string, account_type: string, balance: string, bank_name: string, bank_code: string}[] | null;
-  transactionHistory: {id: string, amount: string, type: string, description: string, status: string, date: string, sender: string, icon: string}[] | null;
 }
 
 const GeneralDataContext = createContext<GeneralDataContextType | undefined>(undefined);
@@ -41,43 +34,10 @@ export const GeneralDataProvider = ({ children }: { children: ReactNode }) => {
     last_name: ''
   });
   
-  const [user, setUser] = useState(null);
-  const [accounts, setAccounts] = useState(null);
-  const [transactionHistory, setTransactionHistory] = useState(null);
-  
   const router = useRouter();
-  const pathName = usePathname();  
-  const cookies = parseCookies();
-  
-  // useEffect(() => {
-  // }, []);
+  const pathName = usePathname();
 
   useEffect(() => {
-    const token = cookies.accessToken;
-    if (pathName !== '/login' && pathName !== '/register' && token) {
-      const fetchUser = async () => {
-          try {
-              const res = await getUserDashboard(token);
-              const {user, accounts, transactionHistory} = res.data;
-  
-              if (!res.success) {
-                  showToast('No data was gotten', 'error');
-              } else {
-                  setUser(user);
-                  setAccounts(accounts);
-                  setTransactionHistory(transactionHistory);
-              }
-          } catch (error) {
-            // setIsLoading(false);
-            setTimeout(() => {
-                showToast(`Error: ${(error as Error).message || 'An unexpected error occurred'}`, 'error');
-            }, 500);
-          }
-      };
-  
-      fetchUser();
-    }
-
     const storedData = localStorage.getItem('currentData');
     if (storedData) {
       setCurrentData(JSON.parse(storedData));
@@ -93,7 +53,7 @@ export const GeneralDataProvider = ({ children }: { children: ReactNode }) => {
       setLoggedInUser(JSON.parse(loggedInUserData));
     }
     
-  }, [pathName, router, cookies.accessToken]);
+  }, [pathName, router]);
   
   const updateGeneralData = (url: string) => {
     // setCurrentData({currentTab: url});
@@ -110,10 +70,6 @@ export const GeneralDataProvider = ({ children }: { children: ReactNode }) => {
 
     localStorage.removeItem('loggedInUserInfo');
   };
-  
-  // console.log('User state', user);
-  // console.log('User Account state', accounts);
-  // console.log('User Transaction History state', transactionHistory);
 
   return (
     <GeneralDataContext.Provider
@@ -127,10 +83,6 @@ export const GeneralDataProvider = ({ children }: { children: ReactNode }) => {
         currentTab: currentData.currentTab,
         updateGeneralData,
         dropLoggedInUserInfo,
-        // currentUser,
-        user,
-        accounts,
-        transactionHistory,
       }}
     >
       {children}

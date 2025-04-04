@@ -48,11 +48,17 @@ const LoginPage: React.FC<LoginProps> = ({ data }) => {
                 const { access_token, user } = res.data;
                 // Store accessToken in a cookie (HTTP-Only for SSR)
                 setCookie(null, 'accessToken', access_token, {
+                    httpOnly: true,
+                    secure: true,
+                    // secure: process.env.NODE_ENV === "production",
                     maxAge: 30 * 24 * 60 * 60,
                     path: '/',
                 });
                 
                 setCookie(null, 'role', user.role, {
+                    httpOnly: true,
+                    secure: true,
+                    // secure: process.env.NODE_ENV === "production",
                     maxAge: 30 * 24 * 60 * 60,
                     path: '/',
                 });

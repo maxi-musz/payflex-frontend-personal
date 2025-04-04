@@ -39,7 +39,7 @@ import Bills from './dataDisplay/Bills';
 import Image from 'next/image';
 import CountUp from 'react-countup';
 import { Key, RemoveRedEyeOutlined } from '@mui/icons-material';
-import { parseFormattedAmount } from '@/utils/numberFormatter';
+import { parseFormattedAmountToNumber } from '@/utils/formatters';
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState<string>('General');
@@ -82,7 +82,7 @@ const Dashboard = () => {
                   <span className={`${item.currency === '₦' ? 'text-green-600' : item.currency === '£' ? 'text-red-600' : 'text-blue-800'} font-extrabold`}>{item.currency}</span>
                   {accounts?.slice(0,1).map(acc => 
                   <span key={acc.id}>
-                    {!isBalanceOpen ? <CountUp start={0} end={parseFormattedAmount(acc.balance) || parseInt(item.balance)} duration={2} delay={0} decimal='true' /> : "******"}
+                    {!isBalanceOpen ? <CountUp start={0} end={parseFormattedAmountToNumber(acc.balance) || parseInt(item.balance)} duration={2} delay={0} decimal='true' /> : "******"}
                   </span>
                   )}
                 </p>

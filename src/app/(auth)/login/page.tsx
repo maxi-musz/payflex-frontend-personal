@@ -42,7 +42,7 @@ const LoginPage: React.FC<LoginProps> = ({ data }) => {
         try {
             setIsLoading(true);
             const res = await loginUser(data.email, data.password);
-            console.log(res);
+            // console.log(res);
             
             if (res.success) {
                 const { access_token, user } = res.data;

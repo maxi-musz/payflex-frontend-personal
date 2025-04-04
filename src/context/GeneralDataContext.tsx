@@ -53,29 +53,30 @@ export const GeneralDataProvider = ({ children }: { children: ReactNode }) => {
   // }, []);
 
   useEffect(() => {
-    const fetchUser = async () => {
-        const token = cookies.accessToken;
-        
-        try {
-            const res = await getUserDashboard(token);
-            const {user, accounts, transactionHistory} = res.data;
-
-            if (!res.success) {
-                showToast('No data was gotten', 'error');
-            } else {
-                setUser(user);
-                setAccounts(accounts);
-                setTransactionHistory(transactionHistory);
-            }
-        } catch (error) {
-          // setIsLoading(false);
-          setTimeout(() => {
-              showToast(`Error: ${(error as Error).message || 'An unexpected error occurred'}`, 'error');
-          }, 500);
-        }
-    };
-
-    fetchUser();
+    const token = cookies.accessToken;
+    if (pathName !== '/login' && pathName !== '/register' && token) {
+      const fetchUser = async () => {
+          try {
+              const res = await getUserDashboard(token);
+              const {user, accounts, transactionHistory} = res.data;
+  
+              if (!res.success) {
+                  showToast('No data was gotten', 'error');
+              } else {
+                  setUser(user);
+                  setAccounts(accounts);
+                  setTransactionHistory(transactionHistory);
+              }
+          } catch (error) {
+            // setIsLoading(false);
+            setTimeout(() => {
+                showToast(`Error: ${(error as Error).message || 'An unexpected error occurred'}`, 'error');
+            }, 500);
+          }
+      };
+  
+      fetchUser();
+    }
 
     const storedData = localStorage.getItem('currentData');
     if (storedData) {

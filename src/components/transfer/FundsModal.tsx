@@ -9,7 +9,7 @@ import { useForm } from 'react-hook-form';
 import Loading from '@/app/loading';
 import { useState } from 'react';
 import { useGeneralData } from '@/context/GeneralDataContext';
-import { formatCurrency, parseFormattedAmount } from '@/utils/numberFormatter';
+import { parseAmountIntoNumberFormat, parseFormattedAmountToNumber } from '@/utils/formatters';
 import { fundWalletAmountSchema, FundWalletAmountType } from '@/features/auth/validations';
 
 interface FundsProps {
@@ -26,7 +26,7 @@ const FundsModal = ({ data, handleModalToggle, whichModal }: FundsProps) => {
     const { currentData, setCurrentData } = useGeneralData();
 
     const onCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const formattedValue = formatCurrency(e.target.value);
+        const formattedValue = parseAmountIntoNumberFormat(e.target.value);
         setInputAmount(formattedValue);
     };
 
@@ -44,7 +44,7 @@ const FundsModal = ({ data, handleModalToggle, whichModal }: FundsProps) => {
 
         try {
             if (whichModal === 'Fund Wallet') {
-                const parsedAmount = parseFormattedAmount(inputAmount); // Parse formatted amount to number
+                const parsedAmount = parseFormattedAmountToNumber(inputAmount); // Parse formatted amount to number
     
                 // Check if the parsed amount is a valid number
                 if (!isNaN(parsedAmount) && parsedAmount > 0) {

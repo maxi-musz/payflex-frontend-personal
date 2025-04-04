@@ -5,7 +5,7 @@ import { currentRecentTransactionsTableHead } from '../../../data/base';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useGeneralData } from '@/context/GeneralDataContext';
-import { formatDate } from '@/utils/numberFormatter';
+import { parseDateIntoMonthDayYear } from '@/utils/formatters';
 
 const BankTransactionTable = () => {
   // ============== pagination =================
@@ -99,7 +99,7 @@ const BankTransactionTable = () => {
                     </span>
                   </td>
                   <td className={`relative py-[11px] text-[12px] px-2 text-center whitespace-nowrap w-2 capitalize`}>{item.type}</td>
-                  <td className={`relative py-[11px] text-[12px] px-2 text-center whitespace-nowrap w-2`}>{formatDate(item.date)}</td>
+                  <td className={`relative py-[11px] text-[12px] px-2 text-center whitespace-nowrap w-2`}>{parseDateIntoMonthDayYear(item.date)}</td>
                 </tr>
               ))}
             </tbody>

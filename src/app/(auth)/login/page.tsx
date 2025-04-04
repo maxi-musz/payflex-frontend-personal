@@ -44,8 +44,8 @@ const LoginPage: React.FC<LoginProps> = ({ data }) => {
             
             if (res.success) {
                 const { access_token, user } = res.data;
-                sessionStorage.setItem("accessToken", access_token);
-                sessionStorage.setItem("role", user.role);
+                localStorage.setItem("accessToken", access_token);
+                localStorage.setItem("role", user.role);
 
                 router.push('/');
                 

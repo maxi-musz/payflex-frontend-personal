@@ -31,8 +31,7 @@ const Sidebar: React.FC<SidebarProps> = ({ show = 'hidden', closeSidebar = () =>
 
     const logout = () => {
         dropLoggedInUserInfo();
-        // destroyCookie(null, 'accessToken');
-        // destroyCookie(null, 'role');
+        sessionStorage.removeItem('accessToken');
         router.push('/login');
     }
 

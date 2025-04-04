@@ -66,7 +66,7 @@ const Dashboard = () => {
     // console.log(token)
 
     if (token === undefined || !token ) {
-      router.push('/login');
+      return router.push('/login');
     }
     
     const fetchUser = async () => {
@@ -83,9 +83,10 @@ const Dashboard = () => {
           }
         } catch (error) {
           // setIsLoading(false);
-          setTimeout(() => {
-            showToast(`Error: ${(error as Error).message || 'An unexpected error occurred'}`, 'error');
-          }, 500);
+          router.push('/login');
+          // setTimeout(() => {
+          //   showToast(`Error: ${(error as Error).message || 'An unexpected error occurred'}`, 'error');
+          // }, 500);
         }
       }
     };

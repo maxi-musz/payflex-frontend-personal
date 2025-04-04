@@ -69,7 +69,6 @@ export const GeneralDataProvider = ({ children }: { children: ReactNode }) => {
     });
 
     localStorage.removeItem('loggedInUserInfo');
-    sessionStorage.removeItem('accessToken');
   };
 
   return (

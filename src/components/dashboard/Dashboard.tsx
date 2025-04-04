@@ -62,7 +62,7 @@ const Dashboard = () => {
   const router = useRouter();
     
   useEffect(() => {
-    const token = localStorage.getItem("accessToken");
+    const token = sessionStorage.getItem("accessToken");
     // console.log(token)
 
     if (token === undefined || !token ) {

@@ -9,7 +9,6 @@ import Tabs from './Tabs';
 import { Logout } from '@mui/icons-material';
 import { useGeneralData } from '@/context/GeneralDataContext';
 import { useEffect, useState } from 'react';
-import { destroyCookie } from 'nookies';
 
 interface SidebarProps {
     show?: string;
@@ -32,8 +31,8 @@ const Sidebar: React.FC<SidebarProps> = ({ show = 'hidden', closeSidebar = () =>
 
     const logout = () => {
         dropLoggedInUserInfo();
-        destroyCookie(null, 'accessToken');
-        destroyCookie(null, 'role');
+        // destroyCookie(null, 'accessToken');
+        // destroyCookie(null, 'role');
         router.push('/login');
     }
 
@@ -62,9 +61,9 @@ const Sidebar: React.FC<SidebarProps> = ({ show = 'hidden', closeSidebar = () =>
                             <Search onChange={handleSearch} />
                         </div> */}
                         <ul className="flex flex-col items-start justify-start gap-3 w-full">
-                            <Tabs start={0} stop={2} type="link" />
-                            <Tabs start={2} stop={3} type="btn" />
-                            <Tabs start={3} stop={6} type="link" />
+                            <Tabs start={0} stop={3} type="link" />
+                            <Tabs start={3} stop={4} type="btn" />
+                            <Tabs start={4} stop={6} type="link" />
                             <Tabs start={6} stop={9} type="btn" />
                             <Tabs start={9} stop={10} type="link" />
                         </ul>

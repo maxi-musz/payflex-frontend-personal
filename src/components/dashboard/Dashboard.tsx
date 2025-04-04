@@ -29,7 +29,6 @@ import ReferAndEarn from '../refer-and-earn/ReferAndEarn';
 import VirtualCards from '../virtual-cards/VirtualCards';
 import RedeemGiftcard from '../redeem-giftcard/RedeemGiftcard';
 import P2PLending from '../p2p-lending/P2PLending';
-import WalletBallanceCard from './dataDisplay/WalletBallanceCard';
 import { dashboardTabs, quickActions, walletBalanceInfo } from '@/data/base';
 import QuickAction from './dataDisplay/QuickAction';
 import { Toaster } from 'react-hot-toast';
@@ -41,8 +40,8 @@ import CountUp from 'react-countup';
 import { Key, RemoveRedEyeOutlined } from '@mui/icons-material';
 import { parseFormattedAmountToNumber } from '@/utils/formatters';
 import { getUserDashboard } from '@/features/dashboard/actions';
-import { parseCookies } from 'nookies';
 import { showToast } from '../HotToast';
+import { useRouter } from 'next/navigation';
 
 interface AccountsProps {
   id: string,
@@ -60,33 +59,39 @@ const Dashboard = () => {
   const [transactionHistory, setTransactionHistory] = useState(null);
   
   const {currentTab} = useGeneralData();
-  const cookies = parseCookies();
+  const router = useRouter();
     
   useEffect(() => {
-    const token = cookies.accessToken;
-    const fetchUser = async () => {
-      if (token) {
-        try {
-            const res = await getUserDashboard(token);
-            const {accounts, transactionHistory} = res.data;
+    const token = sessionStorage.getItem("accessToken");
+    // console.log(token)
 
-            if (!res.success) {
-                showToast('No data was gotten', 'error');
-            } else {
-                setAccounts(accounts);
-                setTransactionHistory(transactionHistory);
-            }
+    if (token === undefined || !token ) {
+      router.push('/login');
+    }
+    
+    const fetchUser = async () => {
+      if (token && token !== undefined) {
+        try {
+          const res = await getUserDashboard(token);
+          const {accounts, transactionHistory} = res.data;
+
+          if (!res.success) {
+              showToast('No data was gotten', 'error');
+          } else {
+              setAccounts(accounts);
+              setTransactionHistory(transactionHistory);
+          }
         } catch (error) {
           // setIsLoading(false);
           setTimeout(() => {
-              showToast(`Error: ${(error as Error).message || 'An unexpected error occurred'}`, 'error');
+            showToast(`Error: ${(error as Error).message || 'An unexpected error occurred'}`, 'error');
           }, 500);
         }
-      };
-    }
+      }
+    };
   
     fetchUser();
-  }, [cookies.accessToken]);
+  }, [router]);
 
   const handleBalanceToggle = () => setIsBalanceOpen(prev => !prev);
     
@@ -94,52 +99,72 @@ const Dashboard = () => {
 
 
   return (
-    <div className='w-full pt-2 pb-4 space-y-2 md:space-y-5'>
+    <div className='w-full pt-2 pb-4 space-y-2 md:space-y-4'>
         <Toaster position="top-center" reverseOrder={false} />
         {/* <div className='w-full rounded-radius-12 py- pl-1 pr-3 bg-white border border-customGray'>
             <BankAccountsPieChart />
         </div> */}
 
         <div className="flex items-center gap-2 md:gap-4 xl:gap-6 flex-wrap">
-        {walletBalanceInfo.slice(0,1).map(item =>
-          <div key={item.id} className='w-72 flex-1 h-40 py-6 pl-5 pr-3 bg-blue-200 rounded-3xl flex flex-col justify-between'>
-            <div className="w-full flex items-center justify-end gap-1">
-              <p className='font-semibold text-xl'>{item.currencyInitials}</p>
-              <div className="relative size-8 rounded-full">
-                <Image
-                  src={`/images/${item.currencyFlag}`}
-                  alt="Currency's country logo"
-                  fill
-                  priority
-                  className="object-cover rounded-full"
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                />
-              </div>
-            </div>
 
-            <div className="space-y-3">
-              <p className="text-neutral-700 text-base font-semibold">Wallet Balance</p>
-              <div className="w-full flex items-center justify-between">
-                <p className='text-textGrayDarker text-xl md:text-2xl font-bold space-x-1'>
-                  <span className={`${item.currency === '₦' ? 'text-green-600' : item.currency === '£' ? 'text-red-600' : 'text-blue-800'} font-extrabold`}>{item.currency}</span>
-                  {accounts?.slice(0,1).map(acc => 
-                  <span key={acc.id}>
-                    {!isBalanceOpen ? <CountUp start={0} end={parseFormattedAmountToNumber(acc.balance) || parseInt(item.balance)} duration={2} delay={0} decimal='true' /> : "******"}
-                  </span>
-                  )}
-                </p>
-                <button onClick={handleBalanceToggle} className='hover:bg-blue-300 rounded-full size-8 flex items-center justify-center border hover:border-transparent transition-all duration-300 ease-in-out'>
-                  {isBalanceOpen ?
-                  <RemoveRedEyeOutlined style={{fontSize: '19px', }} /> :
-                  <Key style={{fontSize: '19px', }} />}
-                </button>
-              </div>
-            </div>
-          </div>)}
+          <div className='space-y-2'>
+            {/* <div className="px-2 w-72 flex-1 sm:flex-none flex items-center justify-between">
+              <p className='text-textGrayDarker text-xl md:text-2xl font-bold space-x-1'>
+                <span className='text-green-600 font-extrabold'>₦</span>
+                {accounts?.slice(0,1).map(acc => 
+                <span key={acc.id}>
+                  {!isBalanceOpen ? <CountUp start={0} end={parseFormattedAmountToNumber(acc.balance)} duration={2} delay={0} decimal='true' /> : "******"}
+                </span>
+                )}
+              </p>
+              <button onClick={handleBalanceToggle} className='hover:bg-blue-300 rounded-full size-8 flex items-center justify-center border hover:border-transparent transition-all duration-300 ease-in-out'>
+                {isBalanceOpen ?
+                <RemoveRedEyeOutlined style={{fontSize: '19px', }} /> :
+                <Key style={{fontSize: '19px', }} />}
+              </button>
+            </div> */}
 
-          {walletBalanceInfo.slice(1,3).map(item =>
+            {walletBalanceInfo.slice(0,1).map(item =>
+              <div key={item.id} className='w-72 flex-1 sm:flex-none h-40 py-6 pl-5 pr-3 bg-blue-200 rounded-3xl flex flex-col justify-between'>
+                <div className="w-full flex items-center justify-end gap-1">
+                  <p className='font-semibold text-xl'>{item.currencyInitials}</p>
+                  <div className="relative size-8 rounded-full">
+                    <Image
+                      src={`/images/${item.currencyFlag}`}
+                      alt="Currency's country logo"
+                      fill
+                      priority
+                      className="object-cover rounded-full"
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  <p className="text-neutral-800 text-base font-semibold">Wallet Balance</p>
+                  <div className="w-full flex items-center justify-between">
+                    <p className='text-textGrayDarker text-xl md:text-2xl font-bold space-x-1'>
+                      <span className={`${item.currency === '₦' ? 'text-green-600' : item.currency === '£' ? 'text-red-600' : 'text-blue-800'} font-extrabold`}>{item.currency}</span>
+                      {accounts?.slice(0,1).map(acc => 
+                      <span key={acc.id}>
+                        {!isBalanceOpen ? <CountUp start={0} end={parseFormattedAmountToNumber(acc.balance) || parseInt(item.balance)} duration={2} delay={0} decimal='true' /> : "******"}
+                      </span>
+                      )}
+                    </p>
+                    <button onClick={handleBalanceToggle} className='hover:bg-blue-300 rounded-full size-8 flex items-center justify-center border hover:border-transparent transition-all duration-300 ease-in-out'>
+                      {isBalanceOpen ?
+                      <RemoveRedEyeOutlined style={{fontSize: '19px', }} /> :
+                      <Key style={{fontSize: '19px', }} />}
+                    </button>
+                  </div>
+                </div>
+              </div>)
+            }
+          </div>
+
+          {/* {walletBalanceInfo.slice(1,3).map(item =>
             <WalletBallanceCard key={item.id} item={item} />
-          )}
+          )} */}
         </div>
 
         <div className="space-y-2 md:space-y-5 py-2">

@@ -57,7 +57,7 @@ export const menuItems = [
     {
         id: 7,
         title: "VTU Payment",
-        url: 'vtu-payment',
+        url: '',
         icon: ShoppingBagOutlined,
         dropdownMenu: [
             {
@@ -93,7 +93,7 @@ export const menuItems = [
             {
                 id: 7,
                 title: 'Transaction History',
-                url: '/transaction-history'
+                url: '/vtu/transaction-history'
             },
         ],
     },

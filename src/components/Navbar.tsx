@@ -13,10 +13,11 @@ const Navbar: React.FC = () => {
   const {loggedInUser} = useGeneralData();
 
   useEffect(() => {
-    
-    const nameArray = loggedInUser.name.split(' ').map(item => item.trim()).filter(item => item !== '');
+    if (loggedInUser.name) {
+      const nameArray = loggedInUser.name.split(' ').map(item => item.trim()).filter(item => item !== '');
       setFirstName(nameArray[0]);
-  }, [loggedInUser.name]);
+    }
+  }, [loggedInUser?.name]);
   
   const closeSidebar = () => setOpen(false);
 

@@ -25,7 +25,7 @@ export const menuItems = [
     {
         id: 4,
         title: "Transfer",
-        url: '',
+        url: 'transfer',
         icon: SendTimeExtensionOutlined,
         dropdownMenu: [
             {
@@ -57,7 +57,7 @@ export const menuItems = [
     {
         id: 7,
         title: "VTU Payment",
-        url: '',
+        url: 'vtu-payment',
         icon: ShoppingBagOutlined,
         dropdownMenu: [
             {
@@ -100,7 +100,7 @@ export const menuItems = [
     {
         id: 8,
         title: "Data Menu",
-        url: '',
+        url: 'data-menu',
         icon: NetworkWifiOutlined,
         dropdownMenu: [
             {
@@ -133,7 +133,7 @@ export const menuItems = [
     {
         id: 9,
         title: "Bills Payment",
-        url: '',
+        url: 'bills-payment',
         icon: CreditCardOutlined,
         dropdownMenu: [
             {
@@ -178,7 +178,7 @@ export const menuItems = [
     {
         id: 11,
         title: "Account",
-        url: '',
+        url: 'account',
         icon: AccountCircleOutlined,
         dropdownMenu: [
             {

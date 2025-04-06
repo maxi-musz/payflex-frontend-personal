@@ -7,6 +7,7 @@ import React, { useEffect, useState } from 'react';
 import Loading from '@/app/loading';
 import { showToast } from '@/components/HotToast';
 import Image from 'next/image';
+import { Toaster } from 'react-hot-toast';
 
 const BuyAirtime = () => {
   const [providers, setProviders] = useState([]);
@@ -81,7 +82,7 @@ const BuyAirtime = () => {
         });
         showToast(airtimePurchaseResponse.message);
       } else {
-        console.log("Error", airtimePurchaseResponse.message)
+        // console.log("Error", airtimePurchaseResponse.message)
         showToast(`${airtimePurchaseResponse.message} || 'Something went wrong', 'error'`);
       }
     } catch (error) {
@@ -92,13 +93,14 @@ const BuyAirtime = () => {
   };
 
   const handleGoBackHome = () => {
-    router.push('http://localhost:3000');
+    router.push('/');
   };
 
   if (loading) return <Loading />;
 
   return (
     <section className="space-y-5">
+      <Toaster position="top-center" reverseOrder={false} />
       <h1 className="text-3xl font-semibold mt-5">Buy Airtime</h1>
 
       {!selectedProvider ? (

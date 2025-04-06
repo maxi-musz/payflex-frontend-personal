@@ -53,22 +53,14 @@ const Sidebar: React.FC<SidebarProps> = ({ show = 'hidden', closeSidebar = () =>
                     </Link>
                     
                     <div className="flex-1 flex flex-col items-start justify-between gap-5">
-                        {/* <div className="w-full px-1 bg-white border border-customGray flex items-center justify-between rounded-radius-8 focus-within:ring-1 focus-within:ring-primary hover:ring-primary">
-                            <ButtonNeutral classes='p-0 ml-1 rounded-full' icon1={<div className='relative size-[16px]'><Image src="/icons/search-md.svg" fill alt="search icon" className={`object-contain`} sizes="(max-width: 768px) 100vw, 50vw" /></div>} />
-                            <Search onChange={handleSearch} />
-                        </div> */}
                         <ul className="flex flex-col items-start justify-start gap-3 w-full">
-                            <Tabs start={0} stop={3} type="link" />
-                            <Tabs start={3} stop={4} type="btn" />
-                            <Tabs start={4} stop={6} type="link" />
-                            <Tabs start={6} stop={9} type="btn" />
-                            <Tabs start={9} stop={10} type="link" />
+                            <Tabs start={0} stop={10} />
                         </ul>
 
                         <div className="border-t">
                             <ul className="flex flex-col items-start justify-start gap-3 w-full py-2">
-                                <Tabs start={10} stop={11} type="btn" />
-                                <Tabs start={11} stop={menuItems.length} type="lowerLink" />
+                                <Tabs start={10} stop={11} />
+                                <Tabs start={11} stop={menuItems.length} />
                             </ul>
 
                             <div className="pl-2 pt-2 pb-5 flex items-center gap-3 border-t">

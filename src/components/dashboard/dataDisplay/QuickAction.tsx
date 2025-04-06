@@ -1,14 +1,17 @@
 import FundsModal from '@/components/transfer/FundsModal';
 import { QuickActionsProps } from '@/types/base';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 const QuickAction: React.FC<QuickActionsProps> = ({item}) => {
   const [isWalletModalOpen, setIsWalletModalOpen] = useState(false);
   const [whichModal, setWhichModal] = useState('');
+  const router = useRouter();
 
   const handleModalToggle = () => {
     if (item.text === 'Fund Wallet') {
-      setWhichModal('Fund Wallet');
+      router.push('/connect-bank');
+      // setWhichModal('Fund Wallet');
     }
     if (item.text === 'Transfer') {
       setWhichModal('Transfer');

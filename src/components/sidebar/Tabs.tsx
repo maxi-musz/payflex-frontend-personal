@@ -29,7 +29,7 @@ const Tabs = ({ start, stop }: TabsProps) => {
     router.push(itemUrl);
   };
 
-  const handleDropdownTabClick = (dropdownUrl: string, parentUrl: string, parentTitle: string) => {
+  const handleDropdownTabClick = (dropdownUrl: string, parentUrl: string) => {
     updateGeneralData(dropdownUrl);
     router.push(parentUrl);
     setCurrentDropdownTab(null);
@@ -54,13 +54,7 @@ const Tabs = ({ start, stop }: TabsProps) => {
           <span className="relative">
             <ButtonNeutral
               btnText1={item.title}
-              onClick={() => {
-                if (item.dropdownMenu.length > 0) {
-                  toggleDropdownMenu(item.title);
-                } else {
-                  handleDirectTabClick(item.url);
-                }
-              }}
+              onClick={() => item.dropdownMenu.length > 0 ? toggleDropdownMenu(item.title) : handleDirectTabClick(item.url)}
               classes={`${
                 isParentActive(item.url, item.dropdownMenu)
                   ? 'text-white bg-primary'
@@ -82,7 +76,7 @@ const Tabs = ({ start, stop }: TabsProps) => {
               <DropDownMenu
                 menu={item.dropdownMenu}
                 handleTabNavigation={(dropdownUrl) =>
-                  handleDropdownTabClick(dropdownUrl, item.url, item.title)
+                  handleDropdownTabClick(dropdownUrl, item.url)
                 }
               />
             )}

@@ -1,6 +1,5 @@
 'use client';
 
-import { usePathname } from 'next/navigation';
 import { useGeneralData } from '@/context/GeneralDataContext';
 import ButtonNeutral from '../button/ButtonNeutral';
 import { useEffect } from 'react';
@@ -15,27 +14,12 @@ interface DropDownMenuProps {
 }
 
 const DropDownMenu = ({menu, handleTabNavigation}: DropDownMenuProps) => {
-    const pathName = usePathname();
     const {currentTab, updateGeneralData} = useGeneralData();
-    // console.log(pathName, currentTab);
-    // const [currentUrl, setCurrentUrl] = useState('/');
         
     useEffect(() => {
         updateGeneralData(currentTab);
     }, [currentTab, updateGeneralData]);
 
-    // const handleTabNavigation = (url: string) => {
-    //     setCurrentUrl(url);
-    //     setCurrentData({currentTab: url});
-    //     // console.log(currentUrl);
-    // };
-
-    // const isActivePath = (route: string | null) => {
-    //     if (!route) return false;
-    //     return (currentTab || pathName) === route;
-    //     // return pathName.includes(route);
-    // };
-    
   return (
     <ul className={`top-11 w-full border absolute left-0 py-1 z-20 bg-white shadow-md rounded-radius-4`}>
         {menu.map(menuItem => 

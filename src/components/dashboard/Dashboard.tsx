@@ -17,19 +17,20 @@ import { showToast } from '../HotToast';
 import { useRouter } from 'next/navigation';
 import { verifyPaystackFunding } from '@/features/banking/actions';
 
-interface AccountsProps {
+interface WalletProps {
   id: string,
-  account_number: string,
-  account_type: string,
-  balance: string,
-  bank_name: string,
-  bank_code: string
+  current_balance: number,
+  all_time_fuunding: number,
+  all_time_withdrawn: number,
+  isActive: boolean,
+  createdAt: string,
+  updatedAt: string,
 }
 
 const Dashboard = () => {
   // const [activeTab, setActiveTab] = useState<string>('General');
   const [isBalanceOpen, setIsBalanceOpen] = useState(false);
-  const [accounts, setAccounts] = useState<AccountsProps[] | null>(null);
+  const [wallet, setWallet] = useState<WalletProps | null>(null);
   const [transactionHistory, setTransactionHistory] = useState(null);
   // const [accessToken, setAccessToken] = useState('');
   
@@ -78,12 +79,12 @@ const Dashboard = () => {
       // Fetch dashboard data
       try {
         const res = await getUserDashboard(token);
-        const { accounts, transactionHistory } = res.data;
+        const { wallet, transactionHistory } = res.data;
   
         if (!res.success) {
           showToast("No data was gotten", "error");
         } else {
-          setAccounts(accounts);
+          setWallet(wallet);
           setTransactionHistory(transactionHistory);
         }
       } catch (error) {
@@ -104,7 +105,8 @@ const Dashboard = () => {
               <div className='space-y-2'>
                   {walletBalanceInfo.slice(0,1).map(item =>
                     <div key={item.id} className='w-72 flex-1 sm:flex-none h-40 py-6 pl-5 pr-3 bg-blue-200 rounded-3xl flex flex-col justify-between'>
-                      <div className="w-full flex items-center justify-end gap-1">
+                      <p className="text-neutral-800 text-lg font-semibold">Wallet Balance</p>
+                      {/* <div className="w-full flex items-center justify-end gap-1">
                         <p className='font-semibold text-xl'>{item.currencyInitials}</p>
                         <div className="relative size-8 rounded-full">
                           <Image
@@ -116,18 +118,13 @@ const Dashboard = () => {
                             sizes="(max-width: 768px) 100vw, 50vw"
                           />
                         </div>
-                      </div>
+                      </div> */}
 
                       <div className="space-y-3">
-                        <p className="text-neutral-800 text-base font-semibold">Wallet Balance</p>
                         <div className="w-full flex items-center justify-between">
-                          <p className='text-textGrayDarker text-xl md:text-2xl font-bold space-x-1'>
+                          <p className='text-textGrayDarker text-2xl md:text-3xl font-bold space-x-1'>
                             <span className={`${item.currency === '₦' ? 'text-green-600' : item.currency === '£' ? 'text-red-600' : 'text-blue-800'} font-extrabold`}>{item.currency}</span>
-                            {accounts?.slice(0,1).map(acc => 
-                              <span key={acc.id}>
-                                {!isBalanceOpen ? <CountUp start={0} end={parseFormattedAmountToNumber(acc.balance) || parseInt(item.balance)} duration={2} delay={0} decimal='true' /> : "******"}
-                              </span>
-                            )}
+                            {(wallet && !isBalanceOpen) ? <CountUp start={0} end={wallet.current_balance || parseInt(item.balance)} duration={2} delay={0} decimal='true' /> : "******"}
                           </p>
                           <button onClick={handleBalanceToggle} className='hover:bg-blue-300 rounded-full size-8 flex items-center justify-center border hover:border-transparent transition-all duration-300 ease-in-out'>
                             {isBalanceOpen ?

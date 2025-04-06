@@ -11,9 +11,13 @@ import { useState } from 'react';
 import { useGeneralData } from '@/context/GeneralDataContext';
 import { parseAmountIntoNumberFormat, parseFormattedAmountToNumber } from '@/utils/formatters';
 import { fundWalletAmountSchema, FundWalletAmountType } from '@/features/auth/validations';
+import { paystackFundingInitializationSchema, PaystackFundingInitializationType } from '@/features/banking/validations';
+import { showToast } from '../HotToast';
+import { initialisePaystackFunding } from '@/features/banking/actions';
+import { Toaster } from 'react-hot-toast';
 
 interface FundsProps {
-    data?: FundWalletAmountType,
+    data?: PaystackFundingInitializationType,
     handleModalToggle: () => void,
     whichModal: string
 }
@@ -24,49 +28,59 @@ const FundsModal = ({ data, handleModalToggle, whichModal }: FundsProps) => {
     const [whichTransferType, setWhichTransferType] = useState('');
 
     const { currentData, setCurrentData } = useGeneralData();
-
+  
     const onCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const formattedValue = parseAmountIntoNumberFormat(e.target.value);
-        setInputAmount(formattedValue);
+      const formattedValue = parseAmountIntoNumberFormat(e.target.value);
+      setInputAmount(`₦${formattedValue}`);
     };
 
     const {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm<FundWalletAmountType>({
-        resolver: zodResolver(fundWalletAmountSchema),
+        } = useForm<PaystackFundingInitializationType>({
+        resolver: zodResolver(paystackFundingInitializationSchema),
         defaultValues: data,
     });
-
-    const onFormSubmit = handleSubmit(async (formData) => {
+        
+    const onFormSubmit = handleSubmit(async (data) => {
+        // console.log(data);
         setIsLoading(true);
-
+        const token = sessionStorage.getItem("accessToken");
         try {
-            if (whichModal === 'Fund Wallet') {
-                const parsedAmount = parseFormattedAmountToNumber(inputAmount);
-    
-                if (!isNaN(parsedAmount) && parsedAmount > 0) {
-                    const updatedFormData: FundWalletAmountType = {
-                        ...formData,
-                        amount: parsedAmount.toString(),
-                    };
-    
-                    console.log(updatedFormData);
-                    setIsLoading(false);
-                    setCurrentData({ ...currentData, currentTab: '/ngn-ngn-transfer' });
-                    handleModalToggle();
-                } else {
-                    console.error('Invalid amount, please enter a valid number.');
-                    setIsLoading(false);
-                }
-            }
+        const parsedAmount = parseFormattedAmountToNumber(inputAmount);
+        if (!isNaN(parsedAmount) && parsedAmount > 0) {
+            const updatedData: PaystackFundingInitializationType = {
+            ...data,
+            amount: parsedAmount.toString(),
+            };
+            // console.log(updatedData);
 
+            if (!token) return showToast("You are unauthorized!", "error");
+
+            const updatedAmount = parseInt(updatedData.amount);
+            const res = await initialisePaystackFunding(token, {
+            amount: updatedAmount,
+            callback_url: `${process.env.NEXT_PUBLIC_PAYSTACK_CALLBACK_URL}`,
+            });          
+            
+            if (res.success) {
+            window.location.href = res.data.authorization_url;
+            showToast(`${res.message}`);
+            } else {
+            showToast('Something went wrong! Could not finish initialization of paystack funding.', 'error');
+            }
+        }
+        // handleModalToggle();
         } catch (error) {
-            console.error('Error submitting form:', error);
-            setIsLoading(false);
+        setTimeout(() => {
+            showToast(`Error: ${(error as Error).message || 'An unexpected error occurred'}`, 'error');
+        }, 500);
+        } finally {
+        setIsLoading(false);
         }
     });
+
 
     const handleTransactionTypeSubmit = () => {
         if (whichModal === 'Transfer') {
@@ -88,6 +102,7 @@ const FundsModal = ({ data, handleModalToggle, whichModal }: FundsProps) => {
 
     return (
         <section className="fixed inset-0 -top-10 bg-gray-800 bg-opacity-80 flex justify-center items-center p-2 z-[999999]">
+            <Toaster position="top-center" reverseOrder={false} />
             <div className="bg-white md:w-[27rem] rounded-radius-12 shadow-lg flex flex-col justify-center items-center">
                 {whichModal === 'Fund Wallet' && 
                 <form onSubmit={onFormSubmit} className="w-full p-6 flex flex-col items-start justify-between gap-4 rounded-radius-12">

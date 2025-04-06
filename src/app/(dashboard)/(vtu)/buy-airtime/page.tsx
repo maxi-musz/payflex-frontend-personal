@@ -6,8 +6,7 @@ import React, { useEffect, useState } from 'react';
 
 import Loading from '@/app/loading';
 import { showToast } from '@/components/HotToast';
-import { error } from 'console';
-import toast from 'react-hot-toast';
+import Image from 'next/image';
 
 const BuyAirtime = () => {
   const [providers, setProviders] = useState([]);
@@ -36,6 +35,7 @@ const BuyAirtime = () => {
     const fetchProviders = async () => {
       try {
         const res = await getAirtimeProviders(token);
+        console.log(res)
         if (!res.success) {
           showToast('No data was gotten', 'error');
         } else {
@@ -69,7 +69,7 @@ const BuyAirtime = () => {
       setLoading(false)
 
       if (airtimePurchaseResponse.success) {
-        toast.success(airtimePurchaseResponse.message);
+        showToast(airtimePurchaseResponse.message);
         // Set transaction data
         setTransactionData({
           provider: airtimePurchaseResponse.data.provider,
@@ -92,7 +92,7 @@ const BuyAirtime = () => {
   };
 
   const handleGoBackHome = () => {
-    router.push('http://localhost:3001');
+    router.push('http://localhost:3000');
   };
 
   if (loading) return <Loading />;
@@ -111,11 +111,15 @@ const BuyAirtime = () => {
                 onClick={() => setSelectedProvider(provider)}
                 className="bg-white border rounded-xl p-4 flex flex-col items-center justify-center shadow-sm hover:shadow-md cursor-pointer transition"
               >
-                <img
-                  src={providerLogos[provider.provider.toUpperCase()] || "/images/default.png"}
-                  alt={provider.provider}
-                  className="w-16 h-16 object-contain mb-2"
-                />
+                <span className="relative size-16 mb-2">
+                  <Image
+                    src={providerLogos[provider.provider.toUpperCase()] || "/images/default.png"}
+                    alt={provider.provider}
+                    fill
+                    className="object-contain"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                  />
+                </span>
                 <span className="text-sm font-medium text-gray-700">{provider.provider}</span>
               </div>
             ))}
@@ -163,11 +167,15 @@ const BuyAirtime = () => {
       ) : (
         // Airtime purchase form
         <form onSubmit={handleSubmit} className="flex flex-col items-center space-y-4 mt-6">
-          <img
-            src={providerLogos[selectedProvider.provider.toUpperCase()]}
-            alt="logo"
-            className="w-20 h-20 object-contain"
-          />
+          <span className="relative size-16 mb-2">
+            <Image
+              src={providerLogos[selectedProvider.provider.toUpperCase()]}
+              alt="logo"
+              fill
+              className="object-contain"
+              sizes="(max-width: 768px) 100vw, 50vw"
+            />
+          </span>
 
           <input
             type="text"

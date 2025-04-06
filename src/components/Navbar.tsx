@@ -6,9 +6,6 @@ import ButtonNeutral from './button/ButtonNeutral';
 import MenuIcon from './icons/MenuIcon';
 import { HelpCenterOutlined, NotificationsOutlined, QrCodeScannerOutlined } from '@mui/icons-material';
 import { useGeneralData } from '@/context/GeneralDataContext';
-// import Link from 'next/link';
-// import Image from 'next/image';
-// import { useGeneralData } from '@/context/GeneralDataContext';
 
 const Navbar: React.FC = () => {
   const [open, setOpen] = useState(false);
@@ -16,8 +13,10 @@ const Navbar: React.FC = () => {
   const {loggedInUser} = useGeneralData();
 
   useEffect(() => {
-      setFirstName(loggedInUser.first_name);
-  }, [loggedInUser.first_name]);
+    
+    const nameArray = loggedInUser.name.split(' ').map(item => item.trim()).filter(item => item !== '');
+      setFirstName(nameArray[0]);
+  }, [loggedInUser.name]);
   
   const closeSidebar = () => setOpen(false);
 
@@ -38,7 +37,7 @@ const Navbar: React.FC = () => {
               </div>
               <p className="font-semibold md:text-3xl lg:text-4xl hidden md:inline">PayFlex</p>
           </Link> */}
-          <h1 className='text-base md:text-xl font-semibold py-1'>Hi, <span className='text-blue-700'>{firstName || 'Victor'}</span></h1>
+          <h1 className='text-base md:text-xl font-semibold py-1'>Hi, <span className='text-blue-700'>{firstName}</span></h1>
         </div>
         
 

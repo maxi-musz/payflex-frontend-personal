@@ -4,12 +4,10 @@ import ButtonNeutral from '../button/ButtonNeutral';
 import BankTransactionTable from './dataDisplay/BankTransactionTable';
 import TransactionOptions from './dataDisplay/TransactionOptions';
 import { useGeneralData } from '@/context/GeneralDataContext';
-import { dashboardTabs, quickActions, walletBalanceInfo } from '@/data/base';
+import { quickActions, walletBalanceInfo } from '@/data/base';
 import QuickAction from './dataDisplay/QuickAction';
 import { Toaster } from 'react-hot-toast';
 import { useEffect, useState } from 'react';
-import VTU from './dataDisplay/VTU';
-import Bills from './dataDisplay/Bills';
 import Image from 'next/image';
 import CountUp from 'react-countup';
 import { Key, RemoveRedEyeOutlined } from '@mui/icons-material';
@@ -17,6 +15,7 @@ import { parseFormattedAmountToNumber } from '@/utils/formatters';
 import { getUserDashboard } from '@/features/dashboard/actions';
 import { showToast } from '../HotToast';
 import { useRouter } from 'next/navigation';
+import { verifyPaystackFunding } from '@/features/banking/actions';
 
 interface AccountsProps {
   id: string,
@@ -28,46 +27,88 @@ interface AccountsProps {
 }
 
 const Dashboard = () => {
-  const [activeTab, setActiveTab] = useState<string>('General');
+  // const [activeTab, setActiveTab] = useState<string>('General');
   const [isBalanceOpen, setIsBalanceOpen] = useState(false);
   const [accounts, setAccounts] = useState<AccountsProps[] | null>(null);
   const [transactionHistory, setTransactionHistory] = useState(null);
+  // const [accessToken, setAccessToken] = useState('');
   
-  const {currentTab} = useGeneralData();
+  const {currentTab, currentData, setCurrentData} = useGeneralData();
   const router = useRouter();
-    
+
   useEffect(() => {
-    const token = sessionStorage.getItem("accessToken");
-    // console.log(token)
-
-    if (token === undefined || !token ) {
-      return router.push('/login');
-    }
-    
-    const fetchUser = async () => {
-      if (token && token !== undefined) {
+    const init = async () => {
+      const token = sessionStorage.getItem("accessToken");
+  
+      if (!token) {
+        router.push("/login");
+        return;
+      }
+  
+      // setAccessToken(token); // Set it for any later use
+  
+      // Handle paystack verification if reference exists
+      const urlParams = new URLSearchParams(window.location.search);
+      const reference = urlParams.get("reference");
+  
+      if (reference) {
         try {
-          const res = await getUserDashboard(token);
-          const {accounts, transactionHistory} = res.data;
-
-          if (!res.success) {
-              showToast('No data was gotten', 'error');
-          } else {
-              setAccounts(accounts);
-              setTransactionHistory(transactionHistory);
-          }
+          const res = await verifyPaystackFunding(token, { reference });
+          if (res.success) {
+            setCurrentData({...currentData, currentTab: '/'});
+            // console.log(res);
+            showToast(`${res.message}`);
+          } 
+          // else {
+          //   showToast(
+          //     "Something went wrong! Could not finish initialization of paystack funding.",
+          //     "error"
+          //   );
+          // }
         } catch (error) {
-          // setIsLoading(false);
-          router.push('/login');
-          // setTimeout(() => {
-          //   showToast(`Error: ${(error as Error).message || 'An unexpected error occurred'}`, 'error');
-          // }, 500);
+          setTimeout(() => {
+            showToast(
+              `Error: ${(error as Error).message || "An unexpected error occurred"}`,
+              "error"
+            );
+          }, 500);
         }
+      }
+  
+      // Fetch dashboard data
+      try {
+        const res = await getUserDashboard(token);
+        const { accounts, transactionHistory } = res.data;
+  
+        if (!res.success) {
+          showToast("No data was gotten", "error");
+        } else {
+          setAccounts(accounts);
+          setTransactionHistory(transactionHistory);
+        }
+      } catch (error) {
+        router.push("/login");
       }
     };
   
-    fetchUser();
-  }, [router]);
+    init();
+  }, [currentData, router, setCurrentData]);
+  
+
+  // const verifyPayment = async (reference: string) => {
+  //   try {
+  //     const res = await verifyPaystackFunding(accessToken, {reference});
+  //     if (res.success) {
+  //     showToast(`${res.message}`);
+  //   } else {
+  //       showToast('Something went wrong! Could not finish initialization of paystack funding.', 'error');
+  //     }
+  //   } catch (error) {
+  //     setTimeout(() => {
+  //       showToast(`Error: ${(error as Error).message || 'An unexpected error occurred'}`, 'error');
+  //     }, 500);
+  //   }
+  // };
 
   const handleBalanceToggle = () => setIsBalanceOpen(prev => !prev);
 

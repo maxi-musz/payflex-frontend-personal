@@ -23,7 +23,8 @@ export const parseAmountIntoNumberFormat = (value: string) => {
 */ 
 export const parseFormattedAmountToNumber = (formattedAmount: string) => {
   const numericValue = formattedAmount.replace(/,/g, ''); // Remove commas
-  return parseFloat(numericValue);
+  const updatedNumericValue = numericValue.replace(/₦/g, ''); // Remove ₦
+  return parseFloat(updatedNumericValue);
 };
 
 /**

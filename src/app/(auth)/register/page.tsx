@@ -95,7 +95,7 @@ const RegisterPage: React.FC<RegisterProps> = ({ data }) => {
 
         try {
             const res = await registerUser(UserData);
-            console.log(res);
+            // console.log(res);
             if (res.success) {
                 // const { user } = res.data;
                 setIsLoading(false);

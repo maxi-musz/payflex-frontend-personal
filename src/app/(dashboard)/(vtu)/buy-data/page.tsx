@@ -1,4 +1,4 @@
-import BuyAirtime from '@/components/vtu-payment/BuyAirtime';
+import BuyAirtime from "../buy-airtime/page";
 
 const BuyAirtimePage = () => {
   return <BuyAirtime />;

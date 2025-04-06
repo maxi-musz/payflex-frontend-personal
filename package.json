@@ -1,5 +1,5 @@
 {
-  "name": "nextbit",
+  "name": "payflex-frontend-personal",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -15,7 +15,7 @@
     "@mui/icons-material": "^6.4.7",
     "@mui/material": "^6.4.7",
     "axios": "^1.8.3",
-    "next": "14.2.9",
+    "next": "^14.2.26",
     "nookies": "^2.5.2",
     "react": "^18",
     "react-countup": "^6.5.3",

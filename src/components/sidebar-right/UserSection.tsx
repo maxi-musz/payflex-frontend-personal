@@ -6,15 +6,13 @@ import React, { useEffect, useState } from 'react'
 
 const UserSection = () => {
     const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const {loggedInUser} = useGeneralData();
 
     useEffect(() => {
-        setFirstName(loggedInUser.first_name)
-        setLastName(loggedInUser.last_name)
+        setFirstName(loggedInUser.name)
         setEmail(loggedInUser.email)
-    }, [loggedInUser.first_name, loggedInUser.last_name, loggedInUser.email]);
+    }, [loggedInUser.name, loggedInUser.email]);
     
   return (
     <div>
@@ -42,8 +40,8 @@ const UserSection = () => {
         </div>
 
         <div className='px-4 mb-6'>
-            <h2 className='font-semibold'>{`${firstName} ${lastName}` || 'Victor Okoye'}</h2>
-            <p className='text-textGray text-sm'>{`${email}` || 'victor.c.okoye@gmail.com'}</p>
+            <h2 className='font-semibold'>{firstName}</h2>
+            <p className='text-textGray text-sm'>{email}</p>
         </div>
     </div>
   )

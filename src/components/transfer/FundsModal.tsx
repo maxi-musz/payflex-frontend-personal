@@ -44,14 +44,12 @@ const FundsModal = ({ data, handleModalToggle, whichModal }: FundsProps) => {
 
         try {
             if (whichModal === 'Fund Wallet') {
-                const parsedAmount = parseFormattedAmountToNumber(inputAmount); // Parse formatted amount to number
+                const parsedAmount = parseFormattedAmountToNumber(inputAmount);
     
-                // Check if the parsed amount is a valid number
                 if (!isNaN(parsedAmount) && parsedAmount > 0) {
-                    // Manually assign parsed amount as a number to formData
                     const updatedFormData: FundWalletAmountType = {
                         ...formData,
-                        amount: parsedAmount.toString(), // Override string with parsed number
+                        amount: parsedAmount.toString(),
                     };
     
                     console.log(updatedFormData);
@@ -59,7 +57,6 @@ const FundsModal = ({ data, handleModalToggle, whichModal }: FundsProps) => {
                     setCurrentData({ ...currentData, currentTab: '/ngn-ngn-transfer' });
                     handleModalToggle();
                 } else {
-                    // Handle invalid number case (NaN or 0)
                     console.error('Invalid amount, please enter a valid number.');
                     setIsLoading(false);
                 }

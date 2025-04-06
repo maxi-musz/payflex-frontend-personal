@@ -17,17 +17,15 @@ interface SidebarProps {
   
 const Sidebar: React.FC<SidebarProps> = ({ show = 'hidden', closeSidebar = () => {} }) => {
     const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const {loggedInUser, dropLoggedInUserInfo} = useGeneralData();
     
     const router = useRouter();
 
     useEffect(() => {
-        setFirstName(loggedInUser.first_name)
-        setLastName(loggedInUser.last_name)
+        setFirstName(loggedInUser.name)
         setEmail(loggedInUser.email)
-    }, [loggedInUser.first_name, loggedInUser.last_name, loggedInUser.email]);
+    }, [loggedInUser.name, loggedInUser.email]);
 
     const logout = () => {
         dropLoggedInUserInfo();
@@ -84,8 +82,8 @@ const Sidebar: React.FC<SidebarProps> = ({ show = 'hidden', closeSidebar = () =>
                                     />
                                 </div>
                                 <div className='flex flex-col'>
-                                    <p className='capitalize text-[12px] text-textGray font-semibold'>{`${firstName} ${lastName}` || 'Victor Okoye'}</p>
-                                    <p className='text-[10px] text-textGray'>{`${email}` || 'victor.c.okoye@gmail.com'}</p>
+                                    <p className='capitalize text-[12px] text-textGray font-semibold'>{firstName}</p>
+                                    <p className='text-[10px] text-textGray'>{email}</p>
                                 </div>
                                 <ButtonNeutral
                                     onClick={logout}

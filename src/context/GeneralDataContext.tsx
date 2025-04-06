@@ -10,8 +10,8 @@ interface GeneralDataContextType {
   setCurrentData: (data: GeneralDataProps) => void;
   currentUserData: UserDataProps;
   setCurrentUserData: (data: UserDataProps) => void;
-  loggedInUser: {email: string, password: string, first_name: string, last_name: string};
-  setLoggedInUser: (data: {email: string, password: string, first_name: string, last_name: string}) => void;
+  loggedInUser: {email: string, password: string, name: string};
+  setLoggedInUser: (data: {email: string, password: string, name: string}) => void;
   currentTab: string;
   updateGeneralData: (url: string) => void;
   dropLoggedInUserInfo: () => void;
@@ -25,13 +25,11 @@ export const GeneralDataProvider = ({ children }: { children: ReactNode }) => {
   const [loggedInUser, setLoggedInUser] = useState<{
     email: string,
     password: string,
-    first_name: string,
-    last_name: string
+    name: string,
   }>({
     email: '',
     password: '',
-    first_name: '',
-    last_name: ''
+    name: '',
   });
   
   const router = useRouter();
@@ -64,8 +62,7 @@ export const GeneralDataProvider = ({ children }: { children: ReactNode }) => {
     setLoggedInUser({
       email: '',
       password: '',
-      first_name: '',
-      last_name: ''
+      name: '',
     });
 
     localStorage.removeItem('loggedInUserInfo');

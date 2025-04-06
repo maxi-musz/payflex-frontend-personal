@@ -93,22 +93,6 @@ const Dashboard = () => {
   
     init();
   }, [currentData, router, setCurrentData]);
-  
-
-  // const verifyPayment = async (reference: string) => {
-  //   try {
-  //     const res = await verifyPaystackFunding(accessToken, {reference});
-  //     if (res.success) {
-  //     showToast(`${res.message}`);
-  //   } else {
-  //       showToast('Something went wrong! Could not finish initialization of paystack funding.', 'error');
-  //     }
-  //   } catch (error) {
-  //     setTimeout(() => {
-  //       showToast(`Error: ${(error as Error).message || 'An unexpected error occurred'}`, 'error');
-  //     }, 500);
-  //   }
-  // };
 
   const handleBalanceToggle = () => setIsBalanceOpen(prev => !prev);
 
@@ -158,15 +142,15 @@ const Dashboard = () => {
           </div>
 
           <div className="space-y-2 md:space-y-5 py-2">
-              <div className="flex items-center justify-between">
-                  <h2 className='text-base font-semibold'>Quick Actions</h2>
-              </div>
+            <div className="flex items-center justify-between">
+              <h2 className='text-base font-semibold'>Quick Actions</h2>
+            </div>
 
-              <div className="w-full flex items-center gap-8 flex-wrap">
-                  {quickActions.map(item =>
-                    <QuickAction key={item.id} item={item} />
-                  )}
-              </div>
+            <div className="w-full flex items-center gap-8 flex-wrap">
+              {quickActions.map(item =>
+                <QuickAction key={item.id} item={item} />
+              )}
+            </div>
           </div>
 
           {currentTab === '/' && 

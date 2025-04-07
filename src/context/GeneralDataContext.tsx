@@ -65,6 +65,7 @@ export const GeneralDataProvider = ({ children }: { children: ReactNode }) => {
       name: '',
     });
 
+    localStorage.removeItem('currentData');
     localStorage.removeItem('loggedInUserInfo');
   };
 

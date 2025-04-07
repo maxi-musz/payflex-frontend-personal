@@ -1,4 +1,4 @@
-import { ContactPhoneOutlined, WhatsApp, AccountCircleOutlined, SnippetFolderOutlined, MonetizationOnOutlined, CreditCardOutlined, NetworkWifiOutlined, AssuredWorkloadOutlined, ShoppingBagOutlined, SendTimeExtensionOutlined, ArrowUpward, SendOutlined, ConnectWithoutContact, BarChart, SettingsCell, CameraRear, SportsSoccer, ConnectedTv, Wallet, HistoryEdu, Category, CardGiftcardOutlined, CardMembershipOutlined, HomeOutlined, CurrencyExchangeOutlined, Add, RestartAlt, Send, PersonAdd } from '@mui/icons-material';
+import { ContactPhoneOutlined, WhatsApp, AccountCircleOutlined, SnippetFolderOutlined, MonetizationOnOutlined, CreditCardOutlined, NetworkWifiOutlined, AssuredWorkloadOutlined, ShoppingBagOutlined, SendTimeExtensionOutlined, ArrowUpward, SendOutlined, ConnectWithoutContact, BarChart, SettingsCell, CameraRear, SportsSoccer, ConnectedTv, Wallet, HistoryEdu, Category, CardGiftcardOutlined, CardMembershipOutlined, HomeOutlined, CurrencyExchangeOutlined, Add, RestartAlt, Send, PersonAdd, CreditCard, ShieldOutlined, PersonOutlined, AccountBalanceWallet } from '@mui/icons-material';
 
 export const menuItems = [
     {
@@ -181,11 +181,11 @@ export const menuItems = [
         url: 'account',
         icon: AccountCircleOutlined,
         dropdownMenu: [
-            {
-                id: 1,
-                title: 'Profile',
-                url: '/profile'
-            },
+            // {
+            //     id: 1,
+            //     title: 'Profile',
+            //     url: '/profile'
+            // },
             {
                 id: 2,
                 title: 'Profile Settings',
@@ -196,11 +196,11 @@ export const menuItems = [
                 title: 'KYC Compliance',
                 url: '/kyc-compliance'
             },
-            {
-                id: 4,
-                title: 'Verification Status',
-                url: '/verification-status'
-            },
+            // {
+            //     id: 4,
+            //     title: 'Verification Status',
+            //     url: '/verification-status'
+            // },
         ],
     },
     {
@@ -433,3 +433,57 @@ export const quickActions = [
         text: '+Beneficiary',
     },
 ];
+
+export const accountAndVirtualCardsTabs = [
+    {
+        id: 1,
+        icon: PersonOutlined,
+        text: 'Profile',
+    },
+    {
+        id: 2,
+        icon: ShieldOutlined,
+        text: 'Verification',
+    },
+    {
+        id: 3,
+        icon: CreditCard,
+        text: 'Create Card',
+    },
+    {
+        id: 4,
+        icon: AccountBalanceWallet,
+        text: 'My Cards',
+    },
+];
+
+export const virtualCards = [
+    {
+        id: 1,
+        cardNumber: '3333 4444 5555 9999',
+        expiryDate: '10/27',
+        cardHolder: 'John Doe',
+        cvv: 119,
+        balance: 3000,
+        active: true,
+    },
+    {
+        id: 2,
+        cardNumber: '8734 4444 5555 0958',
+        expiryDate: '08/26',
+        cardHolder: 'Mike Moe',
+        cvv: 249,
+        balance: 500,
+        active: true,
+    },
+    {
+        id: 3,
+        cardNumber: '2998 4444 5555 3473',
+        expiryDate: '05/28',
+        cardHolder: 'Joey Okoye',
+        cvv: 210,
+        balance: 1500,
+        active: false,
+    },
+];
+

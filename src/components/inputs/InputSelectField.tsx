@@ -29,7 +29,7 @@ const SelectInputField = forwardRef<HTMLSelectElement, Omit<SelectInputProps, "r
     ref
   ) => {
     return (
-      <div className="flex flex-col">
+      <div className="flex flex-col gap-1">
         <label htmlFor={props.name} className="text-sm text-neutral-700">
           {label}
         </label>

@@ -28,9 +28,9 @@ const Sidebar: React.FC<SidebarProps> = ({ show = 'hidden', closeSidebar = () =>
     }, [loggedInUser.name, loggedInUser.email]);
 
     const logout = () => {
+        router.push('/login');
         dropLoggedInUserInfo();
         sessionStorage.removeItem('accessToken');
-        router.push('/login');
     }
 
     return (

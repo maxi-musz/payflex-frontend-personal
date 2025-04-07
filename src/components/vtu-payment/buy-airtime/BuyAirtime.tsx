@@ -98,8 +98,6 @@ const BuyAirtime = () => {
     router.push('/');
   };
 
-  // if (loading) return <Loading />;
-
   return (
     <section className="space-y-5">
       <Toaster position="top-center" reverseOrder={false} />

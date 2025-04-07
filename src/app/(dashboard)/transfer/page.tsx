@@ -6,12 +6,12 @@ import { useGeneralData } from '@/context/GeneralDataContext';
 import React from 'react'
 
 const Transfer = () => {
-    const {currentTab} = useGeneralData();
+    const {currentData} = useGeneralData();
 
   return (
     <>
-    {currentTab === '/ngn-ngn-transfer' && <NGNToNGN/>}
-    {currentTab === '/ngn-foreign-transfer' && <NGNToForeign/>}
+    {currentData.currentSubtab === '/ngn-ngn-transfer' && <NGNToNGN/>}
+    {currentData.currentSubtab === '/ngn-foreign-transfer' && <NGNToForeign/>}
     </>
   )
 }

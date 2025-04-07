@@ -6,12 +6,12 @@ import { useGeneralData } from '@/context/GeneralDataContext';
 import React from 'react'
 
 const VTUPayment = () => {
-    const {currentTab} = useGeneralData();
+    const {currentData} = useGeneralData();
 
   return (
     <>
-    {currentTab === '/buy-airtime' && <BuyAirtime/>}
-    {currentTab === '/buy-data' && <BuyData/>}
+    {currentData.currentSubtab === '/buy-airtime' && <BuyAirtime/>}
+    {currentData.currentSubtab === '/buy-data' && <BuyData/>}
     </>
   )
 }

@@ -43,6 +43,7 @@ export interface Product {
   
 export type GeneralDataProps = {
   currentTab: string,
+  currentSubtab: string,
 }
 
 export interface UserDataProps {

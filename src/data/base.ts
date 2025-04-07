@@ -280,9 +280,8 @@ export const availableTransactions = [
 ];
 
 export const INITIAL_GENERAL_DATA = {
-    currentTab: '/',
-    // userName: 'Joseph Mark',
-    // userEmail: 'joseph.mark@gmail.com',
+    currentTab: '',
+    currentSubtab: '',
 }
 
 export const availableBankOptions = [

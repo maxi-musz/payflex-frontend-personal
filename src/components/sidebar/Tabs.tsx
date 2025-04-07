@@ -3,7 +3,7 @@
 import { menuItems } from '../../data/base';
 import React, { useState } from 'react';
 import ButtonNeutral from '../button/ButtonNeutral';
-import { usePathname, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import DropDownMenu from './DropDownMenu';
 import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
 import { useGeneralData } from '@/context/GeneralDataContext';
@@ -14,41 +14,35 @@ interface TabsProps {
   onItemClick: () => void;
 }
 
+interface MainTabProps {
+  id: number;
+  title: string;
+  url: string;
+}
+
 const Tabs = ({ start, stop, onItemClick }: TabsProps) => {
   const [currentDropdownTab, setCurrentDropdownTab] = useState<string | null>(null);
-  const pathName = usePathname();
   const router = useRouter();
   const { updateGeneralData, currentData } = useGeneralData();
 
-  const isActivePath = (route: string | null) => {
-    if (!route) return false;
-    return pathName === route;
-  };
-
-  const handleDirectTabClick = (itemUrl: string) => {
-    updateGeneralData(itemUrl);
-    router.push(itemUrl);
-    onItemClick();
-  };
   
-  const handleDropdownTabClick = (dropdownUrl: string, parentUrl: string) => {
-    updateGeneralData(dropdownUrl);
-    router.push(parentUrl);
-    onItemClick();
-    setCurrentDropdownTab(null);
-  };
-
-  const isParentActive = (itemUrl: string, dropdownMenu?: { url: string }[]) => {
-    if (isActivePath(itemUrl)) return true;
-    if (dropdownMenu && dropdownMenu.length > 0) {
-      return dropdownMenu.some(subItem => subItem.url === currentData.currentTab);
+  const handleTabClick = (title: string, tabMenu: MainTabProps[], tabUrl: string) => {
+    if (tabMenu.length > 0) {
+      setCurrentDropdownTab((prev) => (prev === title ? null : title));
+    } else {
+      router.push(tabUrl);
+      updateGeneralData(tabUrl, '');
+      setCurrentDropdownTab((prev) => (prev === title ? null : title));
+      onItemClick();
     }
-    return false;
-  };
+  }
 
-  const toggleDropdownMenu = (tab: string) => {
-    setCurrentDropdownTab((prev) => (prev === tab ? null : tab));
-  };
+  const handleSubtabClick = (title: string, tabUrl: string, subTabUrl: string) => {
+    router.push(tabUrl);
+    updateGeneralData(tabUrl, subTabUrl);
+    setCurrentDropdownTab((prev) => (prev === title ? null : title));
+    onItemClick();
+  }
 
   return (
     <>
@@ -57,9 +51,9 @@ const Tabs = ({ start, stop, onItemClick }: TabsProps) => {
           <span className="relative">
             <ButtonNeutral
               btnText1={item.title}
-              onClick={() => item.dropdownMenu.length > 0 ? toggleDropdownMenu(item.title) : handleDirectTabClick(item.url)}
+              onClick={() => handleTabClick(item.title, item.dropdownMenu, item.url )}
               classes={`${
-                isParentActive(item.url, item.dropdownMenu)
+                currentData.currentTab === item.url
                   ? 'text-white bg-primary'
                   : 'text-textGray bg-transparent border-transparent'
               } flex-1 flex items-center gap-2 w-full hover:text-white hover:bg-primary py-2 px-3 rounded-radius-4 text-sm transition-all duration-300 ease-in-out`}
@@ -77,10 +71,9 @@ const Tabs = ({ start, stop, onItemClick }: TabsProps) => {
 
             {currentDropdownTab === item.title && item.dropdownMenu.length > 0 && (
               <DropDownMenu
+                activeSubtab={currentData.currentSubtab}
                 menu={item.dropdownMenu}
-                handleTabNavigation={(dropdownUrl) =>
-                  handleDropdownTabClick(dropdownUrl, item.url)
-                }
+                handleTabNavigation={(menuItemUrl) => handleSubtabClick(item.title, item.url, menuItemUrl)}
               />
             )}
           </span>

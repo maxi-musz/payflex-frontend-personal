@@ -13,7 +13,7 @@ interface GeneralDataContextType {
   loggedInUser: {email: string, password: string, name: string};
   setLoggedInUser: (data: {email: string, password: string, name: string}) => void;
   currentTab: string;
-  updateGeneralData: (url: string) => void;
+  updateGeneralData: (tab: string, subTab: string) => void;
   dropLoggedInUserInfo: () => void;
 }
 
@@ -53,9 +53,9 @@ export const GeneralDataProvider = ({ children }: { children: ReactNode }) => {
     
   }, [pathName, router]);
   
-  const updateGeneralData = (url: string) => {
-    // setCurrentData({currentTab: url});
-    localStorage.setItem('currentData', JSON.stringify({currentTab: url}));
+  const updateGeneralData = (tab: string, subTab: string) => {
+    setCurrentData({currentTab: tab, currentSubtab: subTab});
+    localStorage.setItem('currentData', JSON.stringify({currentTab: tab, currentSubtab: subTab}));
   };
   
   const dropLoggedInUserInfo = () => {

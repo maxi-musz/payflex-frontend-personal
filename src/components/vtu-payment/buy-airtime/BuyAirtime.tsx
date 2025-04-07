@@ -105,7 +105,8 @@ const BuyAirtime = () => {
       <Toaster position="top-center" reverseOrder={false} />
       <h1 className="text-3xl font-semibold mt-5">Buy Airtime</h1>
 
-      {!selectedProvider ? (
+      {loading ? 'Loading...' : 
+      !selectedProvider ? (
         <>
           <h2 className="text-base font-medium mb-4">Select Provider</h2>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">

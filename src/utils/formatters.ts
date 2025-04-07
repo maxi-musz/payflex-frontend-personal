@@ -57,3 +57,12 @@ export const parsePriceIntoIntegerAndDecimal = (price: string | number): { integ
     decimalPart: parseInt(decimalPart, 10) 
   };
 };
+
+/**
+ * Divide an item into an array of the different separated parts of the item
+ * The separator could be any character, usually, fullstop, comma, space, slash, etc
+*/ 
+export const parseItemIntoArray = (item: string, divider: string) => {
+  const itemArray = item.split(divider).map(item => item.trim()).filter(item => item !== '');
+  return itemArray;
+};

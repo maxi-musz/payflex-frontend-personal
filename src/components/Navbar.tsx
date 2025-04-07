@@ -6,6 +6,7 @@ import ButtonNeutral from './button/ButtonNeutral';
 import MenuIcon from './icons/MenuIcon';
 import { HelpCenterOutlined, NotificationsOutlined, QrCodeScannerOutlined } from '@mui/icons-material';
 import { useGeneralData } from '@/context/GeneralDataContext';
+import { parseItemIntoArray } from '@/utils/formatters';
 
 const Navbar: React.FC = () => {
   const [open, setOpen] = useState(false);
@@ -14,7 +15,7 @@ const Navbar: React.FC = () => {
 
   useEffect(() => {
     if (loggedInUser.name) {
-      const nameArray = loggedInUser.name.split(' ').map(item => item.trim()).filter(item => item !== '');
+      const nameArray = parseItemIntoArray(loggedInUser.name, ' ');
       setFirstName(nameArray[0]);
     }
   }, [loggedInUser?.name]);

@@ -11,6 +11,7 @@ import { Toaster } from 'react-hot-toast';
 import InputOne from '@/components/inputs/InputOne';
 import ButtonNeutral from '@/components/button/ButtonNeutral';
 import ButtonOne from '@/components/button/ButtonOne';
+import { parseAmountIntoNumberFormat, parsePriceIntoIntegerAndDecimal } from '@/utils/formatters';
 
 const BuyData = () => {
   const [providers, setProviders] = useState([]);
@@ -25,6 +26,7 @@ const BuyData = () => {
   const [selectedProvider, setSelectedProvider] = useState<any | null>(null);
   const [selectedProviderLogo, setSelectedProviderLogo] = useState<string | null>(null);
   const [selectedPlan, setSelectedPlan] = useState<any | null>(null);
+  const [selectedPlanAmount, setSelectedPlanAmount] = useState<{ integerPart: number; decimalPart: number } | null>(null);
   const [phoneNumber, setPhoneNumber] = useState('');
   const [amount, setAmount] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -78,6 +80,15 @@ const BuyData = () => {
     fetchProviders();
   }, [router]);
 
+  useEffect(() => {
+    if (selectedPlan) {
+      const updatedSelectedPlanAmount = parsePriceIntoIntegerAndDecimal(selectedPlan.amount);
+      setSelectedPlanAmount(updatedSelectedPlanAmount);
+      // console.log(selectedPlanAmount.integerPart, selectedPlanAmount.decimalPart);
+      // console.log(parseAmountIntoNumberFormat(selectedPlanAmount.integerPart.toString()), selectedPlanAmount.decimalPart);
+    }
+  }, [selectedPlan]);
+
   
   const handlePlanSelection = async (provider: any) => {
     // console.log(providerParams[provider.name]);
@@ -112,9 +123,6 @@ const BuyData = () => {
       setLoading(false);
     }
   };
-  
-  // console.log(plans);
-  // console.log(selectedProviderLogo);
   
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -191,7 +199,7 @@ const BuyData = () => {
                     sizes="(max-width: 768px) 100vw, 50vw"
                   />
                 </span>
-                <span className="text-sm font-medium text-gray-700">{provider.name}</span>
+                <span className="text-sm text-center font-medium text-gray-700">{provider.name}</span>
               </div>
             ))}
           </div>
@@ -206,20 +214,19 @@ const BuyData = () => {
                 onClick={() => setSelectedPlan(plan)}
                 className="bg-white border rounded-xl p-4 flex flex-col items-center justify-center gap-2 divide-y shadow-sm hover:shadow-md cursor-pointer transition"
               >
-                {/* <span className="relative size-16 mb-2 rounded-lg border">
-                  <Image
-                    src={providerLogos[plan.name] || "/images/default.png"}
-                    alt={plan.name}
-                    fill
-                    className="object-contain rounded-lg"
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                  />
-                </span> */}
                 <span className="w-full text-base text-center font-medium text-gray-700">{plan.name}</span>
                 <span className="w-full text-sm text-center font-medium text-gray-700 pt-1">₦{plan.amount}</span>
               </div>
             ))}
           </div>
+          
+          {/* <button
+            type="button"
+            onClick={() => {setSelectedProvider(null); setPlans(null)}}
+            className="text-sm text-gray-500 underline mt-2"
+          >
+            Change Provider
+          </button> */}
         </>
       ) : (transactionData) ? (
         // Transaction Summary
@@ -277,6 +284,13 @@ const BuyData = () => {
             </div>
             <form onSubmit={handleSubmit} className="w-full space-y-3">
               <div className="w-full space-y-3">
+                <div className='flex items-center justify-between'>
+                  <span className='text-sm font-semibold'>{selectedPlan.name}</span>
+                  <span className='text-sm font-semibold'>-</span>
+                  {selectedPlanAmount && <span className='text-sm font-semibold'>
+                    ₦{parseAmountIntoNumberFormat(selectedPlanAmount.integerPart.toString())+'.'+selectedPlanAmount.decimalPart}
+                  </span>}
+                </div>
                 <div className="w-full">
                   <InputOne required={true} onChange={(e) => setPhoneNumber(e.target.value)} value={phoneNumber} name="phoneNumber" placeholderText='Enter phone number' />
                   {/* {amountError && <p className='text-center text-xs text-red-700'>{amountError}</p>} */}

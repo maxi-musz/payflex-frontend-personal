@@ -34,7 +34,7 @@ const Sidebar: React.FC<SidebarProps> = ({ show = 'hidden', closeSidebar = () =>
     }
 
     return (
-        <nav className={`${show === 'block' ? 'fixed lg:hidden' : 'hidden'} px-2 lg:block top-0 left-0 z-50 lg:z-auto w-4/6 sm:w-3/6 lg:w-[21%] xl:w-1/6 h-full min-h-full border bg-white lg:bg-transparent`}>
+        <nav className={`${show === 'block' ? 'fixed lg:hidden' : 'hidden'} px-2 lg:block top-0 left-0 z-50 lg:z-auto w-4/6 sm:w-3/6 lg:w-[21%] xl:w-1/6 h-full min-h-full bg-white lg:bg-transparent`}>
             <div className={`relative overflow-y-scroll custom-scrollbar2 w-full h-screen min-h-screen flex flex-col justify-between items-start px-1 pt-10 md:pt-0`}>
                 <button className='absolute top-2 right-2 text-3xl lg:hidden hover:text-red-500' onClick={closeSidebar}>&times;</button>
                 <div className="h-full min-h-full flex flex-col justify-start items-start gap-4 pb-5 md:py-6">

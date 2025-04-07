@@ -94,6 +94,7 @@ const BuyData = () => {
     // console.log(providerParams[provider.name]);
     setSelectedProviderLogo(providerLogos[provider.name]);
     setIsSubmitting(true);
+    setSelectedProvider(provider);
 
     try {
       setLoading(true)
@@ -138,8 +139,10 @@ const BuyData = () => {
 
       if (token) {
         const res = await buyInternetData(token, {
-          provider: selectedPlan.api_cent,
+          // provider: '2',
+          provider: selectedProvider.ip_id,
           number: phoneNumber,
+          // plan_id: 228,
           plan_id: selectedPlan.id,
           amount: parseInt(selectedPlan.amount)
         });
@@ -149,18 +152,30 @@ const BuyData = () => {
           showToast(res.message);
           // Set transaction data
           setTransactionData({
-            provider: res.data.data.name,
-            plan_id: res.data.data.ip_id,
-            phoneNumber: res.data.mobile,
+            phoneNumber: res.data.number,
             amount: res.data.amount,
           });
-          showToast(res.message);
+          setTransactionData({
+            provider: selectedProvider.name,
+            phoneNumber: res.data.number,
+            amount: res.data.amount,
+            date: res.data.created_at || new Date().toLocaleString(),
+            reference: res.data.reference || '',
+            status: res.success ? 'Successful' : 'Unsuccessful',
+          });
+          // console.log(transactionData);
+          
         } else {
-          // console.log("Error", res.message)
-          showToast(`${res.message}` || 'Something went wrong', 'error');
+          // console.log(res.message);
+          if (res.message === 'Transaction failed: Undefined variable: res') {
+            showToast('This data plan is not available at the moment!', 'error');
+          } else {
+            showToast(`${res.message}` || 'Something went wrong', 'error');
+          }
         }
       }
     } catch (error) {
+        console.log((error as Error).message);
       // console.log("Error: ", (error as Error).message);
       showToast(`Error: ${(error as Error).message}`, 'error');
     } finally {

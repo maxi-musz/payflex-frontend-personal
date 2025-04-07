@@ -34,11 +34,11 @@ const Sidebar: React.FC<SidebarProps> = ({ show = 'hidden', closeSidebar = () =>
     }
 
     return (
-        <nav className={`${show === 'block' ? 'fixed lg:hidden' : 'hidden'} px-2 lg:block top-0 left-0 z-50 lg:z-auto w-4/6 sm:w-3/6 lg:w-[21%] xl:w-1/6 h-full min-h-screen bg-white lg:bg-transparent`}>
+        <nav className={`${show === 'block' ? 'fixed lg:hidden' : 'hidden'} px-2 lg:block top-0 left-0 z-50 lg:z-auto w-4/6 sm:w-3/6 lg:w-[21%] xl:w-1/6 h-full min-h-full border bg-white lg:bg-transparent`}>
             <div className={`relative overflow-y-scroll custom-scrollbar2 w-full h-screen min-h-screen flex flex-col justify-between items-start px-1 pt-10 md:pt-0`}>
                 <button className='absolute top-2 right-2 text-3xl lg:hidden hover:text-red-500' onClick={closeSidebar}>&times;</button>
                 <div className="h-full min-h-full flex flex-col justify-start items-start gap-4 pb-5 md:py-6">
-                    <Link href="/" className="flex items-center gap-1">
+                    <Link href="/" className="flex items-center gap-1" onClick={closeSidebar}>
                         <div className="relative size-14 px-3 rounded-full">
                             <Image
                                 src="/images/PayFlex-Logo.jpg"
@@ -54,13 +54,13 @@ const Sidebar: React.FC<SidebarProps> = ({ show = 'hidden', closeSidebar = () =>
                     
                     <div className="flex-1 flex flex-col items-start justify-between gap-5">
                         <ul className="flex flex-col items-start justify-start gap-3 w-full">
-                            <Tabs start={0} stop={10} />
+                            <Tabs start={0} stop={10} onItemClick={closeSidebar} />
                         </ul>
 
                         <div className="border-t">
                             <ul className="flex flex-col items-start justify-start gap-3 w-full py-2">
-                                <Tabs start={10} stop={11} />
-                                <Tabs start={11} stop={menuItems.length} />
+                                <Tabs start={10} stop={11} onItemClick={closeSidebar} />
+                                <Tabs start={11} stop={menuItems.length} onItemClick={closeSidebar} />
                             </ul>
 
                             <div className="pl-2 pt-2 pb-5 flex items-center gap-3 border-t">

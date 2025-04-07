@@ -11,9 +11,10 @@ import { useGeneralData } from '@/context/GeneralDataContext';
 interface TabsProps {
   start: number;
   stop: number;
+  onItemClick: () => void;
 }
 
-const Tabs = ({ start, stop }: TabsProps) => {
+const Tabs = ({ start, stop, onItemClick }: TabsProps) => {
   const [currentDropdownTab, setCurrentDropdownTab] = useState<string | null>(null);
   const pathName = usePathname();
   const router = useRouter();
@@ -27,11 +28,13 @@ const Tabs = ({ start, stop }: TabsProps) => {
   const handleDirectTabClick = (itemUrl: string) => {
     updateGeneralData(itemUrl);
     router.push(itemUrl);
+    onItemClick();
   };
-
+  
   const handleDropdownTabClick = (dropdownUrl: string, parentUrl: string) => {
     updateGeneralData(dropdownUrl);
     router.push(parentUrl);
+    onItemClick();
     setCurrentDropdownTab(null);
   };
 

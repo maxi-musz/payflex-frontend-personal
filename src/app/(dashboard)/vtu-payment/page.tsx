@@ -1,7 +1,7 @@
 'use client';
 
-import BuyAirtime from '@/components/vtu-payment/BuyAirtime'
-import BuyData from '@/components/vtu-payment/BuyData';
+import BuyAirtime from '@/components/vtu-payment/buy-airtime/BuyAirtime'
+import BuyData from '@/components/vtu-payment/buy-data/BuyData';
 import { useGeneralData } from '@/context/GeneralDataContext';
 import React from 'react'
 

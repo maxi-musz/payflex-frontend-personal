@@ -7,6 +7,7 @@ import TextAreaTwo from '../inputs/TextAreaTwo';
 import ButtonNeutral from '../button/ButtonNeutral';
 import Loading from '@/app/loading';
 import dynamic from 'next/dynamic';
+import ButtonOne from '../button/ButtonOne';
 
 const TransferSuccessModal = dynamic(() => import("./TransferSuccessModal"), {
   loading: () => <Loading/>,
@@ -98,7 +99,7 @@ const NGNToNGN = () => {
                   
                   <TextAreaTwo floatingLabel='Remark' required={true} onChange={(e) => setRemark(e.target.value)} value={remark} name="remark" placeholderText='Any remarks? (Optional)' classes='w-full placeholder:text-center placeholder:pt-4' />
                   
-                  <ButtonNeutral onClick={handleModalToggle} btnText1='Confirm' classes={`w-full py-2 px-3 text-white hover:text-green-700 bg-green-700 hover:bg-transparent border border-transparent hover:border-green-700 rounded-radius-8 cursor-pointer shadow-xl focus:ring-2 focus:ring-green-700 focus:ring-offset-2 outline-none`} />
+                  <ButtonOne onClick={handleModalToggle} btnText1='Confirm' classes={`w-full py-2 px-3 text-white hover:text-primary bg-primary hover:bg-transparent border border-transparent hover:border-primary rounded-radius-8 cursor-pointer shadow-xl focus:ring-2 focus:ring-primary focus:ring-offset-2 outline-none`} />
               </div>
               
           </form>

@@ -8,6 +8,9 @@ import Loading from '@/app/loading';
 import { showToast } from '@/components/HotToast';
 import Image from 'next/image';
 import { Toaster } from 'react-hot-toast';
+import InputOne from '@/components/inputs/InputOne';
+import ButtonNeutral from '@/components/button/ButtonNeutral';
+import ButtonOne from '@/components/button/ButtonOne';
 
 const BuyAirtime = () => {
   const [providers, setProviders] = useState([]);
@@ -70,7 +73,6 @@ const BuyAirtime = () => {
       setLoading(false)
 
       if (airtimePurchaseResponse.success) {
-        showToast(airtimePurchaseResponse.message);
         // Set transaction data
         setTransactionData({
           provider: airtimePurchaseResponse.data.provider,
@@ -83,7 +85,7 @@ const BuyAirtime = () => {
         showToast(airtimePurchaseResponse.message);
       } else {
         // console.log("Error", airtimePurchaseResponse.message)
-        showToast(`${airtimePurchaseResponse.message} || 'Something went wrong', 'error'`);
+        showToast(`${airtimePurchaseResponse.message}` || 'Something went wrong', 'error');
       }
     } catch (error) {
       showToast(`Error: ${(error as Error).message}`, 'error');
@@ -96,7 +98,7 @@ const BuyAirtime = () => {
     router.push('/');
   };
 
-  if (loading) return <Loading />;
+  // if (loading) return <Loading />;
 
   return (
     <section className="space-y-5">
@@ -129,7 +131,7 @@ const BuyAirtime = () => {
         </>
       ) : transactionData ? (
         // Transaction Summary
-        <div className="flex flex-col items-center justify-center space-y-4 mt-6">
+        <div className="flex flex-col items-center justify-center space-y-4 mt-5">
           <h2 className="text-xl font-semibold mb-4">Transaction Details</h2>
           <div className="bg-white p-6 border rounded-lg shadow-md space-y-4 w-96">
             <div className="flex justify-between text-sm">
@@ -149,8 +151,8 @@ const BuyAirtime = () => {
               <span>{transactionData.date}</span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="font-medium">Reference:</span>
-              <span>{transactionData.reference}</span>
+              <span className=" font-medium">Reference:</span>
+              <span className='text-xs'>{transactionData.reference}</span>
             </div>
             <div className="flex justify-between text-sm">
               <span className="font-medium">Status:</span>
@@ -167,52 +169,44 @@ const BuyAirtime = () => {
           </button>
         </div>
       ) : (
-        // Airtime purchase form
-        <form onSubmit={handleSubmit} className="flex flex-col items-center space-y-4 mt-6">
-          <span className="relative size-16 mb-2">
-            <Image
-              src={providerLogos[selectedProvider.provider.toUpperCase()]}
-              alt="logo"
-              fill
-              className="object-contain"
-              sizes="(max-width: 768px) 100vw, 50vw"
-            />
-          </span>
+        <div className="w-full pt-5">
+          <div className='w-full sm:w-96 rounded-radius-12 p-6 mx-auto bg-white border border-customGray space-y-3'>
+            <div className="flex items-center gap-2">
+              <span className="relative size-16 mb-2 rounded-lg border">
+                <Image
+                  src={providerLogos[selectedProvider.provider.toUpperCase()]}
+                  alt="logo"
+                  fill
+                  className="object-contain rounded-lg"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+              </span>
+              <h2 className='text-xl font-semibold pb-4'>Airtime Provider</h2>
+            </div>
+            <form onSubmit={handleSubmit} className="w-full space-y-3">
+              <div className="w-full space-y-3">
+                <div className="w-full">
+                  <InputOne required={true} onChange={(e) => setPhoneNumber(e.target.value)} value={phoneNumber} name="phoneNumber" placeholderText='Enter phone number' />
+                  {/* {amountError && <p className='text-center text-xs text-red-700'>{amountError}</p>} */}
+                </div>
+                <div className="w-full">
+                  <InputOne required={true} onChange={(e) => setAmount(e.target.value)} value={amount} name="amount" placeholderText='Enter amount' />
+                  {/* {amountError && <p className='text-center text-xs text-red-700'>{amountError}</p>} */}
+                </div>
 
-          <input
-            type="text"
-            value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
-            placeholder="Enter phone number"
-            className="border rounded-lg p-2 w-64"
-            required
-          />
-
-          <input
-            type="number"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-            placeholder="Enter amount"
-            className="border rounded-lg p-2 w-64"
-            required
-          />
-
-          <button
-            type="submit"
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg w-64"
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? 'Processing...' : 'Buy Airtime'}
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setSelectedProvider(null)}
-            className="text-sm text-gray-500 underline mt-2"
-          >
-            Change Provider
-          </button>
-        </form>
+                <ButtonOne disabled={isSubmitting} type='submit' btnText1={isSubmitting ? 'Processing...' : 'Buy Airtime'} classes={`w-full py-2 px-3 text-white hover:text-primary bg-primary hover:bg-transparent border border-transparent hover:border-primary rounded-radius-8 cursor-pointer shadow-xl focus:ring-2 focus:ring-primary focus:ring-offset-2 outline-none`} />
+              </div>
+            </form>
+            
+            <button
+              type="button"
+              onClick={() => setSelectedProvider(null)}
+              className="text-sm text-gray-500 underline mt-2"
+            >
+              Change Provider
+            </button>
+          </div>
+        </div>
       )}
     </section>
   );

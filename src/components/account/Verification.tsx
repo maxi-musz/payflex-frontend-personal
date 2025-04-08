@@ -5,19 +5,70 @@ import InputField from '../inputs/InputField';
 import { Toaster } from 'react-hot-toast';
 import { showToast } from '../HotToast';
 import SelectInputField from '../inputs/InputSelectField';
+import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { kycSchema, KYCType } from '@/features/dashboard/validations';
+import { updateKYC } from '@/features/dashboard/actions';
 
-const Verification = () => {
+interface ProfileProps {
+    data?: KYCType;
+}
+
+const Verification: React.FC<ProfileProps> = ({ data }) => {
     const [loading, setLoading] = useState(false);
 
-    const onFormSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        setLoading(true);
-        setTimeout(() => {
-            showToast("KYC information updated successfully");
-            setLoading(false);
-        }, 2000);
-    };
+    // const onFormSubmit = (e: React.FormEvent) => {
+    //     e.preventDefault();
+    //     setLoading(true);
+    //     setTimeout(() => {
+    //         showToast("KYC information updated successfully");
+    //         setLoading(false);
+    //     }, 2000);
+    // };
     
+    
+    const router = useRouter();
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        } = useForm<KYCType>({
+        resolver: zodResolver(kycSchema),
+        defaultValues: data,
+        });
+    
+        const onFormSubmit = handleSubmit(async (data) => {
+        console.log(data);
+            
+        const token = sessionStorage.getItem("accessToken");
+        if (!token) return router.push('/login');
+        
+        setLoading(true);
+        const UserData = {
+            id_type: data.id_type,
+            id_no: data.id_no,
+        }
+
+        try {
+            const res = await updateKYC(token, UserData);
+            console.log(res);
+            if (res.success) {
+                // const { user } = res.data;
+                setLoading(false);
+                setTimeout(() => {
+                    showToast(`${res.message}`);
+                }, 500);
+            }
+        } catch (error) {
+            setLoading(false);
+            setTimeout(() => {
+                showToast(`Error: ${(error as Error).message || 'An unexpected error occurred'}`, 'error');
+            }, 500);
+        }
+    });
+        
   return (
     <form onSubmit={onFormSubmit} className='py-3 divide-y'>
         <Toaster position="top-center" reverseOrder={false} />
@@ -30,10 +81,11 @@ const Verification = () => {
             <div className="w-full space-y-3 md:space-y-5">
                 <div className="w-full">
                     <SelectInputField
-                        valueArray={['Passport', 'Driving License', 'National ID Card', 'Residence Permit']}
-                        // {...register("first_name")}
+                        valueArray={['NIGERIAN BVN VERIFICATION', 'Passport', 'Driving License', 'National ID Card', 'Residence Permit']}
+                        {...register("id_type")}
+                        value={data?.id_type}
                         label="ID Type"
-                        // error={errors.first_name}
+                        error={errors.id_type}
                         required
                         classes='w-full'
                         placeholderText='Select ID Type'
@@ -41,9 +93,10 @@ const Verification = () => {
                 </div>
                 <div className="w-full">
                     <InputField
-                        // {...register("last_name")}
+                        {...register("id_no")}
+                        value={data?.id_no}
                         label="ID Number"
-                        // error={errors.last_name}
+                        error={errors.id_no}
                         required
                         classes='w-full'
                         placeholderText='Enter your ID number'

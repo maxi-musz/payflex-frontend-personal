@@ -12,7 +12,7 @@ const Account = () => {
 
   return (
     <div className='w-full h-fit min-h-screen flex items-start justify-center py-5 px-2'>
-        <div className='w-3/5'>
+        <div className='w-full'>
             <AccountHeader/>
             <div className='p-1 rounded-radius-12 border'>
                 <ul className='flex items-center justify-center gap-2 border-b bg-neutral-100 p-2 rounded-[10px]'>

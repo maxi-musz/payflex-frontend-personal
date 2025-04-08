@@ -6,19 +6,65 @@ import InputField from '../inputs/InputField';
 import ButtonOne from '../button/ButtonOne';
 import { showToast } from '../HotToast';
 import { Toaster } from 'react-hot-toast';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { profileSchema, ProfileType } from '@/features/dashboard/validations';
+import { updateProfile } from '@/features/dashboard/actions';
+import { useRouter } from 'next/navigation';
 
-const Profile = () => {
+interface ProfileProps {
+    data?: ProfileType;
+}
+
+const Profile: React.FC<ProfileProps> = ({ data }) => {
     const [loading, setLoading] = useState(false);
     
-    const onFormSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
+    const router = useRouter();
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        } = useForm<ProfileType>({
+        resolver: zodResolver(profileSchema),
+        defaultValues: data,
+        });
+    
+        const onFormSubmit = handleSubmit(async (data) => {
+        console.log(data);
+            
+        const token = sessionStorage.getItem("accessToken");
+        if (!token) return router.push('/login');
+     
         setLoading(true);
-        setTimeout(() => {
-            showToast("Profile updated successfully");
+        const UserData = {
+            first_name: data.first_name,
+            last_name: data.last_name,
+            home_address: data.home_address,
+            city: data.city,
+            state: data.state,
+            country: data.country,
+            postal_code: data.postal_code,
+            house_number: data.house_number,
+        }
+
+        try {
+            const res = await updateProfile(token, UserData);
+            console.log(res);
+            if (res.success) {
+                // const { user } = res.data;
+                setLoading(false);
+                setTimeout(() => {
+                    showToast(`${res.message}` || 'Profile updated successfully');
+                }, 500);
+            }
+        } catch (error) {
             setLoading(false);
-        }, 2000);
-    };
-    console.log(loading);
+            setTimeout(() => {
+                showToast(`Error: ${(error as Error).message || 'An unexpected error occurred'}`, 'error');
+            }, 500);
+        }
+    });
     
   return (
     <form onSubmit={onFormSubmit} className='py-3 divide-y'>
@@ -33,22 +79,24 @@ const Profile = () => {
                 <div className="w-full flex flex-col md:flex-row items-center gap-2 md:gap-3">
                     <div className="w-full md:w-1/2">
                         <InputField
-                            // {...register("first_name")}
+                            {...register("first_name")}
+                            value={data?.first_name}
                             label="First Name"
-                            // error={errors.first_name}
+                            error={errors.first_name}
                             required
                             classes='w-full'
-                            placeholderText='eg. Mikel'
+                            placeholderText='Enter your first name'
                         />
                     </div>
                     <div className="w-full md:w-1/2">
                         <InputField
-                            // {...register("last_name")}
+                            {...register("last_name")}
+                            value={data?.last_name}
                             label="Last Name"
-                            // error={errors.last_name}
+                            error={errors.last_name}
                             required
                             classes='w-full'
-                            placeholderText='eg. Adeyemi'
+                            placeholderText='Enter your last name'
                         />
                     </div>
                 </div>
@@ -65,66 +113,72 @@ const Profile = () => {
                 <div className="w-full flex flex-col md:flex-row items-center gap-2 md:gap-3">
                     <div className="w-full md:w-1/2">
                         <InputField
-                            // {...register("first_name")}
-                            label="Street Address"
-                            // error={errors.first_name}
+                            {...register("home_address")}
+                            value={data?.home_address}
+                            label="Home Address"
+                            error={errors.home_address}
                             required
                             classes='w-full'
-                            placeholderText='eg. Mikel'
+                            placeholderText='Enter your home address'
                         />
                     </div>
                     <div className="w-full md:w-1/2">
                         <InputField
-                            // {...register("last_name")}
+                            {...register("house_number")}
+                            value={data?.house_number}
                             label="House Number"
-                            // error={errors.last_name}
+                            error={errors.house_number}
                             required
                             classes='w-full'
-                            placeholderText='eg. Adeyemi'
+                            placeholderText='Enter your house number'
                         />
                     </div>
                 </div>
                 <div className="w-full flex flex-col md:flex-row items-center gap-2 md:gap-3">
                     <div className="w-full md:w-1/2">
                         <InputField
-                            // {...register("first_name")}
+                            {...register("city")}
+                            value={data?.city}
                             label="City"
-                            // error={errors.first_name}
+                            error={errors.city}
                             required
                             classes='w-full'
-                            placeholderText='eg. Mikel'
+                            placeholderText='Enter your city'
                         />
                     </div>
                     <div className="w-full md:w-1/2">
                         <InputField
-                            // {...register("last_name")}
+                            {...register("state")}
+                            value={data?.state}
                             label="State/Province"
-                            // error={errors.last_name}
+                            error={errors.state}
                             required
                             classes='w-full'
-                            placeholderText='eg. Adeyemi'
+                            placeholderText='Enter your state'
                         />
                     </div>
                 </div>
                 <div className="w-full flex flex-col md:flex-row items-center gap-2 md:gap-3">
                     <div className="w-full md:w-1/2">
                         <InputField
-                            // {...register("first_name")}
+                            {...register("postal_code")}
+                            value={data?.postal_code}
                             label="Postal Code"
-                            // error={errors.first_name}
+                            error={errors.postal_code}
                             required
                             classes='w-full'
-                            placeholderText='eg. Mikel'
+                            placeholderText='Enter your postal code'
                         />
                     </div>
                     <div className="w-full md:w-1/2">
                         <InputField
-                            // {...register("last_name")}
+                            {...register("country")}
+                            value={data?.country}
                             label="Country"
-                            // error={errors.last_name}
+                            error={errors.country}
                             required
                             classes='w-full'
-                            placeholderText='eg. Adeyemi'
+                            placeholderText='Enter your conutry'
                         />
                     </div>
                 </div>

@@ -52,7 +52,7 @@ export const updateKYC = async (token: string, payload: {
     }
 
   return await sendApiRequest(
-    'post',
+    'put',
     `${process.env.NEXT_PUBLIC_PAYFLEX_API_URL}/${USER_DASHBOARD_URL}/update-kyc`,
     payload,
     {

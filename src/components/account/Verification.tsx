@@ -17,7 +17,7 @@ interface ProfileProps {
     data?: KYCType;
 }
 
-const id_types = ['NIGERIAN BVN VERIFICATION', 'NIGERIAN_NIN', 'NIGERIAN_INTERNATIONAL_PASSPORT', 'NIGERIAN_PVC', 'NIGERIAN_DRIVERS_LICENSE']
+const id_types = ['NIGERIAN_BVN_VERIFICATION', 'NIGERIAN_NIN', 'NIGERIAN_INTERNATIONAL_PASSPORT', 'NIGERIAN_PVC', 'NIGERIAN_DRIVERS_LICENSE']
 
 const Verification: React.FC<ProfileProps> = ({ data }) => {
     const [loading, setLoading] = useState(false);

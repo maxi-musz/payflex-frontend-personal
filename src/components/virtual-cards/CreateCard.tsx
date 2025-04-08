@@ -33,8 +33,8 @@ const CreateCard = () => {
 
           <div className='p-5 bg-neutral-100 rounded-radius-12'>
             <div className='flex items-center gap-2 pb-3'>
-                <CreditCard className='text-primary' />
-                <h2 className='text-[16px] font-semibold'>Card Details</h2>
+              <CreditCard className='text-primary' />
+              <h2 className='text-[16px] font-semibold'>Card Details</h2>
             </div>
             
             <div className="w-full space-y-3 md:space-y-5">

@@ -110,3 +110,13 @@ export interface DecodedToken {
   exp: number; // token expiration time (optional)
   iat: number; // token issued at time (optional)
 }
+
+export interface VirtualCardProps {
+    id: number,
+    cardNumber: string,
+    expiryDate: string,
+    cardHolder: string,
+    cvv: number,
+    balance: number,
+    active: boolean,
+}

@@ -50,7 +50,6 @@ const LoginPage: React.FC<LoginProps> = ({ data }) => {
                 localStorage.setItem('loggedInUserInfo', JSON.stringify({
                     email: user.email,
                     name: user.name,
-                    password: ''
                 }));
                 
                 setIsLoading(false);
@@ -114,7 +113,7 @@ const LoginPage: React.FC<LoginProps> = ({ data }) => {
                         <div className='my-2 w-full flex items-center justify-end'>
                             <Link href='/forgot-password' className='text-red-600 text-sm'>Forgot password</Link>
                         </div>
-                        <ButtonOne type='submit' classes='py-2 px-16 w-full' btnText1={isLoading ? 'Logging in ...' : 'Login'} />
+                        <ButtonOne type='submit' classes='py-2 px-16 w-full' btnText1={isLoading ? 'Logging...' : 'Login'} />
                         
                         <p className='text-center text-sm'>Don&apos;t have an account? <Link href='/register' className='text-blue-600'>Sign up</Link></p>
                     </form>

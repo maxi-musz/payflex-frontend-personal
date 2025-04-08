@@ -10,8 +10,8 @@ interface GeneralDataContextType {
   setCurrentData: (data: GeneralDataProps) => void;
   currentUserData: UserDataProps;
   setCurrentUserData: (data: UserDataProps) => void;
-  loggedInUser: {email: string, password: string, name: string};
-  setLoggedInUser: (data: {email: string, password: string, name: string}) => void;
+  loggedInUser: {email: string, name: string};
+  setLoggedInUser: (data: {email: string, name: string}) => void;
   currentTab: string;
   updateGeneralData: (tab: string, subTab: string) => void;
   dropLoggedInUserInfo: () => void;
@@ -24,11 +24,9 @@ export const GeneralDataProvider = ({ children }: { children: ReactNode }) => {
   const [currentUserData, setCurrentUserData] = useState<UserDataProps>(currentUserInfo);
   const [loggedInUser, setLoggedInUser] = useState<{
     email: string,
-    password: string,
     name: string,
   }>({
     email: '',
-    password: '',
     name: '',
   });
   
@@ -61,7 +59,6 @@ export const GeneralDataProvider = ({ children }: { children: ReactNode }) => {
   const dropLoggedInUserInfo = () => {
     setLoggedInUser({
       email: '',
-      password: '',
       name: '',
     });
 

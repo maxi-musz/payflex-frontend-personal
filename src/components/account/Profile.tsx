@@ -11,6 +11,7 @@ import { useForm } from 'react-hook-form';
 import { profileSchema, ProfileType } from '@/features/dashboard/validations';
 import { updateProfile } from '@/features/dashboard/actions';
 import { useRouter } from 'next/navigation';
+import { useGeneralData } from '@/context/GeneralDataContext';
 
 interface ProfileProps {
     data?: ProfileType;
@@ -29,6 +30,8 @@ const Profile: React.FC<ProfileProps> = ({ data }) => {
     //     postal_code: '',
     //     house_number: '',
     // } | null>(null);
+    
+    const {loggedInUser} = useGeneralData();
 
     const router = useRouter();
 
@@ -69,6 +72,10 @@ const Profile: React.FC<ProfileProps> = ({ data }) => {
                     showToast(`${res.message}` || 'Profile updated successfully');
                 }, 500);
                 
+                localStorage.setItem('loggedInUserInfo', JSON.stringify({
+                    ...loggedInUser,
+                    name: `${data.first_name} ${data.last_name}`,
+                }));
                 // setUpdatedUserInfo({
                 //     first_name: data.first_name,
                 //     last_name: data.last_name,

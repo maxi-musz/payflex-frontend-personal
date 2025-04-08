@@ -5,23 +5,16 @@ import { currentRecentTransactionsTableHead } from '../../../data/base';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { parseDateIntoMonthDayYear } from '@/utils/formatters';
+import { TransactionHistoryProps } from '@/types/base';
 
-interface TransactionHistoryProps {
-  id: string,
-  amount: string,
-  type: string,
-  description: string,
-  status: string,
-  date: string,
-  sender: string,
-  icon: string
+interface TransactionHistoryTableProps {
+  transactionHistory: TransactionHistoryProps[] | null,
 }
 
-const BankTransactionTable = ({transactionHistory, loading}: {transactionHistory: TransactionHistoryProps[] | null, loading: boolean}) => {
+const BankTransactionTable = ({transactionHistory}: TransactionHistoryTableProps) => {
   // ============== pagination =================
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [transactionPerPage, setTransactionPerPage] = useState<number>(0);
-    // const {transactionHistory} = useGeneralData();
 
   useEffect(() => {
     const handleResize = () => { 
@@ -67,7 +60,7 @@ const BankTransactionTable = ({transactionHistory, loading}: {transactionHistory
   return (
     <div className={`transition-all duration-300 ease-in-out`}>
       <div className="flex flex-col items-center justify-between gap-1">
-        {loading ? 'Loading...' :
+        {
           transactionHistory && transactionHistory.length > 0 ?
           <>
             <div className="w-full overflow-x-scroll custom-scrollbar">

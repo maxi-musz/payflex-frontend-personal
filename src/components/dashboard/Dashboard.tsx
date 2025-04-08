@@ -3,47 +3,11 @@
 import ButtonNeutral from '../button/ButtonNeutral';
 import BankTransactionTable from './dataDisplay/BankTransactionTable';
 import TransactionOptions from './dataDisplay/TransactionOptions';
-import { useEffect, useState } from 'react';
-import { getUserDashboard } from '@/features/dashboard/actions';
-import { showToast } from '../HotToast';
-import { useRouter } from 'next/navigation';
 import DashboardHeader from '../DashboardHeader';
+import { useGeneralData } from '@/context/GeneralDataContext';
 
 const Dashboard = () => {
-  const [transactionHistory, setTransactionHistory] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const router = useRouter();
-
-  useEffect(() => {
-    const init = async () => {
-      const token = sessionStorage.getItem("accessToken");
-  
-      if (!token) {
-        router.push("/login");
-        return;
-      }
-  
-      // Fetch dashboard data
-      try {
-        setLoading(true);
-        const res = await getUserDashboard(token);
-        // console.log(res)
-        const { transactionHistory } = res.data;
-  
-        if (!res.success) {
-          showToast("No data was gotten", "error");
-        } else {
-          setTransactionHistory(transactionHistory);
-        }
-      } catch (error) {
-        router.push("/login");
-      } finally {
-        setLoading(false);
-      }
-    };
-  
-    init();
-  }, [router]);
+  const {transactionHistory, contextLoading} = useGeneralData();
 
   return (
     <div className='w-full pt-2 pb-4 space-y-2 md:space-y-4'>
@@ -56,7 +20,9 @@ const Dashboard = () => {
         <ButtonNeutral btnText1='View all' classes='px-3 py-2 rounded-radius-8 border text-sm' />
       </div>
 
-      <BankTransactionTable loading={loading} transactionHistory={transactionHistory} />
+      {contextLoading ?
+        <p className='py-4 text-center text-xl'>Loading...</p> :
+        <BankTransactionTable transactionHistory={transactionHistory} />}
     </div>
   )
 }

@@ -7,12 +7,14 @@ import React, { useEffect, useState } from 'react'
 const UserSection = () => {
     const [firstName, setFirstName] = useState('');
     const [email, setEmail] = useState('');
-    const {loggedInUser} = useGeneralData();
+    const {user, contextLoading} = useGeneralData();
 
     useEffect(() => {
-        setFirstName(loggedInUser.name)
-        setEmail(loggedInUser.email)
-    }, [loggedInUser.name, loggedInUser.email]);
+        if (user !== null) {
+            setFirstName(user.name);
+            setEmail(user.email);
+        }
+    }, [user?.name, user?.email]);
     
   return (
     <div>
@@ -40,8 +42,12 @@ const UserSection = () => {
         </div>
 
         <div className='px-4 mb-6'>
-            <h2 className='font-semibold'>{firstName}</h2>
-            <p className='text-textGray text-sm'>{email}</p>
+            {contextLoading ? 'Loading...' : 
+            <>
+                <h2 className='font-semibold'>{firstName}</h2>
+                <p className='text-textGray text-sm'>{email}</p>
+            </>
+            }
         </div>
     </div>
   )

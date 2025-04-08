@@ -112,11 +112,39 @@ export interface DecodedToken {
 }
 
 export interface VirtualCardProps {
-    id: number,
-    cardNumber: string,
-    expiryDate: string,
-    cardHolder: string,
-    cvv: number,
-    balance: number,
-    active: boolean,
+  id: number,
+  cardNumber: string,
+  expiryDate: string,
+  cardHolder: string,
+  cvv: number,
+  balance: number,
+  active: boolean,
+}
+
+export interface WalletProps {
+  id: string,
+  current_balance: number,
+  all_time_fuunding: number,
+  all_time_withdrawn: number,
+  isActive: boolean,
+  createdAt: string,
+  updatedAt: string,
+}
+
+export interface TransactionHistoryProps {
+  id: string,
+  amount: number,
+  type: string,
+  description: string,
+  status: boolean,
+  date: string,
+  sender: string,
+  icon: string,
+}
+
+export interface UserProps {
+  id: string,
+  name: string,
+  email: string,
+  profileImage: null,
 }

@@ -4,33 +4,18 @@ import { quickActions, walletBalanceInfo } from '@/data/base'
 import React, { useEffect, useState } from 'react'
 import QuickAction from './dashboard/dataDisplay/QuickAction'
 import { Key, RemoveRedEyeOutlined } from '@mui/icons-material'
-import { parseFormattedAmountToNumber } from '@/utils/formatters'
 import CountUp from 'react-countup'
-import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useGeneralData } from '@/context/GeneralDataContext'
 import { verifyPaystackFunding } from '@/features/banking/actions'
 import { showToast } from './HotToast'
-import { getUserDashboard } from '@/features/dashboard/actions'
 import { Toaster } from 'react-hot-toast';
-
-interface WalletProps {
-  id: string,
-  current_balance: number,
-  all_time_fuunding: number,
-  all_time_withdrawn: number,
-  isActive: boolean,
-  createdAt: string,
-  updatedAt: string,
-}
 
 const DashboardHeader = () => {
   const [isBalanceOpen, setIsBalanceOpen] = useState(false);
-  const [wallet, setWallet] = useState<WalletProps | null>(null);
-  // const [transactionHistory, setTransactionHistory] = useState(null);
   // const [accessToken, setAccessToken] = useState('');
   
-  const {currentData, setCurrentData} = useGeneralData();
+  const {currentData, setCurrentData, wallet, contextLoading} = useGeneralData();
   const router = useRouter();
   
   useEffect(() => {
@@ -71,22 +56,6 @@ const DashboardHeader = () => {
           }, 500);
         }
       }
-  
-      // Fetch dashboard data
-      try {
-        const res = await getUserDashboard(token);
-        const { wallet } = res.data;
-        // const { wallet, transactionHistory } = res.data;
-  
-        if (!res.success) {
-          showToast("No data was gotten", "error");
-        } else {
-          setWallet(wallet);
-          // setTransactionHistory(transactionHistory);
-        }
-      } catch (error) {
-        router.push("/login");
-      }
     };
   
     init();
@@ -121,7 +90,11 @@ const DashboardHeader = () => {
                   <div className="w-full flex items-center justify-between">
                     <p className='text-textGrayDarker text-2xl md:text-3xl font-bold space-x-1'>
                       <span className={`${item.currency === '₦' ? 'text-green-600' : item.currency === '£' ? 'text-red-600' : 'text-blue-800'} font-extrabold`}>{item.currency}</span>
-                      {(wallet && !isBalanceOpen) ? <CountUp start={0} end={wallet.current_balance || parseInt(item.balance)} duration={2} delay={0} decimal='true' /> : "******"}
+                      {contextLoading ?
+                        'Loadding...' :
+                        (wallet && !isBalanceOpen) ?
+                        <CountUp start={0} end={wallet.current_balance || parseInt(item.balance)} duration={2} delay={0} decimal='true' /> :
+                        "******"}
                     </p>
                     <button onClick={handleBalanceToggle} className='hover:bg-blue-300 rounded-full size-8 flex items-center justify-center border hover:border-transparent transition-all duration-300 ease-in-out'>
                       {isBalanceOpen ?

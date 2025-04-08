@@ -18,14 +18,16 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ show = 'hidden', closeSidebar = () => {} }) => {
     const [firstName, setFirstName] = useState('');
     const [email, setEmail] = useState('');
-    const {loggedInUser, dropLoggedInUserInfo} = useGeneralData();
+    const {user, contextLoading, dropLoggedInUserInfo} = useGeneralData();
     
     const router = useRouter();
 
     useEffect(() => {
-        setFirstName(loggedInUser.name)
-        setEmail(loggedInUser.email)
-    }, [loggedInUser.name, loggedInUser.email]);
+        if (user !== null) {
+            setFirstName(user.name)
+            setEmail(user.email)
+        }
+    }, [user?.name, user?.email]);
 
     const logout = () => {
         router.push('/login');
@@ -73,10 +75,12 @@ const Sidebar: React.FC<SidebarProps> = ({ show = 'hidden', closeSidebar = () =>
                                         sizes="(max-width: 768px) 100vw, 50vw"
                                     />
                                 </div>
+                                {contextLoading ? 'Loading...' : 
                                 <div className='flex flex-col'>
                                     <p className='capitalize text-[12px] text-textGray font-semibold'>{firstName}</p>
                                     <p className='text-[10px] text-textGray'>{email}</p>
                                 </div>
+                                }
                                 <ButtonNeutral
                                     onClick={logout}
                                     classes={`focus:ring-transparent bg-transparent border-transparent hover:bg-[#F6F6F6] border hover:border-customGray p-1 rounded-radius-4 transition-all duration-300 ease-in-out`}

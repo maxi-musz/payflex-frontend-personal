@@ -11,14 +11,14 @@ import { parseItemIntoArray } from '@/utils/formatters';
 const Navbar: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [firstName, setFirstName] = useState('');
-  const {loggedInUser} = useGeneralData();
+  const {user, contextLoading} = useGeneralData();
 
   useEffect(() => {
-    if (loggedInUser.name) {
-      const nameArray = parseItemIntoArray(loggedInUser.name, ' ');
+    if (user !== null) {
+      const nameArray = parseItemIntoArray(user.name, ' ');
       setFirstName(nameArray[0]);
     }
-  }, [loggedInUser?.name]);
+  }, [user?.name]);
   
   const closeSidebar = () => setOpen(false);
 
@@ -39,7 +39,9 @@ const Navbar: React.FC = () => {
               </div>
               <p className="font-semibold md:text-3xl lg:text-4xl hidden md:inline">PayFlex</p>
           </Link> */}
+          {contextLoading ? 'Loading...' : 
           <h1 className='text-base md:text-xl font-semibold py-1'>Hi, <span className='text-blue-700'>{firstName}</span></h1>
+          }
         </div>
         
 

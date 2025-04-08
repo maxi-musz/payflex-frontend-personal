@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState } from 'react'
 import ButtonOne from '../button/ButtonOne';
 import { Save, ShieldOutlined, TaskOutlined } from '@mui/icons-material';
@@ -15,18 +17,15 @@ interface ProfileProps {
     data?: KYCType;
 }
 
+const id_types = ['NIGERIAN BVN VERIFICATION', 'NIGERIAN_NIN', 'NIGERIAN_INTERNATIONAL_PASSPORT', 'NIGERIAN_PVC', 'NIGERIAN_DRIVERS_LICENSE']
+
 const Verification: React.FC<ProfileProps> = ({ data }) => {
     const [loading, setLoading] = useState(false);
-
-    // const onFormSubmit = (e: React.FormEvent) => {
-    //     e.preventDefault();
-    //     setLoading(true);
-    //     setTimeout(() => {
-    //         showToast("KYC information updated successfully");
-    //         setLoading(false);
-    //     }, 2000);
-    // };
-    
+    // const [updatedKYCInfo, setUpdatedKYCInfo] = useState<
+    // {
+    //     id_type: '',
+    //     id_no: '',
+    // } | null>(null);
     
     const router = useRouter();
 
@@ -55,11 +54,16 @@ const Verification: React.FC<ProfileProps> = ({ data }) => {
             const res = await updateKYC(token, UserData);
             console.log(res);
             if (res.success) {
-                // const { user } = res.data;
+                const { data } = res;
                 setLoading(false);
                 setTimeout(() => {
-                    showToast(`${res.message}`);
+                    showToast(`${res.message}` || "KYC information updated successfully");
                 }, 500);
+                
+                // setUpdatedKYCInfo({
+                //     id_type: data.id_type,
+                //     id_no: data.id_no,
+                // })
             }
         } catch (error) {
             setLoading(false);
@@ -81,9 +85,9 @@ const Verification: React.FC<ProfileProps> = ({ data }) => {
             <div className="w-full space-y-3 md:space-y-5">
                 <div className="w-full">
                     <SelectInputField
-                        valueArray={['NIGERIAN BVN VERIFICATION', 'Passport', 'Driving License', 'National ID Card', 'Residence Permit']}
+                        valueArray={id_types}
                         {...register("id_type")}
-                        value={data?.id_type}
+                        // value={updatedKYCInfo?.id_type ? updatedKYCInfo.id_type : ''}
                         label="ID Type"
                         error={errors.id_type}
                         required
@@ -94,7 +98,7 @@ const Verification: React.FC<ProfileProps> = ({ data }) => {
                 <div className="w-full">
                     <InputField
                         {...register("id_no")}
-                        value={data?.id_no}
+                        // value={updatedKYCInfo?.id_no ? updatedKYCInfo.id_no : ''}
                         label="ID Number"
                         error={errors.id_no}
                         required
@@ -112,7 +116,7 @@ const Verification: React.FC<ProfileProps> = ({ data }) => {
         <div className="flex items-center justify-end pt-6 pb-1 px-5">
             <ButtonOne
                 type='submit'
-                classes='py-2 px-8 font-semibold'
+                classes='py-2 px-8 font-semibold w-full sm:w-fit'
                 btnText1={loading ? 'Submitting...' : 'Submit Verification'}
                 icon1={<Save style={{fontSize: '17px'}} />}
             />

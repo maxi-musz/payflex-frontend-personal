@@ -27,21 +27,21 @@ interface WalletProps {
 const DashboardHeader = () => {
   const [isBalanceOpen, setIsBalanceOpen] = useState(false);
   const [wallet, setWallet] = useState<WalletProps | null>(null);
-  const [transactionHistory, setTransactionHistory] = useState(null);
+  // const [transactionHistory, setTransactionHistory] = useState(null);
   // const [accessToken, setAccessToken] = useState('');
   
-  const {currentTab, currentData, setCurrentData} = useGeneralData();
+  const {currentData, setCurrentData} = useGeneralData();
   const router = useRouter();
   
   useEffect(() => {
     const init = async () => {
       const token = sessionStorage.getItem("accessToken");
-  
+      
       if (!token) {
         router.push("/login");
         return;
       }
-  
+      
       // setAccessToken(token); // Set it for any later use
   
       // Handle paystack verification if reference exists
@@ -75,13 +75,14 @@ const DashboardHeader = () => {
       // Fetch dashboard data
       try {
         const res = await getUserDashboard(token);
-        const { wallet, transactionHistory } = res.data;
+        const { wallet } = res.data;
+        // const { wallet, transactionHistory } = res.data;
   
         if (!res.success) {
           showToast("No data was gotten", "error");
         } else {
           setWallet(wallet);
-          setTransactionHistory(transactionHistory);
+          // setTransactionHistory(transactionHistory);
         }
       } catch (error) {
         router.push("/login");

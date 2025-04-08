@@ -18,7 +18,18 @@ interface ProfileProps {
 
 const Profile: React.FC<ProfileProps> = ({ data }) => {
     const [loading, setLoading] = useState(false);
-    
+    // const [updatedUserInfo, setUpdatedUserInfo] = useState<
+    // {
+    //     first_name: '',
+    //     last_name: '',
+    //     home_address: '',
+    //     city: '',
+    //     state: '',
+    //     country: '',
+    //     postal_code: '',
+    //     house_number: '',
+    // } | null>(null);
+
     const router = useRouter();
 
     const {
@@ -52,11 +63,22 @@ const Profile: React.FC<ProfileProps> = ({ data }) => {
             const res = await updateProfile(token, UserData);
             console.log(res);
             if (res.success) {
-                // const { user } = res.data;
+                const { data } = res;
                 setLoading(false);
                 setTimeout(() => {
                     showToast(`${res.message}` || 'Profile updated successfully');
                 }, 500);
+                
+                // setUpdatedUserInfo({
+                //     first_name: data.first_name,
+                //     last_name: data.last_name,
+                //     home_address: data.address.home_address,
+                //     city: data.address.city,
+                //     state: data.address.state,
+                //     country: data.address.country,
+                //     postal_code: data.address.postal_code,
+                //     house_number: data.address.house_number,
+                // })
             }
         } catch (error) {
             setLoading(false);
@@ -80,7 +102,7 @@ const Profile: React.FC<ProfileProps> = ({ data }) => {
                     <div className="w-full md:w-1/2">
                         <InputField
                             {...register("first_name")}
-                            value={data?.first_name}
+                            // value={updatedUserInfo?.first_name ? updatedUserInfo.first_name : ''}
                             label="First Name"
                             error={errors.first_name}
                             required
@@ -91,7 +113,7 @@ const Profile: React.FC<ProfileProps> = ({ data }) => {
                     <div className="w-full md:w-1/2">
                         <InputField
                             {...register("last_name")}
-                            value={data?.last_name}
+                            // value={updatedUserInfo?.last_name  ? updatedUserInfo.last_name : ''}
                             label="Last Name"
                             error={errors.last_name}
                             required
@@ -114,7 +136,7 @@ const Profile: React.FC<ProfileProps> = ({ data }) => {
                     <div className="w-full md:w-1/2">
                         <InputField
                             {...register("home_address")}
-                            value={data?.home_address}
+                            // value={updatedUserInfo?.home_address ? updatedUserInfo.home_address : ''}
                             label="Home Address"
                             error={errors.home_address}
                             required
@@ -125,7 +147,7 @@ const Profile: React.FC<ProfileProps> = ({ data }) => {
                     <div className="w-full md:w-1/2">
                         <InputField
                             {...register("house_number")}
-                            value={data?.house_number}
+                            // value={updatedUserInfo?.house_number ? updatedUserInfo.house_number : ''}
                             label="House Number"
                             error={errors.house_number}
                             required
@@ -138,7 +160,7 @@ const Profile: React.FC<ProfileProps> = ({ data }) => {
                     <div className="w-full md:w-1/2">
                         <InputField
                             {...register("city")}
-                            value={data?.city}
+                            // value={updatedUserInfo?.city ? updatedUserInfo.city : ''}
                             label="City"
                             error={errors.city}
                             required
@@ -149,7 +171,7 @@ const Profile: React.FC<ProfileProps> = ({ data }) => {
                     <div className="w-full md:w-1/2">
                         <InputField
                             {...register("state")}
-                            value={data?.state}
+                            // value={updatedUserInfo?.state ? updatedUserInfo.state : ''}
                             label="State/Province"
                             error={errors.state}
                             required
@@ -162,7 +184,7 @@ const Profile: React.FC<ProfileProps> = ({ data }) => {
                     <div className="w-full md:w-1/2">
                         <InputField
                             {...register("postal_code")}
-                            value={data?.postal_code}
+                            // value={updatedUserInfo?.postal_code ? updatedUserInfo.postal_code : ''}
                             label="Postal Code"
                             error={errors.postal_code}
                             required
@@ -173,7 +195,7 @@ const Profile: React.FC<ProfileProps> = ({ data }) => {
                     <div className="w-full md:w-1/2">
                         <InputField
                             {...register("country")}
-                            value={data?.country}
+                            // value={updatedUserInfo?.country ? updatedUserInfo.country : ''}
                             label="Country"
                             error={errors.country}
                             required
@@ -188,7 +210,7 @@ const Profile: React.FC<ProfileProps> = ({ data }) => {
         <div className="flex items-center justify-end pt-6 pb-1 px-5">
             <ButtonOne
                 type='submit'
-                classes='py-2 px-8 font-semibold'
+                classes='py-2 px-8 font-semibold w-full sm:w-fit'
                 btnText1={loading ? 'Saving...' : 'Save Profile'}
                 icon1={<Save style={{fontSize: '17px'}} />}
             />

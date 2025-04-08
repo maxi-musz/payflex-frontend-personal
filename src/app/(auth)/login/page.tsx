@@ -69,9 +69,9 @@ const LoginPage: React.FC<LoginProps> = ({ data }) => {
         }
     });
 
-    if (isLoading) {
-        return <Loading />;
-    };
+    // if (isLoading) {
+    //     return <Loading />;
+    // };
 
   return (
     <div className='h-full min-h-screen w-full flex flex-col md:flex-row '>
@@ -114,7 +114,7 @@ const LoginPage: React.FC<LoginProps> = ({ data }) => {
                         <div className='my-2 w-full flex items-center justify-end'>
                             <Link href='/forgot-password' className='text-red-600 text-sm'>Forgot password</Link>
                         </div>
-                        <ButtonOne type='submit' classes='py-2 px-16 w-full' btnText1='Login' />
+                        <ButtonOne type='submit' classes='py-2 px-16 w-full' btnText1={isLoading ? 'Logging in ...' : 'Login'} />
                         
                         <p className='text-center text-sm'>Don&apos;t have an account? <Link href='/register' className='text-blue-600'>Sign up</Link></p>
                     </form>

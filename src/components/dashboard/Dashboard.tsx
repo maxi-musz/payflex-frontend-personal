@@ -27,6 +27,7 @@ const Dashboard = () => {
       try {
         setLoading(true);
         const res = await getUserDashboard(token);
+        // console.log(res)
         const { transactionHistory } = res.data;
   
         if (!res.success) {

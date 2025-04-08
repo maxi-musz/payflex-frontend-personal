@@ -148,3 +148,35 @@ export interface UserProps {
   email: string,
   profileImage: null,
 }
+
+export interface UserProfileProps {
+  id: string,
+  first_name: string,
+  last_name: string,
+  email: string,
+  phone_number: string,
+  gender: string,
+  role: string,
+  date_of_birth: string,
+  email_verification: boolean,
+  joined: string,
+}
+
+export interface UserAddressProps {
+  id: string,
+  house_no: string,
+  house_address: string,
+  city: string,
+  state: string,
+  country: string,
+  postal_code: string,
+}
+
+export interface UserKYCProps {
+  id: string,
+  user_id: string,
+  is_active: string,
+  status: string,
+  id_type: string,
+  id_number: string,
+}

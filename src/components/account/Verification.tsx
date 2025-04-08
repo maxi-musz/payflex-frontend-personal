@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 import ButtonOne from '../button/ButtonOne';
-import { Save, ShieldOutlined, TaskOutlined } from '@mui/icons-material';
+import { Edit, Save, ShieldOutlined, TaskOutlined } from '@mui/icons-material';
 import InputField from '../inputs/InputField';
 import { Toaster } from 'react-hot-toast';
 import { showToast } from '../HotToast';
@@ -12,6 +12,8 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { kycSchema, KYCType } from '@/features/dashboard/validations';
 import { updateKYC } from '@/features/dashboard/actions';
+import { useGeneralData } from '@/context/GeneralDataContext';
+import ButtonNeutral from '../button/ButtonNeutral';
 
 interface ProfileProps {
     data?: KYCType;
@@ -21,6 +23,10 @@ const id_types = ['NIGERIAN_BVN_VERIFICATION', 'NIGERIAN_NIN', 'NIGERIAN_INTERNA
 
 const Verification: React.FC<ProfileProps> = ({ data }) => {
     const [loading, setLoading] = useState(false);
+    const [inputDisabled, setInputDisabled] = useState(true);
+    const [inputMode, setInputMode] = useState<string>('editable');
+
+    const {userKYC, contextLoading} = useGeneralData();
     // const [updatedKYCInfo, setUpdatedKYCInfo] = useState<
     // {
     //     id_type: '',
@@ -28,6 +34,11 @@ const Verification: React.FC<ProfileProps> = ({ data }) => {
     // } | null>(null);
     
     const router = useRouter();
+    
+    const handleEditForm = () => {
+        setInputMode('');
+        setInputDisabled(false);
+    }
 
     const {
         register,
@@ -65,6 +76,9 @@ const Verification: React.FC<ProfileProps> = ({ data }) => {
                 //     id_no: data.id_no,
                 // })
             }
+            router.refresh();
+            setInputMode('editable');
+            setInputDisabled(true);
         } catch (error) {
             setLoading(false);
             setTimeout(() => {
@@ -77,9 +91,18 @@ const Verification: React.FC<ProfileProps> = ({ data }) => {
     <form onSubmit={onFormSubmit} className='py-3 divide-y'>
         <Toaster position="top-center" reverseOrder={false} />
         <div className='py-6 px-5'>
-            <div className='flex items-center gap-2 pb-3'>
-                <ShieldOutlined className='text-primary' />
-                <h2 className='text-xl font-semibold'>Identity Verification (KYC)</h2>
+            <div className="w-full flex items-center justify-between gap-3">
+                <div className='flex items-center gap-2 pb-3'>
+                    <ShieldOutlined className='text-primary' />
+                    <h2 className='text-xl font-semibold'>Identity Verification (KYC)</h2>
+                </div>
+                
+                <ButtonNeutral
+                    onClick={handleEditForm}
+                    classes='py-2 px-8 font-semibold space-x-2 border hover:border-primary hover:text-primary rounded-radius-12 w-full sm:w-fit transition-all duration-300 ease-in-out'
+                    btnText1='Edit Profile'
+                    icon1={<Edit style={{fontSize: '17px'}} />}
+                />
             </div>
             
             <div className="w-full space-y-3 md:space-y-5">
@@ -87,23 +110,23 @@ const Verification: React.FC<ProfileProps> = ({ data }) => {
                     <SelectInputField
                         valueArray={id_types}
                         {...register("id_type")}
-                        // value={updatedKYCInfo?.id_type ? updatedKYCInfo.id_type : ''}
                         label="ID Type"
                         error={errors.id_type}
-                        required
-                        classes='w-full'
-                        placeholderText='Select ID Type'
+                        disabled={inputDisabled}
+                        mode={inputMode}
+                        classes={`${inputMode === 'editable' ? 'placeholder:text-neutral-800 placeholder:text-base' : ''} w-full`}
+                        placeholderText={userKYC?.id_type || 'Select ID Type'}
                     />
                 </div>
                 <div className="w-full">
                     <InputField
                         {...register("id_no")}
-                        // value={updatedKYCInfo?.id_no ? updatedKYCInfo.id_no : ''}
                         label="ID Number"
                         error={errors.id_no}
-                        required
-                        classes='w-full'
-                        placeholderText='Enter your ID number'
+                        disabled={inputDisabled}
+                        mode={inputMode}
+                        classes={`${inputMode === 'editable' ? 'placeholder:text-neutral-800 placeholder:text-base' : ''} w-full`}
+                        placeholderText={userKYC?.id_number || 'Enter your ID number'}
                     />
                 </div>
                 <div className="text-primary w-full flex items-start gap-3 p-5 bg-blue-50 border border-blue-100 rounded-radius-12">

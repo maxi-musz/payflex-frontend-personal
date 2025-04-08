@@ -1,6 +1,6 @@
 'use client';
 
-import { HomeOutlined, PersonOutlined, Save } from '@mui/icons-material';
+import { Edit, HomeOutlined, PersonOutlined, Save } from '@mui/icons-material';
 import React, { useState } from 'react';
 import InputField from '../inputs/InputField';
 import ButtonOne from '../button/ButtonOne';
@@ -12,6 +12,7 @@ import { profileSchema, ProfileType } from '@/features/dashboard/validations';
 import { updateProfile } from '@/features/dashboard/actions';
 import { useRouter } from 'next/navigation';
 import { useGeneralData } from '@/context/GeneralDataContext';
+import ButtonNeutral from '../button/ButtonNeutral';
 
 interface ProfileProps {
     data?: ProfileType;
@@ -19,6 +20,9 @@ interface ProfileProps {
 
 const Profile: React.FC<ProfileProps> = ({ data }) => {
     const [loading, setLoading] = useState(false);
+    const [inputDisabled, setInputDisabled] = useState(true);
+    const [inputMode, setInputMode] = useState<string>('editable');
+    const {userProfile, userAddress, contextLoading} = useGeneralData();
     // const [updatedUserInfo, setUpdatedUserInfo] = useState<
     // {
     //     first_name: '',
@@ -35,6 +39,11 @@ const Profile: React.FC<ProfileProps> = ({ data }) => {
 
     const router = useRouter();
 
+    const handleEditForm = () => {
+        setInputMode('');
+        setInputDisabled(false);
+    }
+    
     const {
         register,
         handleSubmit,
@@ -64,7 +73,7 @@ const Profile: React.FC<ProfileProps> = ({ data }) => {
 
         try {
             const res = await updateProfile(token, UserData);
-            console.log(res);
+            // console.log(res);
             if (res.success) {
                 const { data } = res;
                 setLoading(false);
@@ -87,6 +96,9 @@ const Profile: React.FC<ProfileProps> = ({ data }) => {
                 //     house_number: data.address.house_number,
                 // })
             }
+            router.refresh();
+            setInputMode('editable');
+            setInputDisabled(true);
         } catch (error) {
             setLoading(false);
             setTimeout(() => {
@@ -96,12 +108,23 @@ const Profile: React.FC<ProfileProps> = ({ data }) => {
     });
     
   return (
+    <>
+    {contextLoading ? <p className='py-4 text-2xl text-center'>Loading...</p> : 
     <form onSubmit={onFormSubmit} className='py-3 divide-y'>
         <Toaster position="top-center" reverseOrder={false} />
         <div className='py-6 px-5'>
-            <div className='flex items-center gap-2 pb-3'>
-                <PersonOutlined className='text-primary' />
-                <h2 className='text-xl font-semibold'>Personal Information</h2>
+            <div className="w-full flex items-center justify-between gap-3">
+                <div className='flex items-center gap-2 pb-3'>
+                    <PersonOutlined className='text-primary' />
+                    <h2 className='text-xl font-semibold'>Personal Information</h2>
+                </div>
+                
+                <ButtonNeutral
+                    onClick={handleEditForm}
+                    classes='py-2 px-8 font-semibold space-x-2 border hover:border-primary hover:text-primary rounded-radius-12 w-full sm:w-fit transition-all duration-300 ease-in-out'
+                    btnText1='Edit Profile'
+                    icon1={<Edit style={{fontSize: '17px'}} />}
+                />
             </div>
             
             <div className="w-full space-y-3 md:space-y-5">
@@ -109,23 +132,23 @@ const Profile: React.FC<ProfileProps> = ({ data }) => {
                     <div className="w-full md:w-1/2">
                         <InputField
                             {...register("first_name")}
-                            // value={updatedUserInfo?.first_name ? updatedUserInfo.first_name : ''}
                             label="First Name"
                             error={errors.first_name}
-                            required
-                            classes='w-full'
-                            placeholderText='Enter your first name'
+                            disabled={inputDisabled}
+                            mode={inputMode}
+                            classes={`${inputMode === 'editable' ? 'placeholder:text-neutral-800 placeholder:text-base' : ''} w-full`}
+                            placeholderText={userProfile?.first_name || 'Enter your first name'}
                         />
                     </div>
                     <div className="w-full md:w-1/2">
                         <InputField
+                            mode={inputMode}
                             {...register("last_name")}
-                            // value={updatedUserInfo?.last_name  ? updatedUserInfo.last_name : ''}
+                            disabled={inputDisabled}
                             label="Last Name"
                             error={errors.last_name}
-                            required
-                            classes='w-full'
-                            placeholderText='Enter your last name'
+                            classes={`${inputMode === 'editable' ? 'placeholder:text-neutral-800 placeholder:text-base' : ''} w-full`}
+                            placeholderText={userProfile?.last_name || 'Enter your last name'}
                         />
                     </div>
                 </div>
@@ -143,23 +166,23 @@ const Profile: React.FC<ProfileProps> = ({ data }) => {
                     <div className="w-full md:w-1/2">
                         <InputField
                             {...register("home_address")}
-                            // value={updatedUserInfo?.home_address ? updatedUserInfo.home_address : ''}
+                            mode={inputMode}
+                            disabled={inputDisabled}
                             label="Home Address"
                             error={errors.home_address}
-                            required
-                            classes='w-full'
-                            placeholderText='Enter your home address'
+                            classes={`${inputMode === 'editable' ? 'placeholder:text-neutral-800 placeholder:text-base' : ''} w-full`}
+                            placeholderText={userAddress?.house_address || 'Enter your home address'}
                         />
                     </div>
                     <div className="w-full md:w-1/2">
                         <InputField
                             {...register("house_number")}
-                            // value={updatedUserInfo?.house_number ? updatedUserInfo.house_number : ''}
+                            mode={inputMode}
+                            disabled={inputDisabled}
                             label="House Number"
                             error={errors.house_number}
-                            required
-                            classes='w-full'
-                            placeholderText='Enter your house number'
+                            classes={`${inputMode === 'editable' ? 'placeholder:text-neutral-800 placeholder:text-base' : ''} w-full`}
+                            placeholderText={userAddress?.house_no || 'Enter your house number'}
                         />
                     </div>
                 </div>
@@ -167,23 +190,23 @@ const Profile: React.FC<ProfileProps> = ({ data }) => {
                     <div className="w-full md:w-1/2">
                         <InputField
                             {...register("city")}
-                            // value={updatedUserInfo?.city ? updatedUserInfo.city : ''}
+                            mode={inputMode}
+                            disabled={inputDisabled}
                             label="City"
                             error={errors.city}
-                            required
-                            classes='w-full'
-                            placeholderText='Enter your city'
+                            classes={`${inputMode === 'editable' ? 'placeholder:text-neutral-800 placeholder:text-base' : ''} w-full`}
+                            placeholderText={userAddress?.city || 'Enter your city'}
                         />
                     </div>
                     <div className="w-full md:w-1/2">
                         <InputField
                             {...register("state")}
-                            // value={updatedUserInfo?.state ? updatedUserInfo.state : ''}
+                            mode={inputMode}
+                            disabled={inputDisabled}
                             label="State/Province"
                             error={errors.state}
-                            required
-                            classes='w-full'
-                            placeholderText='Enter your state'
+                            classes={`${inputMode === 'editable' ? 'placeholder:text-neutral-800 placeholder:text-base' : ''} w-full`}
+                            placeholderText={userAddress?.state || 'Enter your state'}
                         />
                     </div>
                 </div>
@@ -191,30 +214,30 @@ const Profile: React.FC<ProfileProps> = ({ data }) => {
                     <div className="w-full md:w-1/2">
                         <InputField
                             {...register("postal_code")}
-                            // value={updatedUserInfo?.postal_code ? updatedUserInfo.postal_code : ''}
+                            mode={inputMode}
+                            disabled={inputDisabled}
                             label="Postal Code"
                             error={errors.postal_code}
-                            required
-                            classes='w-full'
-                            placeholderText='Enter your postal code'
+                            classes={`${inputMode === 'editable' ? 'placeholder:text-neutral-800 placeholder:text-base' : ''} w-full`}
+                            placeholderText={userAddress?.postal_code || 'Enter your postal code'}
                         />
                     </div>
                     <div className="w-full md:w-1/2">
                         <InputField
                             {...register("country")}
-                            // value={updatedUserInfo?.country ? updatedUserInfo.country : ''}
+                            mode={inputMode}
+                            disabled={inputDisabled}
                             label="Country"
                             error={errors.country}
-                            required
-                            classes='w-full'
-                            placeholderText='Enter your conutry'
+                            classes={`${inputMode === 'editable' ? 'placeholder:text-neutral-800 placeholder:text-base' : ''} w-full`}
+                            placeholderText={userAddress?.country || 'Enter your country'}
                         />
                     </div>
                 </div>
             </div>
         </div>
 
-        <div className="flex items-center justify-end pt-6 pb-1 px-5">
+        <div className="flex items-center justify-end gap-3 pt-6 pb-1 px-5">
             <ButtonOne
                 type='submit'
                 classes='py-2 px-8 font-semibold w-full sm:w-fit'
@@ -223,6 +246,8 @@ const Profile: React.FC<ProfileProps> = ({ data }) => {
             />
         </div>
     </form>
+    }
+    </>
   )
 }
 

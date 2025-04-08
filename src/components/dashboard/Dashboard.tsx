@@ -7,12 +7,11 @@ import DashboardHeader from '../DashboardHeader';
 import { useGeneralData } from '@/context/GeneralDataContext';
 
 const Dashboard = () => {
-  const {transactionHistory, contextLoading} = useGeneralData();
+  const { transactionHistory, contextLoading } = useGeneralData();
 
   return (
     <div className='w-full pt-2 pb-4 space-y-2 md:space-y-4'>
-      <DashboardHeader/>
-
+      <DashboardHeader />
       <TransactionOptions />
 
       <div className="flex items-center justify-between">
@@ -20,11 +19,13 @@ const Dashboard = () => {
         <ButtonNeutral btnText1='View all' classes='px-3 py-2 rounded-radius-8 border text-sm' />
       </div>
 
-      {contextLoading ?
-        <p className='py-4 text-center text-xl'>Loading...</p> :
-        <BankTransactionTable transactionHistory={transactionHistory} />}
+      {contextLoading ? (
+        <p className='py-4 text-center text-xl'>Loading...</p>
+      ) : (
+        <BankTransactionTable transactionHistory={transactionHistory} />
+      )}
     </div>
-  )
-}
+  );
+};
 
 export default Dashboard;

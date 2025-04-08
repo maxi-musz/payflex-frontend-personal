@@ -6,6 +6,7 @@ import { FieldError } from "react-hook-form";
 type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   key?: number;
   placeholderText?: string;
+  mode?: string;
   classes?: string;
   classes2?: string;
   label?: string;
@@ -23,6 +24,7 @@ const InputField = forwardRef<HTMLInputElement, Omit<InputProps, "ref">>(
   (
     {
       placeholderText = "",
+      mode = "",
       classes = "",
       classes2 = "",
       type = "text",
@@ -68,7 +70,7 @@ const InputField = forwardRef<HTMLInputElement, Omit<InputProps, "ref">>(
               <div
                 className={`${
                   props.disabled
-                    ? "opacity-50 border-neutral-400 cursor-not-allowed"
+                    ? mode === 'uneditable' ? "opacity-50 border-neutral-400 cursor-not-allowed" : mode === 'editable' ? "border-transparent cursor-not-allowed" : ''
                     : "border-customGray"
                 } w-full bg-white border flex items-center justify-between rounded-xl focus-within:ring-1 focus-within:ring-primary hover:ring-primary`}
               >
@@ -78,7 +80,7 @@ const InputField = forwardRef<HTMLInputElement, Omit<InputProps, "ref">>(
                   type={type}
                   placeholder={placeholderText}
                   className={`${classes} ${
-                    props.disabled ? "opacity-40 cursor-not-allowed" : ""
+                    props.disabled ? mode === 'uneditable' ? "opacity-40 cursor-not-allowed" : mode === 'editable' ? "cursor-not-allowed" : '' : ""
                   } bg-transparent w-full py-[10px] px-3 rounded-xl border-0 text-xs focus:outline-0 focus:ring-0 text-[#666666]`}
                   {...props}
                 />

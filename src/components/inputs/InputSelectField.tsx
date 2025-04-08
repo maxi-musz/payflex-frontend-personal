@@ -7,6 +7,7 @@ type SelectInputProps = React.SelectHTMLAttributes<HTMLSelectElement> & {
   key?: number;
   label?: string;
   placeholderText?: string;
+  mode?: string;
   classes?: string;
   valueArray: string[]; // Options for the select input
   error?: FieldError;
@@ -18,6 +19,7 @@ const SelectInputField = forwardRef<HTMLSelectElement, Omit<SelectInputProps, "r
   (
     {
       placeholderText = "",
+      mode = "",
       classes = "",
       label = "",
       valueArray = [],
@@ -36,7 +38,7 @@ const SelectInputField = forwardRef<HTMLSelectElement, Omit<SelectInputProps, "r
         <div
           className={`${
             props.disabled
-              ? "opacity-50 border-neutral-400 cursor-not-allowed"
+              ? mode === 'uneditable' ? "opacity-50 border-neutral-400 cursor-not-allowed" : mode === 'editable' ? "border-transparent cursor-not-allowed" : ''
               : "border-customGray"
           } w-full bg-white border pl-2 pr-4 flex items-center justify-between rounded-xl focus-within:ring-1 focus-within:ring-primary hover:ring-primary`}
         >
@@ -44,7 +46,7 @@ const SelectInputField = forwardRef<HTMLSelectElement, Omit<SelectInputProps, "r
             ref={ref}
             id={props.name}
             className={`${classes} ${
-              props.disabled ? "opacity-40 cursor-not-allowed" : ""
+              props.disabled ? mode === 'uneditable' ? "opacity-40 cursor-not-allowed" : mode === 'editable' ? "cursor-not-allowed" : '' : ""
             } bg-transparent w-full py-[10px] rounded-xl capitalize border-0 text-xs outline-0 ring-0 text-[#666666]`}
             {...props}
           >

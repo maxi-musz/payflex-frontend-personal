@@ -113,18 +113,26 @@ const Profile: React.FC<ProfileProps> = ({ data }) => {
     <form onSubmit={onFormSubmit} className='py-3 divide-y'>
         <Toaster position="top-center" reverseOrder={false} />
         <div className='py-6 px-5'>
-            <div className="w-full flex items-center justify-between gap-3">
-                <div className='flex items-center gap-2 pb-3'>
+            <div className="w-full flex items-center justify-between gap-3 pb-5">
+                <div className='flex items-center gap-2'>
                     <PersonOutlined className='text-primary' />
                     <h2 className='text-xl font-semibold'>Personal Information</h2>
                 </div>
                 
-                <ButtonNeutral
-                    onClick={handleEditForm}
-                    classes='py-2 px-8 font-semibold space-x-2 border hover:border-primary hover:text-primary rounded-radius-12 w-full sm:w-fit transition-all duration-300 ease-in-out'
-                    btnText1='Edit Profile'
-                    icon1={<Edit style={{fontSize: '17px'}} />}
-                />
+                <div className="flex items-center gap-2">
+                    <ButtonNeutral
+                        onClick={handleEditForm}
+                        classes='py-2 px-8 font-semibold space-x-2 border hover:border-primary hover:text-primary rounded-radius-12 w-full sm:w-fit transition-all duration-300 ease-in-out'
+                        btnText1='Edit Profile'
+                        icon1={<Edit style={{fontSize: '17px'}} />}
+                    />
+                    <ButtonOne
+                        type='submit'
+                        classes='py-2 px-8 font-semibold w-full sm:w-fit'
+                        btnText1={loading ? 'Saving...' : 'Save Profile'}
+                        icon1={<Save style={{fontSize: '17px'}} />}
+                    />
+                </div>
             </div>
             
             <div className="w-full space-y-3 md:space-y-5">
@@ -237,14 +245,14 @@ const Profile: React.FC<ProfileProps> = ({ data }) => {
             </div>
         </div>
 
-        <div className="flex items-center justify-end gap-3 pt-6 pb-1 px-5">
+        {/* <div className="flex items-center justify-end gap-3 pt-6 pb-1 px-5">
             <ButtonOne
                 type='submit'
                 classes='py-2 px-8 font-semibold w-full sm:w-fit'
                 btnText1={loading ? 'Saving...' : 'Save Profile'}
                 icon1={<Save style={{fontSize: '17px'}} />}
             />
-        </div>
+        </div> */}
     </form>
     }
     </>

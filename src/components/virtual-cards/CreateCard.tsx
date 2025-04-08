@@ -32,9 +32,17 @@ const CreateCard = () => {
           </div>
 
           <div className='p-5 bg-neutral-100 rounded-radius-12'>
-            <div className='flex items-center gap-2 pb-3'>
-              <CreditCard className='text-primary' />
-              <h2 className='text-[16px] font-semibold'>Card Details</h2>
+            <div className="w-full flex items-center justify-between gap-3 pb-3">
+              <div className='flex items-center gap-2'>
+                <CreditCard className='text-primary' />
+                <h2 className='text-[16px] font-semibold'>Card Details</h2>
+              </div>
+                
+              <ButtonOne
+                type='submit'
+                classes='py-2 px-8 font-semibold'
+                btnText1={loading ? 'Processing...' : 'Create Virtual Card'}
+              />
             </div>
             
             <div className="w-full space-y-3 md:space-y-5">
@@ -72,13 +80,13 @@ const CreateCard = () => {
           </div>
         </div>
 
-        <div className="flex items-center justify-end pt-6 pb-1 px-5">
-            <ButtonOne
-                type='submit'
-                classes='py-2 px-8 font-semibold'
-                btnText1={loading ? 'Processing...' : 'Create Virtual Card'}
-            />
-        </div>
+        {/* <div className="flex items-center justify-end pt-6 pb-1 px-5">
+          <ButtonOne
+            type='submit'
+            classes='py-2 px-8 font-semibold'
+            btnText1={loading ? 'Processing...' : 'Create Virtual Card'}
+          />
+        </div> */}
     </form>
   )
 }

@@ -91,18 +91,30 @@ const Verification: React.FC<ProfileProps> = ({ data }) => {
     <form onSubmit={onFormSubmit} className='py-3 divide-y'>
         <Toaster position="top-center" reverseOrder={false} />
         <div className='py-6 px-5'>
-            <div className="w-full flex items-center justify-between gap-3">
-                <div className='flex items-center gap-2 pb-3'>
+            <div className="w-full flex items-center justify-between gap-3 pb-5">
+                <div className='flex items-center gap-2'>
                     <ShieldOutlined className='text-primary' />
                     <h2 className='text-xl font-semibold'>Identity Verification (KYC)</h2>
                 </div>
-                
-                <ButtonNeutral
-                    onClick={handleEditForm}
-                    classes='py-2 px-8 font-semibold space-x-2 border hover:border-primary hover:text-primary rounded-radius-12 w-full sm:w-fit transition-all duration-300 ease-in-out'
-                    btnText1='Edit Profile'
-                    icon1={<Edit style={{fontSize: '17px'}} />}
-                />
+
+                <div className="flex items-center gap-2">
+                    <ButtonNeutral
+                        onClick={handleEditForm}
+                        classes='py-2 px-8 font-semibold space-x-2 border hover:border-primary hover:text-primary rounded-radius-12 w-full sm:w-fit transition-all duration-300 ease-in-out'
+                        btnText1='Edit Profile'
+                        icon1={<Edit style={{fontSize: '17px'}} />}
+                    />
+
+                    {/* <div className="animate-spin inline-block size-6 border-3 border-current border-t-transparent text-blue-600 rounded-full dark:text-blue-500" role="status" aria-label="loading">
+                        <span className="sr-only">Loading...</span>
+                    </div> */}
+                    <ButtonOne
+                        type='submit'
+                        classes='py-2 px-8 font-semibold w-full sm:w-fit'
+                        btnText1={loading ? 'Updating...' : 'Update KYC'}
+                        icon1={<Save style={{fontSize: '17px'}} />}
+                    />
+                </div>
             </div>
             
             <div className="w-full space-y-3 md:space-y-5">
@@ -136,14 +148,14 @@ const Verification: React.FC<ProfileProps> = ({ data }) => {
             </div>
         </div>
 
-        <div className="flex items-center justify-end pt-6 pb-1 px-5">
+        {/* <div className="flex items-center justify-end pt-6 pb-1 px-5">
             <ButtonOne
                 type='submit'
                 classes='py-2 px-8 font-semibold w-full sm:w-fit'
                 btnText1={loading ? 'Updating...' : 'Update KYC'}
                 icon1={<Save style={{fontSize: '17px'}} />}
             />
-        </div>
+        </div> */}
     </form>
   )
 }

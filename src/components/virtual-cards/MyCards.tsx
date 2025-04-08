@@ -43,11 +43,11 @@ const MyCards = () => {
 
             <div className='flex items-end justify-between gap-2'>
               <p className='flex flex-col items-start gap-1'>
-                <span className='uppercase text-slate-500 text-sm'>CARD HOLDER</span>
+                <span className='uppercase font-light text-sm'>CARD HOLDER</span>
                 <span className='uppercase text-sm font-semibold'>{card.cardHolder}</span>
               </p>
               <p className='flex flex-col items-start gap-1'>
-                <span className='uppercase text-slate-500 text-sm'>EXPIRES</span>
+                <span className='uppercase font-light text-sm'>EXPIRES</span>
                 <span className='uppercase text-sm font-semibold'>{card.expiryDate}</span>
               </p>
               <p className='py-[2px] px-2 rounded-full border text-xs font-semibold'>{card.active ? 'ACTIVE' : 'INACTIVE'}</p>

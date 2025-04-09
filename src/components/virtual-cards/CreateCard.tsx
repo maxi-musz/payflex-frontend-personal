@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ButtonOne from '../button/ButtonOne';
 import InputField from '../inputs/InputField';
 import SelectInputField from '../inputs/InputSelectField';
@@ -11,8 +11,17 @@ import LoadingSpinner from '../LoadingSpinner';
 
 const CreateCard = () => {
   const [loading, setLoading] = useState(false);
+  const [btnIsDisabled, setBtnIsDisabled] = useState(false);
   const [isChecked, setIsChecked] = useState('');
   
+  useEffect(() => {
+    if (isChecked !== 'on' || loading) {
+      setBtnIsDisabled(true);
+    } else {
+      setBtnIsDisabled(false);
+    }
+  }, [isChecked, loading]);
+
   const onFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -22,7 +31,11 @@ const CreateCard = () => {
       // window.location.reload();
     }, 2000);
   };
-  console.log(isChecked);
+
+  // const handleCheckbox = (e: ChangeEventH<HTMLInputElement>) => {
+  //   setIsChecked(e.target.value)
+  // }
+  // console.log(isChecked);
 
   return (
     <form onSubmit={onFormSubmit} className='py-3 divide-y'>
@@ -47,7 +60,7 @@ const CreateCard = () => {
             <ButtonOne
               type='submit'
               classes='py-2 px-8 font-semibold'
-              disabled={loading}
+              disabled={btnIsDisabled}
               icon1={loading ? <LoadingSpinner color='text-white' /> : ''}
               btnText1={loading ? 'Processing...' : 'Create Virtual Card'}
             />

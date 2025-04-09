@@ -32,7 +32,7 @@ const UserSection = () => {
             </div>
             <div className="absolute -bottom-1/2 left-4 size-20 rounded-full border-2 border-white shadow-md">
                 <Image
-                    src="/images/3.jpeg"
+                    src="/images/default_avatar.png"
                     alt="User's profile picture"
                     fill
                     priority

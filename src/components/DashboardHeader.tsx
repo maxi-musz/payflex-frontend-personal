@@ -95,7 +95,7 @@ const DashboardHeader = () => {
                         {item.currency}
                       </span>
                       {contextLoading ? <LoadingSpinner /> : (wallet && !isBalanceOpen) ?
-                        <CountUp start={0} end={wallet.current_balance || parseInt(item.balance)} duration={2} delay={0} decimal='true' /> :
+                        <CountUp start={0} end={wallet.current_balance || 0.00} duration={2} delay={0} decimal='true' /> :
                         "******"}
                     </p>
                     <button onClick={handleBalanceToggle} className='hover:bg-blue-300 rounded-full size-8 flex items-center justify-center border hover:border-transparent transition-all duration-300 ease-in-out'>

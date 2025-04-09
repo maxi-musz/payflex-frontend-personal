@@ -41,6 +41,7 @@ const DashboardHeader = () => {
             setCurrentData({...currentData, currentTab: '/'});
             // console.log(res);
             showToast(`${res.message}`);
+            window.location.reload();
           } 
           // else {
           //   showToast(

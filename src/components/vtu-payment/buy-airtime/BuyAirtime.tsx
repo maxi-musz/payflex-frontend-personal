@@ -83,8 +83,8 @@ const BuyAirtime = () => {
           reference: airtimePurchaseResponse.data.reference,
           status: airtimePurchaseResponse.data.status,
         });
-        showToast(airtimePurchaseResponse.message);
         
+        showToast(airtimePurchaseResponse.message);
         window.location.reload();
       } else {
         // console.log("Error", airtimePurchaseResponse.message)

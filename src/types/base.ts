@@ -51,14 +51,14 @@ export interface UserDataProps {
   last_name: string;
   email: string;
   phone_number: string;
-  address: {
-    country: string;
-    state: string;
-    city: string;
-    home_address: string;
-  };
-  gender: string;
-  date_of_birth: string;
+  // address: {
+  //   country: string;
+  //   state: string;
+  //   city: string;
+  //   home_address: string;
+  // };
+  // gender: string;
+  // date_of_birth: string;
   password: string;
   confirm_password: string;
 }

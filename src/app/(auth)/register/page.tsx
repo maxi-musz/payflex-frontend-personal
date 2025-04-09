@@ -11,10 +11,11 @@ import LoadingSpinner from '@/components/LoadingSpinner';
 import OTPConfirmModal from '@/components/OTPConfirmModal';
 import { registerUser, requestEmailOTP } from '@/features/auth/actions';
 import { registerSchema, RegisterType } from '@/features/auth/validations';
+import { UserDataProps } from '@/types/base';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
 import { Toaster } from 'react-hot-toast';
 
@@ -24,45 +25,72 @@ interface RegisterProps {
 }
 
 const RegisterPage: React.FC<RegisterProps> = ({ data }) => {
-    const [isOTPOpen, setIsOTPOpen] = useState(false);
-    const [isOTPEntered, setIsOTPEntered] = useState(false);
-    const [isVerified, setIsVerified] = useState(false);
+    // const [isOTPOpen, setIsOTPOpen] = useState(false);
+    // const [isOTPEntered, setIsOTPEntered] = useState(false);
+    // const [isVerified, setIsVerified] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const [emailAddress, setEmailAddress] = useState('');
+    // const [emailAddress, setEmailAddress] = useState('');
+    const [btnIsDisabled, setBtnIsDisabled] = useState(false);
+    const [newUserData, setNewUserData] = useState<UserDataProps>({
+        first_name: '',
+        last_name: '',
+        email: '',
+        phone_number: '',
+        password: '',
+        confirm_password: '',
+    });
 
     const router = useRouter();
+    
+    useEffect(() => {
+    if (newUserData.first_name === ''
+        || newUserData.last_name === ''
+        || newUserData.email === ''
+        || newUserData.email.length < 5
+        || newUserData.phone_number === ''
+        || newUserData.phone_number.length < 8
+        || newUserData.password === ''
+        || newUserData.password.length < 8
+        || newUserData.confirm_password === ''
+        || newUserData.confirm_password.length < 8
+        || newUserData.confirm_password !== newUserData.password
+        || isLoading) {
+        setBtnIsDisabled(true);
+    } else {
+        setBtnIsDisabled(false);
+    }
+    }, [newUserData, isLoading]);
 
-    const toggleOTPModal = async () => {
-        if (!isOTPOpen) {
-            try {
-                setIsLoading(true);
-                const res = await requestEmailOTP(emailAddress);
-                setIsLoading(false);
-                setIsOTPOpen(true);
+    // const toggleOTPModal = async () => {
+    //     if (!isOTPOpen) {
+    //         try {
+    //             setIsLoading(true);
+    //             const res = await requestEmailOTP(emailAddress);
+    //             setIsLoading(false);
+    //             setIsOTPOpen(true);
                 
-                setTimeout(() => {
-                    showToast(`${res.message}`);
-                }, 500);
-            } catch (error) {
-                setIsLoading(false);
-                setTimeout(() => {
-                    showToast(`Error: ${(error as Error).message || 'An unexpected error occurred'}`, 'error');
-                }, 500);
-            }
-        } else {
-            setIsOTPOpen(false);
-        }
-    };
+    //             setTimeout(() => {
+    //                 showToast(`${res.message}`);
+    //             }, 500);
+    //         } catch (error) {
+    //             setIsLoading(false);
+    //             setTimeout(() => {
+    //                 showToast(`Error: ${(error as Error).message || 'An unexpected error occurred'}`, 'error');
+    //             }, 500);
+    //         }
+    //     } else {
+    //         setIsOTPOpen(false);
+    //     }
+    // };
     
     
-    
-    const cancelEmailVerification = () => {
-        setIsOTPEntered(false);
-        setIsOTPOpen(false);
-        setTimeout(() => {
-            showToast(`Your email address has not been verified!`, 'error');
-        }, 500);
-    };
+    // const cancelEmailVerification = () => {
+    //     setIsOTPEntered(false);
+    //     setIsOTPOpen(false);
+    //     setTimeout(() => {
+    //         showToast(`Your email address has not been verified!`, 'error');
+    //     }, 500);
+    // };
 
 
     const {
@@ -82,17 +110,26 @@ const RegisterPage: React.FC<RegisterProps> = ({ data }) => {
             last_name: data.last_name,
             email: data.email,
             phone_number: data.phone_number,
-            address: {
-                country: data.country,
-                state: data.state,
-                city: data.city,
-                home_address: data.home_address,
-            },
-            gender: data.gender,
-            date_of_birth: data.date_of_birth,
+            // address: {
+            //     country: data.country,
+            //     state: data.state,
+            //     city: data.city,
+            //     home_address: data.home_address,
+            // },
+            // gender: data.gender,
+            // date_of_birth: data.date_of_birth,
             password: data.password,
             confirm_password: data.confirm_password,
         }
+
+        setNewUserData({
+            first_name: data.first_name,
+            last_name: data.last_name,
+            email: data.email,
+            phone_number: data.phone_number,
+            password: data.password,
+            confirm_password: data.confirm_password,
+        })
 
         try {
             const res = await registerUser(UserData);
@@ -114,15 +151,15 @@ const RegisterPage: React.FC<RegisterProps> = ({ data }) => {
         }
     });
       
-    if (isLoading) {
-        return <Loading />;
-    };
+    // if (isLoading) {
+    //     return <Loading />;
+    // };
 
   return (
     <div className='h-full min-h-screen w-full flex flex-col md:flex-row '>
         <Toaster position="top-center" reverseOrder={false} />
-        <div className='order-2 md:order-1 w-full md:w-1/2 h-fit py-8 md:h-screen min-h-full flex items-center justify-center'>
-            <div className="flex flex-col gap-6 w-[90%] md:w-[90%]">
+        <div className='order-2 md:order-1 w-full md:w-1/2 h-fit py-2 md:h-screen min-h-full flex items-center justify-center'>
+            <div className="flex flex-col gap-6 w-[90%] md:w-[70%]">
                 <AuthPagesHeader />
 
                 <div className="self-start">
@@ -136,6 +173,7 @@ const RegisterPage: React.FC<RegisterProps> = ({ data }) => {
                             <div className="w-full md:w-1/2">
                                 <InputField
                                     {...register("first_name")}
+                                    onChange={(e) => setNewUserData({...newUserData, first_name: e.target.value})}
                                     label="First Name"
                                     error={errors.first_name}
                                     required
@@ -146,6 +184,7 @@ const RegisterPage: React.FC<RegisterProps> = ({ data }) => {
                             <div className="w-full md:w-1/2">
                                 <InputField
                                     {...register("last_name")}
+                                    onChange={(e) => setNewUserData({...newUserData, last_name: e.target.value})}
                                     label="Last Name"
                                     error={errors.last_name}
                                     required
@@ -156,7 +195,20 @@ const RegisterPage: React.FC<RegisterProps> = ({ data }) => {
                         </div>
 
                         <div className="w-full flex flex-col md:flex-row items-center gap-2 md:gap-3">
+                            
                             <div className="w-full md:w-1/2">
+                                <InputField
+                                    {...register("email")}
+                                    onChange={(e) => setNewUserData({...newUserData, email: e.target.value})}
+                                    label="Email Address"
+                                    error={errors.email}
+                                    required
+                                    classes='w-full'
+                                    placeholderText='eg. mikel.adeyemi@gmail.com'
+                                />
+                            </div>
+
+                            {/* <div className="w-full md:w-1/2">
                                 <InputField
                                     disabled={isVerified}
                                     {...register("email")}
@@ -176,11 +228,13 @@ const RegisterPage: React.FC<RegisterProps> = ({ data }) => {
                                     <button type='button' onClick={toggleOTPModal} className='px-2 text-sm underline'>Verify</button>
                                 </div>
                                 }
-                            </div>
+                            </div> */}
 
-                            <div className={`${emailAddress ? 'mb-4' : ''} w-full md:w-1/2`}>
+                            {/* <div className={`${emailAddress ? 'mb-4' : ''} w-full md:w-1/2`}> */}
+                            <div className={`w-full md:w-1/2`}>
                                 <InputField
                                     {...register("phone_number")}
+                                    onChange={(e) => setNewUserData({...newUserData, phone_number: e.target.value})}
                                     label="Phone Number"
                                     error={errors.phone_number}
                                     required
@@ -190,7 +244,7 @@ const RegisterPage: React.FC<RegisterProps> = ({ data }) => {
                             </div>
                         </div>
                         
-                        <div className="w-full flex flex-col md:flex-row items-center gap-2 md:gap-3">
+                        {/* <div className="w-full flex flex-col md:flex-row items-center gap-2 md:gap-3">
                             <div className="w-full md:w-1/3">
                                 <InputField
                                     {...register("city")}
@@ -255,13 +309,14 @@ const RegisterPage: React.FC<RegisterProps> = ({ data }) => {
                                     error={errors.date_of_birth}
                                 />
                             </div>
-                        </div>
+                        </div> */}
 
                         <div className="w-full flex items-center gap-2 md:gap-3">
                             <div className="w-1/2">
                                 <InputField
                                     type="password"
                                     {...register("password")}
+                                    onChange={(e) => setNewUserData({...newUserData, password: e.target.value})}
                                     label="Password"
                                     error={errors.password}
                                     required
@@ -272,6 +327,7 @@ const RegisterPage: React.FC<RegisterProps> = ({ data }) => {
                                 <InputField
                                     type="password"
                                     {...register("confirm_password")}
+                                    onChange={(e) => setNewUserData({...newUserData, confirm_password: e.target.value})}
                                     label="Confirm Password"
                                     error={errors.confirm_password}
                                     required
@@ -283,7 +339,7 @@ const RegisterPage: React.FC<RegisterProps> = ({ data }) => {
                         <ButtonOne
                             type='submit'
                             classes='py-2 px-16 w-full'
-                            disabled={isLoading}
+                            disabled={btnIsDisabled}
                             icon1={isLoading ? <LoadingSpinner color='text-white' /> : ''}
                             btnText1='Sign up'
                         />
@@ -293,13 +349,13 @@ const RegisterPage: React.FC<RegisterProps> = ({ data }) => {
                 </div>
             </div>
 
-            {isOTPOpen && 
+            {/* {isOTPOpen && 
             <OTPConfirmModal
                 cancelEmailVerification={cancelEmailVerification}
                 handleModalToggle={toggleOTPModal} 
                 emailAddress={emailAddress} 
                 setIsVerified={setIsVerified} 
-            />}
+            />} */}
         </div>
 
         <AuthPagesRightSide />

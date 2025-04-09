@@ -76,7 +76,7 @@ const BankTransactionTable = ({transactionHistory}: TransactionHistoryTableProps
                   {currentRecentTransactions?.map(item => (
                     <tr
                       key={item.id}
-                      className={`my-2 ${item.status === 'success' ? 'bg-green-50' : item.status === 'cancelled' ? 'bg-orange-50' : item.status === 'failed' ? 'bg-yellow-50' : 'bg-gray-50'}`}
+                      className={`my-2 ${item.status === true ? 'bg-green-50' : ''}`}
                     >
                       <td className={`relative 'py-[11px] text-[12px] px-2 text-center whitespace-nowrap w-2`}>
                         <span className='flex items-center gap-2'>
@@ -97,8 +97,8 @@ const BankTransactionTable = ({transactionHistory}: TransactionHistoryTableProps
                         {+item.amount < 2500  ? '-' : '+'} ₦{item.amount}
                       </td>
                       <td className={`relative py-[11px] text-[12px] px-2 text-center whitespace-nowrap w-2 capitalize`}>
-                        <span className={`w-fit flex items-center gap-1 px-1 mx-auto ${item.status === 'success' ? 'text-green-700 border-green-300 bg-green-100' : item.status === 'cancelled' ? 'text-yellow-700 border-yellow-300 bg-yellow-100' : item.status === 'failed' ? 'text-red-700 border-red-300 bg-red-100' : 'text-gray-700 border-gray-300 bg-gray-100'} border rounded-full`}>
-                          <div className={`size-1 rounded-full ${item.status === 'success' ? 'bg-green-700' : item.status === 'cancelled' ? 'bg-yellow-700' : item.status === 'failed' ? 'bg-red-700' : 'bg-gray-700'} `}></div>
+                        <span className={`w-fit flex items-center gap-1 px-1 mx-auto ${item.status === true ? 'text-green-700 border-green-300 bg-green-100'  : 'text-yellow-700 border-yellow-300 bg-yellow-100'} border rounded-full`}>
+                          <div className={`size-1 rounded-full ${item.status === true ? 'bg-green-700' : 'bg-yellow-700'} `}></div>
                           {item.status}
                         </span>
                       </td>

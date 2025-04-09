@@ -10,6 +10,7 @@ import { useGeneralData } from '@/context/GeneralDataContext'
 import { verifyPaystackFunding } from '@/features/banking/actions'
 import { showToast } from './HotToast'
 import { Toaster } from 'react-hot-toast';
+import LoadingSpinner from './LoadingSpinner';
 
 const DashboardHeader = () => {
   const [isBalanceOpen, setIsBalanceOpen] = useState(false);
@@ -89,10 +90,10 @@ const DashboardHeader = () => {
                 <div className="space-y-3">
                   <div className="w-full flex items-center justify-between">
                     <p className='text-textGrayDarker text-2xl md:text-3xl font-bold space-x-1'>
-                      <span className={`${item.currency === '₦' ? 'text-green-600' : item.currency === '£' ? 'text-red-600' : 'text-blue-800'} font-extrabold`}>{item.currency}</span>
-                      {contextLoading ?
-                        'Loadding...' :
-                        (wallet && !isBalanceOpen) ?
+                      <span className={`${item.currency === '₦' ? 'text-green-600' : item.currency === '£' ? 'text-red-600' : 'text-blue-800'} font-extrabold`}>
+                        {item.currency}
+                      </span>
+                      {contextLoading ? <LoadingSpinner /> : (wallet && !isBalanceOpen) ?
                         <CountUp start={0} end={wallet.current_balance || parseInt(item.balance)} duration={2} delay={0} decimal='true' /> :
                         "******"}
                     </p>

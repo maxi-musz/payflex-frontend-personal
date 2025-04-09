@@ -7,6 +7,7 @@ import ButtonOne from '@/components/button/ButtonOne';
 import { showToast } from '@/components/HotToast';
 import InputField from '@/components/inputs/InputField';
 import InputSelectField from '@/components/inputs/InputSelectField';
+import LoadingSpinner from '@/components/LoadingSpinner';
 import OTPConfirmModal from '@/components/OTPConfirmModal';
 import { registerUser, requestEmailOTP } from '@/features/auth/actions';
 import { registerSchema, RegisterType } from '@/features/auth/validations';
@@ -279,9 +280,15 @@ const RegisterPage: React.FC<RegisterProps> = ({ data }) => {
                             </div>
                         </div>
                         
-                        <ButtonOne type='submit' classes='py-2 px-16 w-full' btnText1='Sign up' />
+                        <ButtonOne
+                            type='submit'
+                            classes='py-2 px-16 w-full'
+                            disabled={isLoading}
+                            icon1={isLoading ? <LoadingSpinner color='text-white' /> : ''}
+                            btnText1='Sign up'
+                        />
                         
-                        <p className='text-center text-sm'>Already have an account? <Link href='/login' className='text-blue-600'>Login</Link></p>
+                        <p className='text-center text-sm'>Already have an account? <Link href='/login' className='text-blue-600 font-semibold'>Login</Link></p>
                     </form>
                 </div>
             </div>

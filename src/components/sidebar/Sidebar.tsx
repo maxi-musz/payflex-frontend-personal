@@ -9,6 +9,7 @@ import Tabs from './Tabs';
 import { Logout } from '@mui/icons-material';
 import { useGeneralData } from '@/context/GeneralDataContext';
 import { useEffect, useState } from 'react';
+import LoadingSpinner from '../LoadingSpinner';
 
 interface SidebarProps {
     show?: string;
@@ -75,12 +76,11 @@ const Sidebar: React.FC<SidebarProps> = ({ show = 'hidden', closeSidebar = () =>
                                         sizes="(max-width: 768px) 100vw, 50vw"
                                     />
                                 </div>
-                                {contextLoading ? 'Loading...' : 
+                                {contextLoading ? <LoadingSpinner /> : 
                                 <div className='flex flex-col'>
                                     <p className='capitalize text-[12px] text-textGray font-semibold'>{firstName}</p>
                                     <p className='text-[10px] text-textGray'>{email}</p>
-                                </div>
-                                }
+                                </div>}
                                 <ButtonNeutral
                                     onClick={logout}
                                     classes={`focus:ring-transparent bg-transparent border-transparent hover:bg-[#F6F6F6] border hover:border-customGray p-1 rounded-radius-4 transition-all duration-300 ease-in-out`}

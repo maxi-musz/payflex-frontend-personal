@@ -5,6 +5,7 @@ import AuthPagesRightSide from '@/components/AuthPagesRightSide';
 import ButtonOne from '@/components/button/ButtonOne';
 import { showToast } from '@/components/HotToast';
 import InputField from '@/components/inputs/InputField';
+import LoadingSpinner from '@/components/LoadingSpinner';
 import { loginUser } from '@/features/auth/actions';
 import { loginSchema, LoginType } from '@/features/auth/validations';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -112,9 +113,15 @@ const LoginPage: React.FC<LoginProps> = ({ data }) => {
                         <div className='my-2 w-full flex items-center justify-end'>
                             <Link href='/forgot-password' className='text-red-600 text-sm'>Forgot password</Link>
                         </div>
-                        <ButtonOne type='submit' classes='py-2 px-16 w-full' btnText1={isLoading ? 'Logging...' : 'Login'} />
+                        <ButtonOne
+                            type='submit'
+                            classes='py-2 px-16 w-full'
+                            disabled={isLoading}
+                            icon1={isLoading ? <LoadingSpinner color='text-white' /> : ''}
+                            btnText1={isLoading ? 'Logging...' : 'Login'}
+                        />
                         
-                        <p className='text-center text-sm'>Don&apos;t have an account? <Link href='/register' className='text-blue-600'>Sign up</Link></p>
+                        <p className='text-center text-sm'>Don&apos;t have an account? <Link href='/register' className='text-blue-600 font-semibold'>Sign up</Link></p>
                     </form>
                 </div>
             </div>

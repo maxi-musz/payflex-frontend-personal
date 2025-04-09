@@ -5,6 +5,7 @@ import BankTransactionTable from './dataDisplay/BankTransactionTable';
 import TransactionOptions from './dataDisplay/TransactionOptions';
 import DashboardHeader from '../DashboardHeader';
 import { useGeneralData } from '@/context/GeneralDataContext';
+import LoadingSpinner from '../LoadingSpinner';
 
 const Dashboard = () => {
   const { transactionHistory, contextLoading } = useGeneralData();
@@ -20,7 +21,9 @@ const Dashboard = () => {
       </div>
 
       {contextLoading ? (
-        <p className='py-4 text-center text-xl'>Loading...</p>
+        <div className="w-full h-[12rem] flex items-center justify-center">
+          <LoadingSpinner dynamicSize='size-12' />
+        </div>
       ) : (
         <BankTransactionTable transactionHistory={transactionHistory} />
       )}

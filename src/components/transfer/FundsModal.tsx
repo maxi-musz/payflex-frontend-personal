@@ -15,6 +15,7 @@ import { paystackFundingInitializationSchema, PaystackFundingInitializationType 
 import { showToast } from '../HotToast';
 import { initialisePaystackFunding } from '@/features/banking/actions';
 import { Toaster } from 'react-hot-toast';
+import LoadingSpinner from '../LoadingSpinner';
 
 interface FundsProps {
     data?: PaystackFundingInitializationType,
@@ -60,24 +61,27 @@ const FundsModal = ({ data, handleModalToggle, whichModal }: FundsProps) => {
 
             const updatedAmount = parseInt(updatedData.amount);
             const res = await initialisePaystackFunding(token, {
-            amount: updatedAmount,
-            callback_url: `${process.env.NEXT_PUBLIC_PAYSTACK_CALLBACK_URL}`,
-            });          
+                amount: updatedAmount,
+                callback_url: `${process.env.NEXT_PUBLIC_PAYSTACK_CALLBACK_URL}`,
+            });
             
             if (res.success) {
-            window.location.href = res.data.authorization_url;
-            showToast(`${res.message}`);
+                window.location.href = res.data.authorization_url;
+                setTimeout(() => {
+                    window.location.reload();
+                }, 500);
+                showToast(`${res.message}`);
             } else {
-            showToast('Something went wrong! Could not finish initialization of paystack funding.', 'error');
+                showToast('Something went wrong! Could not finish initialization of paystack funding.', 'error');
             }
         }
         // handleModalToggle();
         } catch (error) {
-        setTimeout(() => {
-            showToast(`Error: ${(error as Error).message || 'An unexpected error occurred'}`, 'error');
-        }, 500);
+            setTimeout(() => {
+                showToast(`Error: ${(error as Error).message || 'An unexpected error occurred'}`, 'error');
+            }, 500);
         } finally {
-        setIsLoading(false);
+            setIsLoading(false);
         }
     });
 
@@ -96,10 +100,6 @@ const FundsModal = ({ data, handleModalToggle, whichModal }: FundsProps) => {
         }
     }
 
-    if (isLoading) {
-        return <Loading />;
-    }
-
     return (
         <section className="fixed inset-0 -top-10 bg-gray-800 bg-opacity-80 flex justify-center items-center p-2 z-[999999]">
             <Toaster position="top-center" reverseOrder={false} />
@@ -113,21 +113,27 @@ const FundsModal = ({ data, handleModalToggle, whichModal }: FundsProps) => {
                     <div className='pt-3 pb-5 space-y-4 mx-auto'>
                         <p className='text-lg md:text-xl text-center font-semibold'>How much do you want to fund your wallet with?</p>
                         <InputField
-                            {...register("amount")} // Register the field without valueAsNumber
-                            type='text' // Use text to allow formatting
+                            {...register("amount")}
+                            type='text'
                             placeholder='₦0.00'
                             error={errors.amount}
-                            value={inputAmount} // Use formatted value
+                            value={inputAmount}
                             required
                             classes='w-full'
-                            onChange={onCodeChange} // Update on change with formatting
+                            onChange={onCodeChange}
                             className='placeholder:text-center placeholder:text-xl text-xl py-2 px-3 text-center w-full rounded-xl'
                         />
                     </div>
 
                     <div className="w-full flex items-center justify-center gap-3">
                         <ButtonNeutral onClick={handleModalToggle} classes='py-2 px-8 text-sm border rounded-xl' btnText1='Cancel' />
-                        <ButtonOne type='submit' classes='py-2 px-8 text-sm' btnText1='Continue' />
+                        <ButtonOne 
+                            type='submit'
+                            classes='py-2 px-8 text-sm'
+                            disabled={isLoading}
+                            icon1={isLoading ? <LoadingSpinner color='text-white' /> : ''}
+                            btnText1={`${isLoading ? 'Processing...' : 'Continue'}`}
+                        />
                     </div>
                 </form>
                 }

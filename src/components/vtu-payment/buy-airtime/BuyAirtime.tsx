@@ -11,6 +11,7 @@ import { Toaster } from 'react-hot-toast';
 import InputOne from '@/components/inputs/InputOne';
 import ButtonNeutral from '@/components/button/ButtonNeutral';
 import ButtonOne from '@/components/button/ButtonOne';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 const BuyAirtime = () => {
   const [providers, setProviders] = useState([]);
@@ -83,6 +84,8 @@ const BuyAirtime = () => {
           status: airtimePurchaseResponse.data.status,
         });
         showToast(airtimePurchaseResponse.message);
+        
+        window.location.reload();
       } else {
         // console.log("Error", airtimePurchaseResponse.message)
         showToast(`${airtimePurchaseResponse.message}` || 'Something went wrong', 'error');
@@ -103,7 +106,11 @@ const BuyAirtime = () => {
       <Toaster position="top-center" reverseOrder={false} />
       <h1 className="text-3xl font-semibold mt-5">Buy Airtime</h1>
 
-      {loading ? 'Loading...' : 
+      {loading ? 
+        <div className="w-full h-[12rem] flex items-center justify-center">
+          <LoadingSpinner dynamicSize='size-12' />
+        </div>
+       : 
       !selectedProvider ? (
         <>
           <h2 className="text-base font-medium mb-4">Select Provider</h2>

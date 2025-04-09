@@ -1,4 +1,5 @@
 import { showToast } from '@/components/HotToast';
+import LoadingSpinner from '@/components/LoadingSpinner';
 import { getAirtimeProviders } from '@/features/vtu-vas/actions';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -46,24 +47,30 @@ const Providers = () => {
     <>
         <h2 className="text-base font-medium mb-4">Select Provider</h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {providers.map((provider: any) => (
-            <div
-            key={provider.provider}
-            onClick={() => setSelectedProvider(provider)}
-            className="bg-white border rounded-xl p-4 flex flex-col items-center justify-center shadow-sm hover:shadow-md cursor-pointer transition"
-            >
-            <span className="relative size-16 mb-2">
-                <Image
-                src={providerLogos[provider.provider.toUpperCase()] || "/images/default.png"}
-                alt={provider.provider}
-                fill
-                className="object-contain"
-                sizes="(max-width: 768px) 100vw, 50vw"
-                />
-            </span>
-            <span className="text-sm font-medium text-gray-700">{provider.provider}</span>
+
+            {loading ?  
+            <div className="w-full h-[12rem] flex items-center justify-center">
+                <LoadingSpinner dynamicSize='size-12' />
             </div>
-        ))}
+            : 
+            providers.map((provider: any) => (
+                <div
+                    key={provider.provider}
+                    onClick={() => setSelectedProvider(provider)}
+                    className="bg-white border rounded-xl p-4 flex flex-col items-center justify-center shadow-sm hover:shadow-md cursor-pointer transition"
+                >
+                    <span className="relative size-16 mb-2">
+                        <Image
+                        src={providerLogos[provider.provider.toUpperCase()] || "/images/default.png"}
+                        alt={provider.provider}
+                        fill
+                        className="object-contain"
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                        />
+                    </span>
+                    <span className="text-sm font-medium text-gray-700">{provider.provider}</span>
+                </div>
+            ))}
         </div>
     </>
   )

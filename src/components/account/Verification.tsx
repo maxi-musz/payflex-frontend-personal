@@ -14,6 +14,7 @@ import { kycSchema, KYCType } from '@/features/dashboard/validations';
 import { updateKYC } from '@/features/dashboard/actions';
 import { useGeneralData } from '@/context/GeneralDataContext';
 import ButtonNeutral from '../button/ButtonNeutral';
+import LoadingSpinner from '../LoadingSpinner';
 
 interface ProfileProps {
     data?: KYCType;
@@ -86,38 +87,37 @@ const Verification: React.FC<ProfileProps> = ({ data }) => {
             }, 500);
         }
     });
-        
+        // console.log(userKYC?.id_number);
   return (
     <form onSubmit={onFormSubmit} className='py-3 divide-y'>
         <Toaster position="top-center" reverseOrder={false} />
         <div className='py-6 px-5'>
-            <div className="w-full flex items-center justify-between gap-3 pb-5">
+            <div className="w-full flex items-center justify-between gap-3 flex-wrap pb-8">
                 <div className='flex items-center gap-2'>
                     <ShieldOutlined className='text-primary' />
                     <h2 className='text-xl font-semibold'>Identity Verification (KYC)</h2>
                 </div>
 
                 <div className="flex items-center gap-2">
+                    {userKYC?.id_number === null ? inputMode === 'editable' ?
                     <ButtonNeutral
                         onClick={handleEditForm}
                         classes='py-2 px-8 font-semibold space-x-2 border hover:border-primary hover:text-primary rounded-radius-12 w-full sm:w-fit transition-all duration-300 ease-in-out'
                         btnText1='Edit Profile'
                         icon1={<Edit style={{fontSize: '17px'}} />}
-                    />
-
-                    {/* <div className="animate-spin inline-block size-6 border-3 border-current border-t-transparent text-blue-600 rounded-full dark:text-blue-500" role="status" aria-label="loading">
-                        <span className="sr-only">Loading...</span>
-                    </div> */}
+                    /> :
                     <ButtonOne
                         type='submit'
                         classes='py-2 px-8 font-semibold w-full sm:w-fit'
+                        disabled={loading}
+                        icon1={loading ? <LoadingSpinner color='text-white' /> : <Save style={{fontSize: '17px'}} />}
                         btnText1={loading ? 'Updating...' : 'Update KYC'}
-                        icon1={<Save style={{fontSize: '17px'}} />}
-                    />
+                    /> 
+                    : null}
                 </div>
             </div>
             
-            <div className="w-full space-y-3 md:space-y-5">
+            <div className="w-full sm:w-96 mx-auto space-y-3 md:space-y-5">
                 <div className="w-full">
                     <SelectInputField
                         valueArray={id_types}
@@ -126,7 +126,7 @@ const Verification: React.FC<ProfileProps> = ({ data }) => {
                         error={errors.id_type}
                         disabled={inputDisabled}
                         mode={inputMode}
-                        classes={`${inputMode === 'editable' ? 'placeholder:text-neutral-800 placeholder:text-base' : ''} w-full`}
+                        classes={`${userKYC?.id_number !== null && inputMode === 'editable' ? 'placeholder:text-neutral-800 placeholder:text-base' : ''} w-full`}
                         placeholderText={userKYC?.id_type || 'Select ID Type'}
                     />
                 </div>
@@ -137,7 +137,7 @@ const Verification: React.FC<ProfileProps> = ({ data }) => {
                         error={errors.id_no}
                         disabled={inputDisabled}
                         mode={inputMode}
-                        classes={`${inputMode === 'editable' ? 'placeholder:text-neutral-800 placeholder:text-base' : ''} w-full`}
+                        classes={`${userKYC?.id_number !== null && inputMode === 'editable' ? 'placeholder:text-neutral-800 placeholder:text-base' : ''} w-full`}
                         placeholderText={userKYC?.id_number || 'Enter your ID number'}
                     />
                 </div>

@@ -7,6 +7,7 @@ import MenuIcon from './icons/MenuIcon';
 import { HelpCenterOutlined, NotificationsOutlined, QrCodeScannerOutlined } from '@mui/icons-material';
 import { useGeneralData } from '@/context/GeneralDataContext';
 import { parseItemIntoArray } from '@/utils/formatters';
+import LoadingSpinner from './LoadingSpinner';
 
 const Navbar: React.FC = () => {
   const [open, setOpen] = useState(false);
@@ -39,9 +40,9 @@ const Navbar: React.FC = () => {
               </div>
               <p className="font-semibold md:text-3xl lg:text-4xl hidden md:inline">PayFlex</p>
           </Link> */}
-          {contextLoading ? 'Loading...' : 
-          <h1 className='text-base md:text-xl font-semibold py-1'>Hi, <span className='text-blue-700'>{firstName}</span></h1>
-          }
+          <h1 className='text-base md:text-xl font-semibold py-1'>
+            Hi, {contextLoading ? <LoadingSpinner/> : <span className='text-blue-700'>{firstName}</span>}
+          </h1>
         </div>
         
 

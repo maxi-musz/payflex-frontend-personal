@@ -17,7 +17,7 @@ const MyCards = () => {
   const goBackToAllCards = () => setSingleCard(null);
 
   return (
-    <div className='py-6 pl-2 pr-10'>
+    <div className='py-6 px-2'>
       <div className='pb-5'>
         <h2 className='text-xl font-semibold'>My Cards</h2>
         <p>Manage your virtual cards for international transactions</p>
@@ -54,7 +54,7 @@ const MyCards = () => {
             </div>
           </div>
         ) :
-        <div className='w-full'>
+        <div className='w-full pr-6'>
           <ButtonNeutral onClick={goBackToAllCards} icon1={<KeyboardBackspace className='text-[16px] group-hover:-translate-x-1 transition-all duration-300 ease-in-out' />} btnText1='Go Back' classes='py-2 px-4 space-x-1 hover:bg-slate-200 rounded-radius-12 group transition-all duration-300 ease-in-out'/>
           
           <div className='w-full grid grid-cols-3 gap-10 pt-2'>
@@ -94,7 +94,7 @@ const MyCards = () => {
                 <div className='flex items-end justify-between gap-2'>
                   <p className='flex flex-col items-start gap-1'>
                     <span className='uppercase text-slate-500'>Balance</span>
-                    <span className='uppercase text-xl font-semibold'>₦{singleCard.balance}</span>
+                    <span className='uppercase text-2xl font-bold'>₦{singleCard.balance}</span>
                   </p>
                 </div>
 

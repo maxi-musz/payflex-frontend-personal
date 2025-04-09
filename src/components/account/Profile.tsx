@@ -13,6 +13,7 @@ import { updateProfile } from '@/features/dashboard/actions';
 import { useRouter } from 'next/navigation';
 import { useGeneralData } from '@/context/GeneralDataContext';
 import ButtonNeutral from '../button/ButtonNeutral';
+import LoadingSpinner from '../LoadingSpinner';
 
 interface ProfileProps {
     data?: ProfileType;
@@ -120,18 +121,20 @@ const Profile: React.FC<ProfileProps> = ({ data }) => {
                 </div>
                 
                 <div className="flex items-center gap-2">
+                    {inputMode === 'editable' ?
                     <ButtonNeutral
                         onClick={handleEditForm}
                         classes='py-2 px-8 font-semibold space-x-2 border hover:border-primary hover:text-primary rounded-radius-12 w-full sm:w-fit transition-all duration-300 ease-in-out'
                         btnText1='Edit Profile'
                         icon1={<Edit style={{fontSize: '17px'}} />}
-                    />
+                    /> : 
                     <ButtonOne
                         type='submit'
                         classes='py-2 px-8 font-semibold w-full sm:w-fit'
                         btnText1={loading ? 'Saving...' : 'Save Profile'}
-                        icon1={<Save style={{fontSize: '17px'}} />}
-                    />
+                        disabled={loading}
+                        icon1={loading ? <LoadingSpinner color='text-white' /> : <Save style={{fontSize: '17px'}} />}
+                    />}
                 </div>
             </div>
             

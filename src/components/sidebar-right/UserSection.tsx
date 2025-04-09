@@ -3,6 +3,7 @@
 import { useGeneralData } from '@/context/GeneralDataContext';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react'
+import LoadingSpinner from '../LoadingSpinner';
 
 const UserSection = () => {
     const [firstName, setFirstName] = useState('');
@@ -42,12 +43,11 @@ const UserSection = () => {
         </div>
 
         <div className='px-4 mb-6'>
-            {contextLoading ? 'Loading...' : 
+            {contextLoading ? <LoadingSpinner/> :
             <>
                 <h2 className='font-semibold'>{firstName}</h2>
                 <p className='text-textGray text-sm'>{email}</p>
-            </>
-            }
+            </>}
         </div>
     </div>
   )

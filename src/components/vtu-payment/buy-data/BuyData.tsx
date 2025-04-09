@@ -12,6 +12,7 @@ import InputOne from '@/components/inputs/InputOne';
 import ButtonNeutral from '@/components/button/ButtonNeutral';
 import ButtonOne from '@/components/button/ButtonOne';
 import { parseAmountIntoNumberFormat, parsePriceIntoIntegerAndDecimal } from '@/utils/formatters';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 const BuyData = () => {
   const [providers, setProviders] = useState([]);
@@ -165,6 +166,7 @@ const BuyData = () => {
           });
           // console.log(transactionData);
           
+          window.location.reload();
         } else {
           // console.log(res.message);
           if (res.message === 'Transaction failed: Undefined variable: res') {
@@ -192,7 +194,11 @@ const BuyData = () => {
     <section className="space-y-5">
       <Toaster position="top-center" reverseOrder={false} />
       <h1 className="text-3xl font-semibold mt-5">Buy Internet Data</h1>
-      {loading ? 'Loading...' : 
+      {loading ?  
+        <div className="w-full h-[12rem] flex items-center justify-center">
+          <LoadingSpinner dynamicSize='size-12' />
+        </div>
+       : 
         (!selectedProvider && plans?.length === 0) ? (
           <>
             <h2 className="text-base font-medium mb-4">Select Provider</h2>
@@ -268,7 +274,7 @@ const BuyData = () => {
               </div>
               <div className="flex justify-between text-sm">
                 <span className="font-medium">Status:</span>
-                <span className={transactionData.status === 'success' ? 'text-green-500' : 'text-red-500'}>
+                <span className={transactionData.status === 'Successful' ? 'text-green-500' : 'text-red-500'}>
                   {transactionData.status}
                 </span>
               </div>

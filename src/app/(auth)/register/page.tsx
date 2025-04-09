@@ -341,7 +341,7 @@ const RegisterPage: React.FC<RegisterProps> = ({ data }) => {
                             classes='py-2 px-16 w-full'
                             disabled={btnIsDisabled}
                             icon1={isLoading ? <LoadingSpinner color='text-white' /> : ''}
-                            btnText1='Sign up'
+                            btnText1={isLoading ? 'Registering...' : 'Sign up'}
                         />
                         
                         <p className='text-center text-sm'>Already have an account? <Link href='/login' className='text-blue-600 font-semibold'>Login</Link></p>

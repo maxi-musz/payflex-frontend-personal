@@ -77,7 +77,7 @@ const Verification: React.FC<ProfileProps> = ({ data }) => {
                 //     id_no: data.id_no,
                 // })
             }
-            router.refresh();
+            window.location.reload();
             setInputMode('editable');
             setInputDisabled(true);
         } catch (error) {

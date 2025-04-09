@@ -19,6 +19,7 @@ const CreateCard = () => {
     setTimeout(() => {
       showToast("Card created successfully! You can view it in the 'My Cards' tab.");
       setLoading(false);
+      // window.location.reload();
     }, 2000);
   };
   console.log(isChecked);

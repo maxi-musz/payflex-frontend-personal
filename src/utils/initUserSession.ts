@@ -1,4 +1,3 @@
-// utils/initUserSession.ts
 import { getUserDashboard, getUserProfile } from "@/features/dashboard/actions";
 import { showToast } from "@/components/HotToast";
 

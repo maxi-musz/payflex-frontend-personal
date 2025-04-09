@@ -97,7 +97,7 @@ const Profile: React.FC<ProfileProps> = ({ data }) => {
                 //     house_number: data.address.house_number,
                 // })
             }
-            router.refresh();
+            window.location.reload();
             setInputMode('editable');
             setInputDisabled(true);
         } catch (error) {

@@ -1,6 +1,6 @@
 "use client"
 
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import ButtonOne from './button/ButtonOne';
 import { ErrorOutline, Restore } from '@mui/icons-material';
 import ButtonNeutral from './button/ButtonNeutral';
@@ -19,10 +19,11 @@ interface OtpProps {
     handleModalToggle: () => void,
     cancelEmailVerification: () => void,
     emailAddress: string,
-    setIsVerified: Dispatch<SetStateAction<boolean>>,
+    // setIsVerified: Dispatch<SetStateAction<boolean>>,
 }
 
-const OTPConfirmModal = ({data, handleModalToggle, cancelEmailVerification, emailAddress, setIsVerified}: OtpProps) => {
+// const OTPConfirmModal = ({data, handleModalToggle, cancelEmailVerification, emailAddress}: OtpProps) => {
+const OTPConfirmModal = ({data, handleModalToggle, cancelEmailVerification, emailAddress}: OtpProps) => {
     const [otpTime, setOTPTime] = useState(60);
     const [otpCode, setOTPCode] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -84,20 +85,22 @@ const OTPConfirmModal = ({data, handleModalToggle, cancelEmailVerification, emai
         setIsLoading(true);
         try {
             if (pathName === '/register') {
-                const res = await verifyEmail(emailAddress, data.otp_code);
-            
-                if (res.success) {
+                const {success, message} = await verifyEmail(emailAddress, data.otp_code);
+                // console.log(success, message);
+
+                if (success) {
                     setIsLoading(false);
-                    showToast(`${res.message}`);
-                    setIsVerified(true);
+                    showToast(`${message}`);
+                    // setIsVerified(true);
                     handleModalToggle();
+                    router.push('/login');
                 }
             }
             
             if (pathName === '/forgot-password') {
-                const res = await verifyPasswordReset(emailAddress, data.otp_code);
+                const {success, message} = await verifyPasswordReset(emailAddress, data.otp_code);
                 
-                if (res.success) {
+                if (success) {
                     setIsLoading(false);
                     // setIsVerified(true);
                     handleModalToggle();
@@ -105,7 +108,7 @@ const OTPConfirmModal = ({data, handleModalToggle, cancelEmailVerification, emai
                 }
                     
                 setTimeout(() => {
-                    showToast(`${res.message}`);
+                    showToast(`${message}`);
                 }, 500);
             };
         } catch (error) {

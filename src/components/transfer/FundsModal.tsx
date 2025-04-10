@@ -6,11 +6,9 @@ import ButtonOne from '../button/ButtonOne';
 import InputField from '../inputs/InputField';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import Loading from '@/app/loading';
 import { useState } from 'react';
 import { useGeneralData } from '@/context/GeneralDataContext';
 import { parseAmountIntoNumberFormat, parseFormattedAmountToNumber } from '@/utils/formatters';
-import { fundWalletAmountSchema, FundWalletAmountType } from '@/features/auth/validations';
 import { paystackFundingInitializationSchema, PaystackFundingInitializationType } from '@/features/banking/validations';
 import { showToast } from '../HotToast';
 import { initialisePaystackFunding } from '@/features/banking/actions';
@@ -66,11 +64,8 @@ const FundsModal = ({ data, handleModalToggle, whichModal }: FundsProps) => {
             });
             
             if (res.success) {
-                window.location.href = res.data.authorization_url;
-                setTimeout(() => {
-                    window.location.reload();
-                }, 500);
                 showToast(`${res.message}`);
+                window.location.href = res.data.authorization_url;
             } else {
                 showToast('Something went wrong! Could not finish initialization of paystack funding.', 'error');
             }

@@ -50,7 +50,7 @@ export interface UserDataProps {
   first_name: string;
   last_name: string;
   email: string;
-  phone_number: string;
+  // phone_number: string;
   // address: {
   //   country: string;
   //   state: string;
@@ -60,7 +60,7 @@ export interface UserDataProps {
   // gender: string;
   // date_of_birth: string;
   password: string;
-  confirm_password: string;
+  // confirm_password: string;
 }
 
 export interface LocalStorateUserDataProps {

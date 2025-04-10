@@ -14,6 +14,7 @@ import { showToast } from '../HotToast';
 import { initialisePaystackFunding } from '@/features/banking/actions';
 import { Toaster } from 'react-hot-toast';
 import LoadingSpinner from '../LoadingSpinner';
+import { useRouter } from 'next/navigation';
 
 interface FundsProps {
     data?: PaystackFundingInitializationType,
@@ -27,7 +28,9 @@ const FundsModal = ({ data, handleModalToggle, whichModal }: FundsProps) => {
     const [whichTransferType, setWhichTransferType] = useState('');
 
     const { currentData, setCurrentData } = useGeneralData();
-  
+    
+    const router = useRouter();
+
     const onCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const formattedValue = parseAmountIntoNumberFormat(e.target.value);
       setInputAmount(`₦${formattedValue}`);
@@ -47,29 +50,35 @@ const FundsModal = ({ data, handleModalToggle, whichModal }: FundsProps) => {
         setIsLoading(true);
         const token = sessionStorage.getItem("accessToken");
         try {
-        const parsedAmount = parseFormattedAmountToNumber(inputAmount);
-        if (!isNaN(parsedAmount) && parsedAmount > 0) {
-            const updatedData: PaystackFundingInitializationType = {
-            ...data,
-            amount: parsedAmount.toString(),
-            };
-            // console.log(updatedData);
+            const parsedAmount = parseFormattedAmountToNumber(inputAmount);
+            if (!isNaN(parsedAmount) && parsedAmount > 0) {
+                const updatedData: PaystackFundingInitializationType = {
+                ...data,
+                amount: parsedAmount.toString(),
+                };
+                // console.log(updatedData);
 
-            if (!token) return showToast("You are unauthorized!", "error");
+                if (!token) {
+                    showToast("You are unauthorized!", "error");
 
-            const updatedAmount = parseInt(updatedData.amount);
-            const res = await initialisePaystackFunding(token, {
-                amount: updatedAmount,
-                callback_url: `${process.env.NEXT_PUBLIC_PAYSTACK_CALLBACK_URL}`,
-            });
-            
-            if (res.success) {
-                showToast(`${res.message}`);
-                window.location.href = res.data.authorization_url;
-            } else {
-                showToast('Something went wrong! Could not finish initialization of paystack funding.', 'error');
+                    setTimeout(() => {
+                        return router.push('/login');
+                    }, 500);
+                } else {
+                    const updatedAmount = parseInt(updatedData.amount);
+                    const res = await initialisePaystackFunding(token, {
+                        amount: updatedAmount,
+                        callback_url: `${process.env.NEXT_PUBLIC_PAYSTACK_CALLBACK_URL}`,
+                    });
+                    
+                    if (res.success) {
+                        showToast(`${res.message}`);
+                        window.location.href = res.data.authorization_url;
+                    } else {
+                        showToast('Something went wrong! Could not finish initialization of paystack funding.', 'error');
+                    }
+                }
             }
-        }
         // handleModalToggle();
         } catch (error) {
             setTimeout(() => {

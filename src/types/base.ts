@@ -136,7 +136,7 @@ export interface TransactionHistoryProps {
   amount: number,
   type: string,
   description: string,
-  status: boolean,
+  status: string,
   date: string,
   sender: string,
   icon: string,

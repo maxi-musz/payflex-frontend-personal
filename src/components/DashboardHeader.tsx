@@ -14,6 +14,7 @@ import LoadingSpinner from './LoadingSpinner';
 
 const DashboardHeader = () => {
   const [isBalanceOpen, setIsBalanceOpen] = useState(false);
+  const [isPaystackVerified, setIsPaystackVerified] = useState(false);
   // const [accessToken, setAccessToken] = useState('');
   
   const {currentData, setCurrentData, wallet, contextLoading} = useGeneralData();
@@ -41,7 +42,7 @@ const DashboardHeader = () => {
             setCurrentData({...currentData, currentTab: '/'});
             // console.log(res);
             showToast(`${res.message}`);
-            window.location.reload();
+            setIsPaystackVerified(true);
           } 
           // else {
           //   showToast(
@@ -62,6 +63,13 @@ const DashboardHeader = () => {
   
     init();
   }, [currentData, router, setCurrentData]);
+  
+  if (isPaystackVerified) {
+    window.location.reload();
+    setTimeout(() => {
+      setIsPaystackVerified(false);
+    }, 200);
+  }
 
   const handleBalanceToggle = () => setIsBalanceOpen(prev => !prev);
 

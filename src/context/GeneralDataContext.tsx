@@ -4,10 +4,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { currentUserInfo, INITIAL_GENERAL_DATA } from '../data/base';
 import { GeneralDataProps, TransactionHistoryProps, UserAddressProps, UserDataProps, UserKYCProps, UserProfileProps, UserProps, WalletProps } from '../types/base';
 import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
-import { showToast } from '@/components/HotToast';
-import { getUserDashboard, getUserProfile } from '@/features/dashboard/actions';
 import { initUserSession } from '@/utils/initUserSession';
-import { useSessionInit } from '@/hooks/useSessionInit';
 
 interface GeneralDataContextType {
   currentData: GeneralDataProps;

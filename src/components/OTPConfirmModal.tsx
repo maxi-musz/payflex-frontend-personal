@@ -147,14 +147,14 @@ const OTPConfirmModal = ({data, handleModalToggle, cancelEmailVerification, emai
                             <p className='flex-1 flex items-center justify-between gap-3'>
                                 {otpTime === 0 ?
                                 <>
-                                    <span>OTP code has expired.</span>
+                                    <span>Didn&apos;t get OTP?</span>
                                     <button onClick={resendOTP} className='cursor-pointer text-textGrayDarker underline flex items-center gap-1 text-sm font-semibold'>
                                         <Restore style={{fontSize: '16px'}} />
-                                        Resend OTP
+                                        Resend
                                     </button>
                                 </>
                                 : 
-                                <span>Confirmation code expires in <strong>{otpTime === 60 ? '01:00' : otpTime}</strong></span>}
+                                <span>_<strong>{otpTime === 60 ? '01:00' : otpTime}</strong></span>}
                                 {/* <span>Confirmation code expires in <strong>{otpTime === 60 ? '01:00' : <CountDownTimer/>}</strong></span>} */}
                             </p>
                         </div>

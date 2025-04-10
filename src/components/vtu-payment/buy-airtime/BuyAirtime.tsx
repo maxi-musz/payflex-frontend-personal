@@ -4,14 +4,13 @@ import { getAirtimeProviders, buyAirtime } from '@/features/vtu-vas/actions';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
-import Loading from '@/app/loading';
 import { showToast } from '@/components/HotToast';
 import Image from 'next/image';
 import { Toaster } from 'react-hot-toast';
 import InputOne from '@/components/inputs/InputOne';
-import ButtonNeutral from '@/components/button/ButtonNeutral';
 import ButtonOne from '@/components/button/ButtonOne';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import { useGeneralData } from '@/context/GeneralDataContext';
 
 const BuyAirtime = () => {
   const [providers, setProviders] = useState([]);
@@ -20,7 +19,8 @@ const BuyAirtime = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [amount, setAmount] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [transactionData, setTransactionData] = useState<any | null>(null);  // State to hold transaction data
+  const [transactionData, setTransactionData] = useState<any | null>(null);
+  const {updateGeneralData} = useGeneralData();
 
   const router = useRouter();
 
@@ -65,6 +65,8 @@ const BuyAirtime = () => {
     try {
       setLoading(true)
       const token = sessionStorage.getItem("accessToken");
+      // setAccessToken(token!);
+
       airtimePurchaseResponse = await buyAirtime(token!, {
         amount,
         phoneNumber,
@@ -85,7 +87,10 @@ const BuyAirtime = () => {
         });
         
         showToast(airtimePurchaseResponse.message);
-        window.location.reload();
+        
+        // setTimeout(() => {
+        //   window.location.reload();
+        // }, 1500);
       } else {
         // console.log("Error", airtimePurchaseResponse.message)
         showToast(`${airtimePurchaseResponse.message}` || 'Something went wrong', 'error');
@@ -94,10 +99,13 @@ const BuyAirtime = () => {
       showToast(`Error: ${(error as Error).message}`, 'error');
     } finally {
       setIsSubmitting(false);
+      setLoading(false);
     }
   };
 
   const handleGoBackHome = () => {
+    // setCurrentData({...currentData, currentTab: '/'});
+    updateGeneralData('/', '');
     router.push('/');
   };
 

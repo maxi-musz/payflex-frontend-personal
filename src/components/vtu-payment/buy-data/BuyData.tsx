@@ -3,16 +3,14 @@
 import { getInternetDataProviders, buyInternetData, selectInternetData } from '@/features/vtu-vas/actions';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
-
-import Loading from '@/app/loading';
 import { showToast } from '@/components/HotToast';
 import Image from 'next/image';
 import { Toaster } from 'react-hot-toast';
 import InputOne from '@/components/inputs/InputOne';
-import ButtonNeutral from '@/components/button/ButtonNeutral';
 import ButtonOne from '@/components/button/ButtonOne';
 import { parseAmountIntoNumberFormat, parsePriceIntoIntegerAndDecimal } from '@/utils/formatters';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import { useGeneralData } from '@/context/GeneralDataContext';
 
 const BuyData = () => {
   const [providers, setProviders] = useState([]);
@@ -29,9 +27,10 @@ const BuyData = () => {
   const [selectedPlan, setSelectedPlan] = useState<any | null>(null);
   const [selectedPlanAmount, setSelectedPlanAmount] = useState<{ integerPart: number; decimalPart: number } | null>(null);
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [amount, setAmount] = useState('');
+  // const [amount, setAmount] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [transactionData, setTransactionData] = useState<any | null>(null);
+    const {updateGeneralData} = useGeneralData();
 
   const router = useRouter();
 
@@ -166,7 +165,9 @@ const BuyData = () => {
           });
           // console.log(transactionData);
           
-          window.location.reload();
+          // setTimeout(() => {
+          //   window.location.reload();
+          // }, 1500);
         } else {
           // console.log(res.message);
           if (res.message === 'Transaction failed: Undefined variable: res') {
@@ -187,6 +188,8 @@ const BuyData = () => {
   };
 
   const handleGoBackHome = () => {
+    // setCurrentData({...currentData, currentTab: '/'});
+    updateGeneralData('/', '');
     router.push('/');
   };
 

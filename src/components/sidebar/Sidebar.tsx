@@ -69,7 +69,7 @@ const Sidebar: React.FC<SidebarProps> = ({ show = 'hidden', closeSidebar = () =>
                             <div className="w-full pl-2 pt-2 pb-5 flex items-center justify-between gap-3 border-t">
                                 <div className="relative size-9 rounded-full">
                                     <Image
-                                        src="/images/3.jpeg"
+                                        src="/images/default_avatar.png"
                                         alt="User's profile image"
                                         fill
                                         className="object-contain rounded-full"

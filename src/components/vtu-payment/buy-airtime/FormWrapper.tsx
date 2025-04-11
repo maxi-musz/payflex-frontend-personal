@@ -49,13 +49,13 @@ const FormWrapper = ({
                 </div>
                 <div className="w-full">
                     <InputOne
-                    type='text'
-                    // onChange={(e) => setAmount(e.target.value)}
-                    required
-                    onChange={onCodeChange}
-                    value={amount}
-                    name="amount"
-                    placeholderText='Enter amount (₦0.00)'
+                        type='number'
+                        // onChange={(e) => setAmount(e.target.value)}
+                        onChange={onCodeChange}
+                        required
+                        value={amount}
+                        name="amount"
+                        placeholderText='Enter amount (₦0.00)'
                     />
                     {/* {amountError && <p className='text-center text-xs text-red-700'>{amountError}</p>} */}
                 </div>

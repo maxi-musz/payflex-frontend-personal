@@ -1,7 +1,7 @@
 'use client';
 
 import { Edit, HomeOutlined, PersonOutlined, Save } from '@mui/icons-material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import InputField from '../inputs/InputField';
 import ButtonOne from '../button/ButtonOne';
 import { showToast } from '../HotToast';
@@ -38,6 +38,23 @@ const Profile: React.FC<ProfileProps> = ({ data }) => {
     
     const {loggedInUser} = useGeneralData();
 
+    const {register, handleSubmit, formState: { errors }, reset, } = useForm<ProfileType>({resolver: zodResolver(profileSchema),});
+
+    useEffect(() => {
+        if (inputMode !== 'editable') {
+          reset({
+            first_name: userProfile?.first_name || '',
+            last_name: userProfile?.last_name || '',
+            home_address: userAddress?.house_address || '',
+            house_number: userAddress?.house_no || '',
+            city: userAddress?.city || '',
+            state: userAddress?.state || '',
+            country: userAddress?.country || '',
+            postal_code: userAddress?.postal_code || '',
+          });
+        }
+      }, [inputMode, userProfile, userAddress, reset]);
+
     const router = useRouter();
 
     const handleEditForm = () => {
@@ -45,21 +62,12 @@ const Profile: React.FC<ProfileProps> = ({ data }) => {
         setInputDisabled(false);
     }
     
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-        } = useForm<ProfileType>({
-        resolver: zodResolver(profileSchema),
-        defaultValues: data,
-        });
-    
-        const onFormSubmit = handleSubmit(async (data) => {
+    const onFormSubmit = handleSubmit(async (data) => {
         console.log(data);
             
         const token = sessionStorage.getItem("accessToken");
         if (!token) return router.push('/login');
-     
+        
         setLoading(true);
         const UserData = {
             first_name: data.first_name,
@@ -97,6 +105,7 @@ const Profile: React.FC<ProfileProps> = ({ data }) => {
                 //     house_number: data.address.house_number,
                 // })
             }
+
             window.location.reload();
             setInputMode('editable');
             setInputDisabled(true);
@@ -107,10 +116,14 @@ const Profile: React.FC<ProfileProps> = ({ data }) => {
             }, 500);
         }
     });
+
+    if (contextLoading) {
+        return (<div className="w-full h-[12rem] flex items-center justify-center">
+          <LoadingSpinner dynamicSize='size-12' />
+        </div>)
+    }
     
   return (
-    <>
-    {contextLoading ? <p className='py-4 text-2xl text-center'>Loading...</p> : 
     <form onSubmit={onFormSubmit} className='py-3 divide-y'>
         <Toaster position="top-center" reverseOrder={false} />
         <div className='py-6 px-5'>
@@ -146,6 +159,7 @@ const Profile: React.FC<ProfileProps> = ({ data }) => {
                             label="First Name"
                             error={errors.first_name}
                             disabled={inputDisabled}
+                            defaultValue={inputMode !== 'editable' ? userProfile?.first_name : ''}
                             mode={inputMode}
                             classes={`${inputMode === 'editable' ? 'placeholder:text-neutral-800 placeholder:text-base' : ''} w-full`}
                             placeholderText={userProfile?.first_name || 'Enter your first name'}
@@ -157,6 +171,7 @@ const Profile: React.FC<ProfileProps> = ({ data }) => {
                             {...register("last_name")}
                             disabled={inputDisabled}
                             label="Last Name"
+                            defaultValue={inputMode !== 'editable' ? userProfile?.last_name : ''}
                             error={errors.last_name}
                             classes={`${inputMode === 'editable' ? 'placeholder:text-neutral-800 placeholder:text-base' : ''} w-full`}
                             placeholderText={userProfile?.last_name || 'Enter your last name'}
@@ -180,6 +195,7 @@ const Profile: React.FC<ProfileProps> = ({ data }) => {
                             mode={inputMode}
                             disabled={inputDisabled}
                             label="Home Address"
+                            defaultValue={inputMode !== 'editable' ? userAddress?.house_address : ''}
                             error={errors.home_address}
                             classes={`${inputMode === 'editable' ? 'placeholder:text-neutral-800 placeholder:text-base' : ''} w-full`}
                             placeholderText={userAddress?.house_address || 'Enter your home address'}
@@ -191,6 +207,7 @@ const Profile: React.FC<ProfileProps> = ({ data }) => {
                             mode={inputMode}
                             disabled={inputDisabled}
                             label="House Number"
+                            defaultValue={inputMode !== 'editable' ? userAddress?.house_no : ''}
                             error={errors.house_number}
                             classes={`${inputMode === 'editable' ? 'placeholder:text-neutral-800 placeholder:text-base' : ''} w-full`}
                             placeholderText={userAddress?.house_no || 'Enter your house number'}
@@ -204,6 +221,7 @@ const Profile: React.FC<ProfileProps> = ({ data }) => {
                             mode={inputMode}
                             disabled={inputDisabled}
                             label="City"
+                            defaultValue={inputMode !== 'editable' ? userAddress?.city : ''}
                             error={errors.city}
                             classes={`${inputMode === 'editable' ? 'placeholder:text-neutral-800 placeholder:text-base' : ''} w-full`}
                             placeholderText={userAddress?.city || 'Enter your city'}
@@ -215,6 +233,7 @@ const Profile: React.FC<ProfileProps> = ({ data }) => {
                             mode={inputMode}
                             disabled={inputDisabled}
                             label="State/Province"
+                            defaultValue={inputMode !== 'editable' ? userAddress?.state : ''}
                             error={errors.state}
                             classes={`${inputMode === 'editable' ? 'placeholder:text-neutral-800 placeholder:text-base' : ''} w-full`}
                             placeholderText={userAddress?.state || 'Enter your state'}
@@ -228,6 +247,7 @@ const Profile: React.FC<ProfileProps> = ({ data }) => {
                             mode={inputMode}
                             disabled={inputDisabled}
                             label="Postal Code"
+                            defaultValue={inputMode !== 'editable' ? userAddress?.postal_code : ''}
                             error={errors.postal_code}
                             classes={`${inputMode === 'editable' ? 'placeholder:text-neutral-800 placeholder:text-base' : ''} w-full`}
                             placeholderText={userAddress?.postal_code || 'Enter your postal code'}
@@ -239,6 +259,7 @@ const Profile: React.FC<ProfileProps> = ({ data }) => {
                             mode={inputMode}
                             disabled={inputDisabled}
                             label="Country"
+                            defaultValue={inputMode !== 'editable' ? userAddress?.country : ''}
                             error={errors.country}
                             classes={`${inputMode === 'editable' ? 'placeholder:text-neutral-800 placeholder:text-base' : ''} w-full`}
                             placeholderText={userAddress?.country || 'Enter your country'}
@@ -257,8 +278,6 @@ const Profile: React.FC<ProfileProps> = ({ data }) => {
             />
         </div> */}
     </form>
-    }
-    </>
   )
 }
 

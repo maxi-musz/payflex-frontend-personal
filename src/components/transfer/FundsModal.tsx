@@ -89,7 +89,6 @@ const FundsModal = ({ data, handleModalToggle, whichModal }: FundsProps) => {
         }
     });
 
-
     const handleTransactionTypeSubmit = () => {
         if (whichModal === 'Transfer') {
             // console.log(whichTransferType);

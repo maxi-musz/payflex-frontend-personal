@@ -20,7 +20,6 @@ import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
 import { Toaster } from 'react-hot-toast';
 
-
 interface RegisterProps {
     data?: RegisterType;
 }

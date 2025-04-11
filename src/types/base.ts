@@ -180,3 +180,42 @@ export interface UserKYCProps {
   id_type: string,
   id_number: string,
 }
+
+export interface AirtimeProviderProps {
+  maxAmount: string,
+  minAmount: string,
+  provider: string,
+  providerLogoUrl: string
+}
+
+export interface AirtimeTransactionDataProps {
+  provider: string,
+  phoneNumber: string,
+  amount: string,
+  date: string,
+  reference: string,
+  status: string,
+}
+
+export interface InternetDataProviderProps {
+  id: number,
+  ip_id: number,
+  name: string,
+}
+
+export interface InternetDataPlanProps {
+  id: number,
+  data_type_id: number,
+  api_cent: string,
+  amount: string,
+  name: string,
+}
+
+export interface InternetDataTransactionDataProps {
+  transactionProvider: string,
+  phoneNumber: string,
+  amount: string,
+  date: string,
+  reference: string,
+  status: string,
+}

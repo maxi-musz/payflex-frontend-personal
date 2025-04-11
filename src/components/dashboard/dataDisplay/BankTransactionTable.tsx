@@ -85,8 +85,7 @@ const BankTransactionTable = ({transactionHistory}: TransactionHistoryTableProps
                         <span className='flex items-center gap-2'>
                           <div className="relative size-7 rounded-full border">
                             <Image
-                              src={item.icon === '' ? item.icon : '/images/default_avatar.png'}
-                              // src={`${item.icon}` || '/images/default_avatar.png'}
+                              src={item.icon === '' ? item.icon : '/images/imagePlaceholder.jpeg'}
                               alt="user avatar"
                               fill
                               className="object-cover rounded-full"

@@ -25,6 +25,7 @@ interface GeneralDataContextType {
   contextLoading: boolean;
   setContextLoading: (data: boolean) => void;
   setAccessToken: (token: string) => void;
+  accessToken: string,
   setWallet: (data: WalletProps | null) => void;
   setTransactionHistory: (data: TransactionHistoryProps[] | null) => void;
   setUser: (data: UserProps | null) => void;
@@ -125,6 +126,7 @@ export const GeneralDataProvider = ({ children }: { children: ReactNode }) => {
 
       setAccessToken(token);
       setContextLoading(true);
+      // console.log(accessToken);
 
       const data = await initUserSession(token);
 
@@ -160,7 +162,7 @@ export const GeneralDataProvider = ({ children }: { children: ReactNode }) => {
     if (loggedIn) {
       setLoggedInUser(JSON.parse(loggedIn));
     }
-  }, [pathName]);
+  }, [pathName, accessToken, router]);
 
   const updateGeneralData = (tab: string, subTab: string) => {
     setCurrentData({currentTab: tab, currentSubtab: subTab});
@@ -190,6 +192,7 @@ export const GeneralDataProvider = ({ children }: { children: ReactNode }) => {
         updateGeneralData,
         dropLoggedInUserInfo,
         setAccessToken,
+        accessToken,
         userProfile,
         userAddress,
         userKYC,

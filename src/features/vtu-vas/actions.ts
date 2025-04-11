@@ -72,7 +72,7 @@ export const selectInternetData = async (token: string, params: string) => {
 
 
 export const buyInternetData = async (token: string, payload: {
-    provider: string,
+    provider: number,
     number: string,
     plan_id: number,
     amount: number,

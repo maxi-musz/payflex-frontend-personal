@@ -6,9 +6,14 @@ import TransactionOptions from './dataDisplay/TransactionOptions';
 import DashboardHeader from '../DashboardHeader';
 import { useGeneralData } from '@/context/GeneralDataContext';
 import LoadingSpinner from '../LoadingSpinner';
+import { useEffect } from 'react';
 
 const Dashboard = () => {
-  const { transactionHistory, contextLoading } = useGeneralData();
+  const { transactionHistory, contextLoading, updateGeneralData } = useGeneralData();
+
+  useEffect(() => {
+    updateGeneralData('/', '');
+  }, []);
 
   return (
     <div className='w-full pt-2 pb-4 space-y-2 md:space-y-4'>

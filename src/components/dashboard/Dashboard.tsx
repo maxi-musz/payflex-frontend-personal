@@ -12,7 +12,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     updateGeneralData('/', '');
-  }, []);
+  });
 
   return (
     <div className='w-full pb-4 space-y-2 md:space-y-4'>

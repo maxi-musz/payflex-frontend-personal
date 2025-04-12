@@ -19,7 +19,7 @@ interface ProfileProps {
     data?: ProfileType;
 }
 
-const Profile: React.FC<ProfileProps> = ({ data }) => {
+const Profile: React.FC<ProfileProps> = () => {
     const [loading, setLoading] = useState(false);
     const [inputDisabled, setInputDisabled] = useState(true);
     const [inputMode, setInputMode] = useState<string>('editable');
@@ -63,7 +63,7 @@ const Profile: React.FC<ProfileProps> = ({ data }) => {
     }
     
     const onFormSubmit = handleSubmit(async (data) => {
-        console.log(data);
+        // console.log(data);
             
         const token = sessionStorage.getItem("accessToken");
         if (!token) return router.push('/login');

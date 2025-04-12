@@ -42,7 +42,7 @@ const ButtonNeutral: React.FC<ButtonProps> = ({
       key={0}
       type={type}
       title={title || btnText1}
-      className={`focus:ring-2 focus:ring-${bgColor ? bgColor+'-700' : 'primary'} focus:ring-offset-2 outline-none ${classes} ${pending || disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+      className={`focus:ring-2 focus:ring-${bgColor ? bgColor+'-700' : 'primary'} focus:ring-offset-2 outline-none transition-all duration-300 ease-in-out ${classes} ${pending || disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
       disabled={pending || disabled}
       onClick={onClick}
     >

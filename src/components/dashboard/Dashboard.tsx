@@ -3,7 +3,6 @@
 import ButtonNeutral from '../button/ButtonNeutral';
 import BankTransactionTable from './dataDisplay/BankTransactionTable';
 import TransactionOptions from './dataDisplay/TransactionOptions';
-import DashboardHeader from '../DashboardHeader';
 import { useGeneralData } from '@/context/GeneralDataContext';
 import LoadingSpinner from '../LoadingSpinner';
 import { useEffect } from 'react';
@@ -16,8 +15,7 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <div className='w-full pt-2 pb-4 space-y-2 md:space-y-4'>
-      <DashboardHeader />
+    <div className='w-full pb-4 space-y-2 md:space-y-4'>
       <TransactionOptions />
 
       <div className="flex items-center justify-between">

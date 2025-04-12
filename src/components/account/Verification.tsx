@@ -27,7 +27,7 @@ const Verification: React.FC<ProfileProps> = ({ data }) => {
     const [inputDisabled, setInputDisabled] = useState(true);
     const [inputMode, setInputMode] = useState<string>('editable');
 
-    const {userKYC, contextLoading} = useGeneralData();
+    const {userKYC} = useGeneralData();
     // const [updatedKYCInfo, setUpdatedKYCInfo] = useState<
     // {
     //     id_type: '',
@@ -66,7 +66,7 @@ const Verification: React.FC<ProfileProps> = ({ data }) => {
             const res = await updateKYC(token, UserData);
             console.log(res);
             if (res.success) {
-                const { data } = res;
+                // const { data } = res;
                 setLoading(false);
                 setTimeout(() => {
                     showToast(`${res.message}` || "KYC information updated successfully");

@@ -19,7 +19,7 @@ const Navbar: React.FC = () => {
       const nameArray = parseItemIntoArray(user.name, ' ');
       setFirstName(nameArray[0]);
     }
-  }, [user?.name]);
+  }, [user?.name, user]);
   
   const closeSidebar = () => setOpen(false);
 

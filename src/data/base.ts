@@ -4,7 +4,7 @@ export const menuItems = [
     {
         id: 1,
         title: "Dashboard",
-        url: '/',
+        url: '/dashboard',
         icon: HomeOutlined,
         dropdownMenu: [],
     },

@@ -33,7 +33,7 @@ const WalletBallanceCard: React.FC<WalletBalanceInfoProps> = ({item}) => {
         <div className="w-full flex items-center justify-between">
           <p className='text-textGrayDarker text-xl md:text-2xl font-bold space-x-1'>
             <span className={`${item.currency === '₦' ? 'text-green-600' : item.currency === '£' ? 'text-red-600' : 'text-blue-800'} font-extrabold`}>{item.currency}</span>
-            {!isBalanceOpen ? <CountUp start={0} end={0} duration={2} delay={0} decimal='true' /> : "******"}
+            {!isBalanceOpen ? <CountUp start={0} end={0} duration={2} delay={0} decimals={2} /> : "******"}
           </p>
           <button onClick={handleBalanceToggle} className='hover:bg-blue-300 rounded-full size-8 flex items-center justify-center border hover:border-transparent transition-all duration-300 ease-in-out'>
             {isBalanceOpen ?

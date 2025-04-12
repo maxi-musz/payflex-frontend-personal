@@ -111,6 +111,7 @@ const ForgotPasswordPage: React.FC<ForgotPasswordProps> = ({ data }) => {
                     handleModalToggle={closeOTPModal}
                     emailAddress={emailAddress} 
                     setIsVerified={setIsVerified} 
+                    isVerified={isVerified}
                 />}
             </div>
 

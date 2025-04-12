@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import ButtonOne from './button/ButtonOne';
 import { ErrorOutline, Restore } from '@mui/icons-material';
 import ButtonNeutral from './button/ButtonNeutral';
@@ -19,7 +19,8 @@ interface OtpProps {
     handleModalToggle: () => void,
     cancelEmailVerification: () => void,
     emailAddress: string,
-    // setIsVerified: Dispatch<SetStateAction<boolean>>,
+    isVerified?: boolean,
+    setIsVerified?: Dispatch<SetStateAction<boolean>>,
 }
 
 // const OTPConfirmModal = ({data, handleModalToggle, cancelEmailVerification, emailAddress}: OtpProps) => {

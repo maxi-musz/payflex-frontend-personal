@@ -4,7 +4,6 @@ import React, { useEffect, useRef, useState } from 'react'
 import InputOne from '../inputs/InputOne'
 import { availableBankOptions } from '../../data/base';
 import TextAreaTwo from '../inputs/TextAreaTwo';
-import ButtonNeutral from '../button/ButtonNeutral';
 import Loading from '@/app/loading';
 import dynamic from 'next/dynamic';
 import ButtonOne from '../button/ButtonOne';

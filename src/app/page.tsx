@@ -1,18 +1,24 @@
-import Dashboard from "@/components/dashboard/Dashboard";
-import Navbar from "@/components/Navbar";
-import Sidebar from "@/components/sidebar/Sidebar";
-import SidebarRight from "@/components/sidebar-right/SidebarRight";
+import CallToAction from "@/components/home/CallToAcion";
+import Features from "@/components/home/Features";
+import Footer from "@/components/home/Footer";
+import GiftCards from "@/components/home/GiftCards";
+import Hero from "@/components/home/Hero";
+import Navbar from "@/components/home/Navbar";
+import Testimonials from "@/components/home/Testimonials";
+import VirtualCards from "@/components/home/VirtualCards";
 
 const HomePage: React.FC = () => {
 
   return (
-    <div className='bg-[#f8fbff] h-full min-h-screen flex'>
-      <Sidebar />
-      <div className="px-2 md:px-5 w-full md:w-4/6 h-full min-h-screen col-span-2 border-x border-customGray">
-        <Navbar />
-        <Dashboard />
-      </div>
-      <SidebarRight />
+    <div className='min-h-screen' id="home">
+      <Navbar/>
+      <Hero />
+      <Features />
+      <VirtualCards />
+      <GiftCards />
+      <Testimonials />
+      <CallToAction />
+      <Footer />
     </div>
   );
 };

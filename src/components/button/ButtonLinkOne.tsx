@@ -37,7 +37,7 @@ const ButtonLinkOne: React.FC<ButtonProps> = ({
       type={type}
       href={href}
       title={title || btnText1}
-      className={`flex items-center justify-center gap-2 text-white hover:text-primary bg-primary hover:bg-transparent border border-transparent hover:border-primary rounded-radius-8 hover:cursor-pointer shadow-xl focus:ring-2 focus:ring-primary focus:ring-offset-2 outline-none ${classes}`}
+      className={`flex items-center justify-center gap-2 text-white hover:text-primary bg-primary hover:bg-transparent border border-transparent hover:border-primary rounded-radius-8 hover:cursor-pointer shadow-xl focus:ring-2 focus:ring-primary focus:ring-offset-2 outline-none transition-all duration-300 ease-in-out ${classes}`}
     >
       {icon1 && <span>{icon1}</span>}
       <span className={`${btnText2Classes}`}>{btnText2}</span>

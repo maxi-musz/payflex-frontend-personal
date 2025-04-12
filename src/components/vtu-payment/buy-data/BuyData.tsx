@@ -161,8 +161,8 @@ const BuyData = () => {
   };
 
   const handleGoBackHome = () => {
-    updateGeneralData('/', '');
-    router.push('/');
+    updateGeneralData('/dashboard', '');
+    router.push('/dashboard');
   };
 
   if (loading) {

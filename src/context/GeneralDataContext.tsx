@@ -120,7 +120,7 @@ export const GeneralDataProvider = ({ children }: { children: ReactNode }) => {
       const token = sessionStorage.getItem("accessToken");
 
       if (!token) {
-        router.push("/login");
+        router.push("/");
         return;
       }
 
@@ -138,13 +138,13 @@ export const GeneralDataProvider = ({ children }: { children: ReactNode }) => {
         setUserAddress(data.addres);
         setUserKYC(data.user_kyc_data);
       } else {
-        router.push("/login");
+        router.push("/");
       }
 
       setContextLoading(false);
     };
 
-    const safePaths = ["/login", "/register", "/change-password", "/forgot-password"];
+    const safePaths = ["/", "/login", "/register", "/change-password", "/forgot-password"];
     if (!safePaths.includes(pathName)) {
       runInit();
     }

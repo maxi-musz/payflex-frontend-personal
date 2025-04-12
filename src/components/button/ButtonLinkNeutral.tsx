@@ -35,7 +35,7 @@ const ButtonLinkNeutral: React.FC<ButtonProps> = ({
       href={href}
       key={0}
       title={title || btnText1}
-      className={`focus:ring-2 focus:ring-${bgColor ? bgColor+'-700' : 'primary'} focus:ring-offset-2 outline-none ${classes}`}
+      className={`focus:ring-2 focus:ring-${bgColor ? bgColor+'-700' : 'primary'} focus:ring-offset-2 outline-none transition-all duration-300 ease-in-out ${classes}`}
     >
       {icon1 && <span>{icon1}</span>}
       <span className={`${btnText2Classes}`}>{btnText2}</span>

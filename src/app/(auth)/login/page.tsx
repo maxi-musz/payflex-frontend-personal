@@ -53,7 +53,7 @@ const LoginPage: React.FC<LoginProps> = ({ data }) => {
                 }));
                 
                 setIsLoading(false);
-                router.push('/');
+                router.push('/dashboard');
             }
 
             setTimeout(() => {

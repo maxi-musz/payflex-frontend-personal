@@ -15,7 +15,7 @@ const UserSection = () => {
             setFirstName(user.name);
             setEmail(user.email);
         }
-    }, [user?.name, user?.email]);
+    }, [user?.name, user?.email, user]);
     
   return (
     <div>

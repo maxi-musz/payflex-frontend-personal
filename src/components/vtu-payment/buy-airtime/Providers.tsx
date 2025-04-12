@@ -1,6 +1,7 @@
 import { showToast } from '@/components/HotToast';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { getAirtimeProviders } from '@/features/vtu-vas/actions';
+import { AirtimeProviderProps } from '@/types/base';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
@@ -8,7 +9,7 @@ import React, { useEffect, useState } from 'react'
 const Providers = () => {
   const [providers, setProviders] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedProvider, setSelectedProvider] = useState<any | null>(null);
+  const [selectedProvider, setSelectedProvider] = useState<AirtimeProviderProps | null>(null);
   
     const router = useRouter();
 
@@ -19,28 +20,29 @@ const Providers = () => {
         "9MOBILE": "/images/9mobile-icon.jpg",
     };
     
+    console.log(selectedProvider);
+
     useEffect(() => {
-    const token = sessionStorage.getItem("accessToken");
-    if (!token) return router.push('/login');
+        const token = sessionStorage.getItem("accessToken");
+        if (!token) return router.push('/login');
 
-    const fetchProviders = async () => {
-        try {
-        const res = await getAirtimeProviders(token);
-        console.log(res)
-        if (!res.success) {
-            showToast('No data was gotten', 'error');
-        } else {
-            setProviders(res.data);
-        }
-        } catch (error) {
-        showToast(`Error: ${(error as Error).message}`, 'error');
-        router.push('/');
-        } finally {
-        setLoading(false);
-        }
-    };
+        const fetchProviders = async () => {
+            try {
+            const res = await getAirtimeProviders(token);
+            if (!res.success) {
+                showToast('No data was gotten', 'error');
+            } else {
+                setProviders(res.data);
+            }
+            } catch (error) {
+            showToast(`Error: ${(error as Error).message}`, 'error');
+            router.push('/');
+            } finally {
+            setLoading(false);
+            }
+        };
 
-    fetchProviders();
+        fetchProviders();
     }, [router]);
     
   return (
@@ -53,7 +55,7 @@ const Providers = () => {
                 <LoadingSpinner dynamicSize='size-12' />
             </div>
             : 
-            providers.map((provider: any) => (
+            providers.map((provider: AirtimeProviderProps) => (
                 <div
                     key={provider.provider}
                     onClick={() => setSelectedProvider(provider)}

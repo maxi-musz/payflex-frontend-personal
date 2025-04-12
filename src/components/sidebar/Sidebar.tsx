@@ -28,10 +28,10 @@ const Sidebar: React.FC<SidebarProps> = ({ show = 'hidden', closeSidebar = () =>
             setFirstName(user.name)
             setEmail(user.email)
         }
-    }, [user?.name, user?.email]);
+    }, [user?.name, user?.email, user]);
 
     const logout = () => {
-        router.push('/login');
+        router.push('/');
         dropLoggedInUserInfo();
         sessionStorage.removeItem('accessToken');
     }

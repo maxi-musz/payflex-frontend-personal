@@ -5,14 +5,13 @@ import BankTransactionTable from './dataDisplay/BankTransactionTable';
 import TransactionOptions from './dataDisplay/TransactionOptions';
 import { useGeneralData } from '@/context/GeneralDataContext';
 import LoadingSpinner from '../LoadingSpinner';
-import { useEffect } from 'react';
 
 const Dashboard = () => {
-  const { transactionHistory, contextLoading, updateGeneralData } = useGeneralData();
+  const { transactionHistory, contextLoading } = useGeneralData();
 
-  useEffect(() => {
-    updateGeneralData('/', '');
-  });
+  // useEffect(() => {
+  //   updateGeneralData('/', '');
+  // });
 
   return (
     <div className='w-full pb-4 space-y-2 md:space-y-4'>

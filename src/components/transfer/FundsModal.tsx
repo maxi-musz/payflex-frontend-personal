@@ -110,7 +110,7 @@ const FundsModal = ({ data, handleModalToggle, whichModal }: FundsProps) => {
                 {whichModal === 'Fund Wallet' && 
                 <form onSubmit={onFormSubmit} className="w-full p-6 flex flex-col items-start justify-between gap-4 rounded-radius-12">
                     <div className='rounded-radius-12 size-10 border border-gray-200 flex items-center justify-center'>
-                        <span className='text-green-600'><AttachMoneyOutlined /></span>
+                        <span className='text-green-600 text-2xl font-bold'>₦</span>
                     </div>
 
                     <div className='pt-3 pb-5 space-y-4 mx-auto'>

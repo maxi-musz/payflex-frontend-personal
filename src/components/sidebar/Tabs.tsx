@@ -6,7 +6,7 @@ import ButtonNeutral from '../button/ButtonNeutral';
 import { useRouter } from 'next/navigation';
 import DropDownMenu from './DropDownMenu';
 import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
-import { useGeneralData } from '@/context/GeneralDataContext';
+import { useGeneralData } from '@/stores/useGeneralData';
 
 interface TabsProps {
   start: number;
@@ -23,8 +23,9 @@ interface MainTabProps {
 const Tabs = ({ start, stop, onItemClick }: TabsProps) => {
   const [currentDropdownTab, setCurrentDropdownTab] = useState<string | null>(null);
   const router = useRouter();
-  const { updateGeneralData, currentData } = useGeneralData();
 
+  const updateGeneralData = useGeneralData((state) => state.updateGeneralData);
+  const currentData = useGeneralData((state) => state.currentData);
   
   const handleTabClick = (title: string, tabMenu: MainTabProps[], tabUrl: string) => {
     if (tabMenu.length > 0) {

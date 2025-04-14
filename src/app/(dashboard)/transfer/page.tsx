@@ -2,11 +2,11 @@
 
 import NGNToForeign from '@/components/transfer/NGNToForeign';
 import NGNToNGN from '@/components/transfer/NGNToNGN';
-import { useGeneralData } from '@/context/GeneralDataContext';
+import { useGeneralData } from '@/stores/useGeneralData';
 import React from 'react'
 
 const Transfer = () => {
-    const {currentData} = useGeneralData();
+    const currentData = useGeneralData((state) => state.currentData);
 
   return (
     <>

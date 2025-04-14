@@ -12,9 +12,9 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { kycSchema, KYCType } from '@/features/dashboard/validations';
 import { updateKYC } from '@/features/dashboard/actions';
-import { useGeneralData } from '@/context/GeneralDataContext';
 import ButtonNeutral from '../button/ButtonNeutral';
 import LoadingSpinner from '../LoadingSpinner';
+import { useGeneralData } from '@/stores/useGeneralData';
 
 interface ProfileProps {
     data?: KYCType;
@@ -27,7 +27,8 @@ const Verification: React.FC<ProfileProps> = ({ data }) => {
     const [inputDisabled, setInputDisabled] = useState(true);
     const [inputMode, setInputMode] = useState<string>('editable');
 
-    const {userKYC} = useGeneralData();
+    const userKYC = useGeneralData((state) => state.userKYC);
+    
     // const [updatedKYCInfo, setUpdatedKYCInfo] = useState<
     // {
     //     id_type: '',

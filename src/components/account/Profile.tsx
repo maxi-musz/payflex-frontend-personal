@@ -11,9 +11,9 @@ import { useForm } from 'react-hook-form';
 import { profileSchema, ProfileType } from '@/features/dashboard/validations';
 import { updateProfile } from '@/features/dashboard/actions';
 import { useRouter } from 'next/navigation';
-import { useGeneralData } from '@/context/GeneralDataContext';
 import ButtonNeutral from '../button/ButtonNeutral';
 import LoadingSpinner from '../LoadingSpinner';
+import { useGeneralData } from '@/stores/useGeneralData';
 
 interface ProfileProps {
     data?: ProfileType;
@@ -23,7 +23,11 @@ const Profile: React.FC<ProfileProps> = () => {
     const [loading, setLoading] = useState(false);
     const [inputDisabled, setInputDisabled] = useState(true);
     const [inputMode, setInputMode] = useState<string>('editable');
-    const {userProfile, userAddress, contextLoading} = useGeneralData();
+
+    const userProfile = useGeneralData((state) => state.userProfile);
+    const userAddress = useGeneralData((state) => state.userAddress);
+    const contextLoading = useGeneralData((state) => state.contextLoading);
+
     // const [updatedUserInfo, setUpdatedUserInfo] = useState<
     // {
     //     first_name: '',

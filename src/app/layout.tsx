@@ -1,6 +1,5 @@
 import { ReactNode } from 'react';
 import './globals.css';
-import { GeneralDataProvider } from '@/context/GeneralDataContext';
 import ScrollToTopButton from '@/components/button/ScrollToTopButton';
 import { Maven_Pro, Signika_Negative, Ubuntu, Sora, Inter } from 'next/font/google';
 import ReactQueryProvider from '@/providers/ReactQueryProvider';
@@ -23,11 +22,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body className='relative h-full min-h-fit flex'>
         <div className="w-full h-fit min-h-screen">
           <ReactQueryProvider>
-            <GeneralDataProvider>
-              {children}
-              <Toaster position="top-center" reverseOrder={false} />
-              <ScrollToTopButton/>
-            </GeneralDataProvider>
+            {children}
+            <Toaster position="top-center" reverseOrder={false} />
+            <ScrollToTopButton/>
           </ReactQueryProvider>
         </div>
       </body>

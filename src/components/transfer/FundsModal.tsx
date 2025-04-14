@@ -7,7 +7,6 @@ import InputField from '../inputs/InputField';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
-import { useGeneralData } from '@/context/GeneralDataContext';
 import { parseAmountIntoNumberFormat, parseFormattedAmountToNumber } from '@/utils/formatters';
 import { paystackFundingInitializationSchema, PaystackFundingInitializationType } from '@/features/banking/validations';
 import { showToast } from '../HotToast';
@@ -15,6 +14,7 @@ import { initialisePaystackFunding } from '@/features/banking/actions';
 import { Toaster } from 'react-hot-toast';
 import LoadingSpinner from '../LoadingSpinner';
 import { useRouter } from 'next/navigation';
+import { useGeneralData } from '@/stores/useGeneralData';
 
 interface FundsProps {
     data?: PaystackFundingInitializationType,
@@ -27,7 +27,8 @@ const FundsModal = ({ data, handleModalToggle, whichModal }: FundsProps) => {
     const [inputAmount, setInputAmount] = useState('');
     const [whichTransferType, setWhichTransferType] = useState('');
 
-    const { currentData, setCurrentData } = useGeneralData();
+    const currentData = useGeneralData((state) => state.currentData);
+    const setCurrentData = useGeneralData((state) => state.setCurrentData);
     
     const router = useRouter();
 
@@ -62,7 +63,7 @@ const FundsModal = ({ data, handleModalToggle, whichModal }: FundsProps) => {
                     showToast("You are unauthorized!", "error");
 
                     setTimeout(() => {
-                        return router.push('/login');
+                        return router.push('/');
                     }, 500);
                 } else {
                     const updatedAmount = parseInt(updatedData.amount);
@@ -70,7 +71,7 @@ const FundsModal = ({ data, handleModalToggle, whichModal }: FundsProps) => {
                         amount: updatedAmount,
                         callback_url: `${process.env.NEXT_PUBLIC_PAYSTACK_CALLBACK_URL}`,
                     });
-                    
+                    console.log(res.data)
                     if (res.success) {
                         showToast(`${res.message}`);
                         window.location.href = res.data.authorization_url;
@@ -88,6 +89,7 @@ const FundsModal = ({ data, handleModalToggle, whichModal }: FundsProps) => {
             setIsLoading(false);
         }
     });
+    // console.log(`${process.env.NEXT_PUBLIC_PAYSTACK_CALLBACK_URL}`);
 
     const handleTransactionTypeSubmit = () => {
         if (whichModal === 'Transfer') {

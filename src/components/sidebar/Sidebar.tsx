@@ -7,10 +7,9 @@ import ButtonNeutral from '../button/ButtonNeutral';
 import { useRouter } from 'next/navigation';
 import Tabs from './Tabs';
 import { Logout } from '@mui/icons-material';
-import { useGeneralData } from '@/context/GeneralDataContext';
-import { useEffect, useState } from 'react';
 import LoadingSpinner from '../LoadingSpinner';
 import { useUserData } from '@/hooks/useUserData';
+import { useGeneralData } from '@/stores/useGeneralData';
 
 interface SidebarProps {
     show?: string;
@@ -18,8 +17,8 @@ interface SidebarProps {
 }
   
 const Sidebar: React.FC<SidebarProps> = ({ show = 'hidden', closeSidebar = () => {} }) => {
-    const {dropLoggedInUserInfo} = useGeneralData();
-    
+    const dropLoggedInUserInfo = useGeneralData((state) => state.dropLoggedInUserInfo);
+
     const {
     userDashboardData,
     isPending,

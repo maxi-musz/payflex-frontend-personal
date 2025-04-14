@@ -1,4 +1,4 @@
-import { useGeneralData } from '@/context/GeneralDataContext';
+import { useGeneralData } from '@/stores/useGeneralData';
 import { AirtimeTransactionDataProps } from '@/types/base';
 import { useRouter } from 'next/navigation';
 import React from 'react'
@@ -8,7 +8,7 @@ interface TransactionData {
 }
 
 const TransactionSummary = ({transactionData}: TransactionData) => {
-    const {updateGeneralData} = useGeneralData();
+    const updateGeneralData = useGeneralData((state) => state.updateGeneralData);
 
     const router = useRouter();
     

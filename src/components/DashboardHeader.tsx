@@ -5,20 +5,21 @@ import React, { useEffect, useState } from 'react'
 import QuickAction from './dashboard/dataDisplay/QuickAction'
 import { Key, RemoveRedEyeOutlined } from '@mui/icons-material'
 import CountUp from 'react-countup'
-import { useGeneralData } from '@/context/GeneralDataContext'
 import { verifyPaystackFunding } from '@/features/banking/actions'
 import { showToast } from './HotToast'
 import LoadingSpinner from './LoadingSpinner';
 import { useAuthToken } from '@/hooks/useAuthToken';
-import { useUserData } from '@/hooks/useUserData';
 import { useQuery } from '@tanstack/react-query';
+import { useUserData } from '@/hooks/useUserData';
+import { useGeneralData } from '@/stores/useGeneralData';
 
 const DashboardHeader = () => {
   const [openBalances, setOpenBalances] = useState<Set<number>>(new Set());
   const [isPaystackVerified, setIsPaystackVerified] = useState(false);
   const [reference, setReference] = useState<string | null>(null);
   
-  const {currentData, setCurrentData} = useGeneralData();
+  const currentData = useGeneralData((state) => state.currentData);
+  const setCurrentData = useGeneralData((state) => state.setCurrentData);
 
   const token = useAuthToken();
 
@@ -144,4 +145,4 @@ const DashboardHeader = () => {
   )
 }
 
-export default DashboardHeader
+export default DashboardHeader;

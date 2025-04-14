@@ -5,19 +5,28 @@ import Sidebar from './sidebar/Sidebar';
 import ButtonNeutral from './button/ButtonNeutral';
 import MenuIcon from './icons/MenuIcon';
 import { HelpCenterOutlined, NotificationsOutlined, QrCodeScannerOutlined } from '@mui/icons-material';
-import { useGeneralData } from '@/context/GeneralDataContext';
 import { parseItemIntoArray } from '@/utils/formatters';
 import LoadingSpinner from './LoadingSpinner';
+import { useUserData } from '@/hooks/useUserData';
 
 const Navbar: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [firstName, setFirstName] = useState('');
-  const {user, contextLoading} = useGeneralData();
+
+  const {
+    userDashboardData,
+    isPending,
+    hasError,
+  } = useUserData();
+
+  if (hasError) return <div>Error loading user data</div>;
+
+  const { user } = userDashboardData || {};
 
   useEffect(() => {
     if (user !== null) {
-      const nameArray = parseItemIntoArray(user.name, ' ');
-      setFirstName(nameArray[0]);
+      const nameArray = parseItemIntoArray(user?.name, ' ');
+      if (nameArray) setFirstName(nameArray[0]);
     }
   }, [user?.name, user]);
   
@@ -41,7 +50,7 @@ const Navbar: React.FC = () => {
               <p className="font-semibold md:text-3xl lg:text-4xl hidden md:inline">PayFlex</p>
           </Link> */}
           <h1 className='text-base md:text-xl font-semibold py-1'>
-            Hi, {contextLoading ? <LoadingSpinner/> : <span className='text-blue-700'>{firstName}</span>}
+            Hi, {isPending ? <LoadingSpinner/> : <span className='text-blue-700'>{firstName}</span>}
           </h1>
         </div>
         

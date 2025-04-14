@@ -5,71 +5,65 @@ import React, { useEffect, useState } from 'react'
 import QuickAction from './dashboard/dataDisplay/QuickAction'
 import { Key, RemoveRedEyeOutlined } from '@mui/icons-material'
 import CountUp from 'react-countup'
-import { useRouter } from 'next/navigation'
 import { useGeneralData } from '@/context/GeneralDataContext'
 import { verifyPaystackFunding } from '@/features/banking/actions'
 import { showToast } from './HotToast'
-import { Toaster } from 'react-hot-toast';
 import LoadingSpinner from './LoadingSpinner';
+import { useAuthToken } from '@/hooks/useAuthToken';
+import { useUserData } from '@/hooks/useUserData';
+import { useQuery } from '@tanstack/react-query';
 
 const DashboardHeader = () => {
   const [openBalances, setOpenBalances] = useState<Set<number>>(new Set());
   const [isPaystackVerified, setIsPaystackVerified] = useState(false);
-  // const [accessToken, setAccessToken] = useState('');
+  const [reference, setReference] = useState<string | null>(null);
   
-  const {currentData, setCurrentData, wallet, contextLoading} = useGeneralData();
-  const router = useRouter();
-  
+  const {currentData, setCurrentData} = useGeneralData();
+
+  const token = useAuthToken();
+
   useEffect(() => {
-    const init = async () => {
-      const token = sessionStorage.getItem("accessToken");
-      
-      if (!token) {
-        router.push("/login");
-        return;
-      }
-      
-      // setAccessToken(token); // Set it for any later use
-  
-      // Handle paystack verification if reference exists
+    if (typeof window !== 'undefined') {
       const urlParams = new URLSearchParams(window.location.search);
-      const reference = urlParams.get("reference");
+      const ref = urlParams.get("reference");
+      setReference(ref);
+    }
+  }, []);
   
-      if (reference) {
-        try {
-          const res = await verifyPaystackFunding(token, { reference });
-          if (res.success) {
-            setCurrentData({...currentData, currentTab: '/'});
-            // console.log(res);
-            showToast(`${res.message}`);
-            setIsPaystackVerified(true);
-          } 
-          // else {
-          //   showToast(
-          //     "Something went wrong! Could not finish initialization of paystack funding.",
-          //     "error"
-          //   );
-          // }
-        } catch (error) {
-          setTimeout(() => {
-            showToast(
-              `Error: ${(error as Error).message || "An unexpected error occurred"}`,
-              "error"
-            );
-          }, 500);
-        }
-      }
-    };
+  const {
+    userDashboardData,
+    isPending,
+    hasError,
+  } = useUserData();
+
+  if (hasError) return <div>Error loading user data</div>;
+
+  const { wallet } = userDashboardData || {};
+
+  const {
+    data: referenceData,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ['paystackVerificationProviders'],
+    queryFn: () => verifyPaystackFunding(token ?? '', { reference: reference! }),
+    enabled: !!token && !!reference,
+  });
+
+  useEffect(() => {
+    if (reference && !token) {
+      showToast("User not authenticated!", "error");
+    }
   
-    init();
-  }, [currentData, router, setCurrentData]);
+    if (!reference) return;
   
-  if (isPaystackVerified) {
-    window.location.reload();
-    setTimeout(() => {
-      setIsPaystackVerified(false);
-    }, 200);
-  }
+    if (referenceData?.success) {
+      showToast(referenceData.message);
+      setCurrentData({ ...currentData, currentTab: '/' });
+      setIsPaystackVerified(true);
+      // console.log(referenceData);
+    }
+  }, [reference, token, referenceData]);  
   
   const handleBalanceToggle = (id: number) => {
     setOpenBalances(prev => {
@@ -82,6 +76,17 @@ const DashboardHeader = () => {
       return updated;
     });
   };
+  
+  if (error) showToast("Failed to load providers. Please try again.", 'error');
+
+  // Checking loading state and error state
+  // if (isLoading || !!error) return (
+  //   <StatusHandler
+  //     isLoading={isLoading}
+  //     isError={!!error}
+  //     errorMessage="Failed to load providers. Please try again."
+  //   />
+  // );
 
   return (
     <div>
@@ -109,7 +114,7 @@ const DashboardHeader = () => {
                   <span className={`${item.currency === '₦' ? 'text-green-600' : item.currency === '£' ? 'text-red-600' : 'text-blue-800'} font-extrabold`}>
                     {item.currency}
                   </span>
-                  {contextLoading ? <LoadingSpinner /> : (wallet && !openBalances.has(item.id)) ?
+                  {(isPending || isLoading) ? <LoadingSpinner /> : (wallet && !openBalances.has(item.id)) ?
                     <CountUp start={0} end={item.currency === '₦' ? wallet.current_balance || 0.00 : 0.00} duration={2} delay={0} decimals={2} /> :
                     "******"}
                 </p>

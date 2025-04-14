@@ -10,6 +10,7 @@ import { Logout } from '@mui/icons-material';
 import { useGeneralData } from '@/context/GeneralDataContext';
 import { useEffect, useState } from 'react';
 import LoadingSpinner from '../LoadingSpinner';
+import { useUserData } from '@/hooks/useUserData';
 
 interface SidebarProps {
     show?: string;
@@ -17,18 +18,19 @@ interface SidebarProps {
 }
   
 const Sidebar: React.FC<SidebarProps> = ({ show = 'hidden', closeSidebar = () => {} }) => {
-    const [firstName, setFirstName] = useState('');
-    const [email, setEmail] = useState('');
-    const {user, contextLoading, dropLoggedInUserInfo} = useGeneralData();
+    const {dropLoggedInUserInfo} = useGeneralData();
+    
+    const {
+    userDashboardData,
+    isPending,
+    hasError,
+    } = useUserData();
+
+    if (hasError) return <div>Error loading user data</div>;
+
+    const { user } = userDashboardData || {};
     
     const router = useRouter();
-
-    useEffect(() => {
-        if (user !== null) {
-            setFirstName(user.name)
-            setEmail(user.email)
-        }
-    }, [user?.name, user?.email, user]);
 
     const logout = () => {
         router.push('/');
@@ -76,10 +78,10 @@ const Sidebar: React.FC<SidebarProps> = ({ show = 'hidden', closeSidebar = () =>
                                         sizes="(max-width: 768px) 100vw, 50vw"
                                     />
                                 </div>
-                                {contextLoading ? <LoadingSpinner /> : 
+                                {isPending ? <LoadingSpinner /> : 
                                 <div className='flex flex-col'>
-                                    <p className='capitalize text-[12px] text-textGray font-semibold'>{firstName}</p>
-                                    <p className='text-[10px] text-textGray'>{email}</p>
+                                    <p className='capitalize text-[12px] text-textGray font-semibold'>{user.name}</p>
+                                    <p className='text-[10px] text-textGray'>{user.email}</p>
                                 </div>}
                                 <ButtonNeutral
                                     onClick={logout}

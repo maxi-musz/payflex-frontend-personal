@@ -63,6 +63,47 @@ export const parsePriceIntoIntegerAndDecimal = (price: string | number): { integ
  * The separator could be any character, usually, fullstop, comma, space, slash, etc
 */ 
 export const parseItemIntoArray = (item: string, divider: string) => {
-  const itemArray = item.split(divider).map(item => item.trim()).filter(item => item !== '');
-  return itemArray;
+  if (item) {
+    const itemArray = item.split(divider).map(item => item.trim()).filter(item => item !== '');
+    return itemArray;
+  }
 };
+
+/**
+ * Date formatter: for time how long.
+ * eg. 1 year ago, or 1 month ago, or 1 day ago, or 3 hours ago, or 30 minutes ago, or 40 seconds ago
+*/ 
+export function formatRelativeDate(date: Date | string | number): string {
+  const now = new Date();
+  const commentDate = new Date(date);
+  const diffInSeconds = Math.floor(
+    (now.getTime() - commentDate.getTime()) / 1000
+  );
+
+  if (diffInSeconds < 60) {
+    return `${diffInSeconds} seconds ago`;
+  }
+
+  const diffInMinutes = Math.floor(diffInSeconds / 60);
+  if (diffInMinutes < 60) {
+    return `${diffInMinutes} minute${diffInMinutes === 1 ? "" : "s"} ago`;
+  }
+
+  const diffInHours = Math.floor(diffInMinutes / 60);
+  if (diffInHours < 24) {
+    return `${diffInHours} hour${diffInHours === 1 ? "" : "s"} ago`;
+  }
+
+  const diffInDays = Math.floor(diffInHours / 24);
+  if (diffInDays < 30) {
+    return `${diffInDays} day${diffInDays === 1 ? "" : "s"} ago`;
+  }
+
+  const diffInMonths = Math.floor(diffInDays / 30);
+  if (diffInMonths < 12) {
+    return `${diffInMonths} month${diffInMonths === 1 ? "" : "s"} ago`;
+  }
+
+  const diffInYears = Math.floor(diffInMonths / 12);
+  return `${diffInYears} year${diffInYears === 1 ? "" : "s"} ago`;
+}

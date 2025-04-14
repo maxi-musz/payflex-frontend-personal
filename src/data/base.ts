@@ -487,3 +487,31 @@ export const virtualCards = [
     },
 ];
 
+export const airtimeProviderLogos: Record<string, string> = {
+    MTN: "/images/mtn-icon.jpg",
+    AIRTEL: "/images/airtel-icon.jpg",
+    GLO: "/images/glo-icon.jpg",
+    "9MOBILE": "/images/9mobile-icon.jpg",
+};
+  
+export const providerLogos: Record<string, string> = {
+  "AIRTEL Direct": "/images/airtel-icon.jpg",
+  "MTN Direct": "/images/mtn-icon.jpg",
+  "GLO Direct": "/images/glo-icon.jpg",
+  "9MOBILE Direct": "/images/9mobile-icon.jpg",
+  "MTN SME": "/images/mtn-icon.jpg",
+  "SMILE 4G": "/images/Smile-communications.png",
+  "AIRTEL Corporate Gifting": "/images/airtel-icon.jpg",
+  "Spectranet Internet Data": "/images/spectranet-2.png",
+};
+
+export const providerParams: Record<string, string> = {
+    "AIRTEL Direct": "AIRTEL",
+    "MTN Direct": "MTN",
+    "GLO Direct": "GLO",
+    "9MOBILE Direct": "9MOBILE",
+    "MTN SME": "MTN",
+    "SMILE 4G": "SMILE4G",
+    "AIRTEL Corporate Gifting": "AIRTEL",
+    "Spectranet Internet Data": "SPECTRANET",
+  };

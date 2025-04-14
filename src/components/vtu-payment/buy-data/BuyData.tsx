@@ -4,18 +4,19 @@ import { getInternetDataProviders, buyInternetData, selectInternetData } from '@
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { showToast } from '@/components/HotToast';
-import Image from 'next/image';
-import { Toaster } from 'react-hot-toast';
 import { parsePriceIntoIntegerAndDecimal } from '@/utils/formatters';
-import LoadingSpinner from '@/components/LoadingSpinner';
-import { useGeneralData } from '@/context/GeneralDataContext';
-import { InternetDataPlanProps, InternetDataProviderProps, InternetDataTransactionDataProps } from '@/types/base';
+import { InternetDataPlanProps, InternetDataProviderProps, InternetDataTransactionDataProps, ProviderResponse } from '@/types/base';
 import TransactionSummary from './TransactionSummary';
 import FormWrapper from './FormWrapper';
 import DataPlans from './DataPlans';
+import { useQuery } from '@tanstack/react-query';
+import { useAuthToken } from '@/hooks/useAuthToken';
+import ProviderSelection from './ProviderSelection';
+import { providerLogos, providerParams } from '@/data/base';
+import StatusHandler from '@/components/shared/StatusHandler';
+import { useUserData } from '@/hooks/useUserData';
 
 const BuyData = () => {
-  const [providers, setProviders] = useState([]);
   const [plans, setPlans] = useState<InternetDataPlanProps[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedProvider, setSelectedProvider] = useState<InternetDataProviderProps | null>(null);
@@ -25,54 +26,28 @@ const BuyData = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [transactionData, setTransactionData] = useState<InternetDataTransactionDataProps | null>(null);
-  const {updateGeneralData} = useGeneralData();
 
   const router = useRouter();
+  const token = useAuthToken();
+  const { refetchDashboard } = useUserData();
 
-  const providerLogos: Record<string, string> = {
-    "AIRTEL Direct": "/images/airtel-icon.jpg",
-    "MTN Direct": "/images/mtn-icon.jpg",
-    "GLO Direct": "/images/glo-icon.jpg",
-    "9MOBILE Direct": "/images/9mobile-icon.jpg",
-    "MTN SME": "/images/mtn-icon.jpg",
-    "SMILE 4G": "/images/Smile-communications.png",
-    "AIRTEL Corporate Gifting": "/images/airtel-icon.jpg",
-    "Spectranet Internet Data": "/images/spectranet-2.png",
-  };
-
-  const providerParams: Record<string, string> = {
-    "AIRTEL Direct": "AIRTEL",
-    "MTN Direct": "MTN",
-    "GLO Direct": "GLO",
-    "9MOBILE Direct": "9MOBILE",
-    "MTN SME": "MTN",
-    "SMILE 4G": "SMILE4G",
-    "AIRTEL Corporate Gifting": "AIRTEL",
-    "Spectranet Internet Data": "SPECTRANET",
-  };
+  const {
+    data: providerData,
+    isLoading,
+    error,
+  } = useQuery<ProviderResponse | undefined, Error>({
+    queryKey: ['internetDataProviders'],
+    queryFn: () => getInternetDataProviders(token ?? ''),
+    enabled: !!token,
+  });
 
   useEffect(() => {
-    const token = sessionStorage.getItem("accessToken");
-    if (!token) return router.push('/login');
+    if (providerData?.success) {
+      showToast(providerData.message);
+      setLoading(false);
+    }
+  }, [providerData]);
 
-    const fetchProviders = async () => {
-      try {
-        const res = await getInternetDataProviders(token);
-        if (!res.success) {
-          showToast('No data was gotten', 'error');
-        } else {
-          setProviders(res.data.data);
-        }
-      } catch (error) {
-        showToast(`Error: ${(error as Error).message}`, 'error');
-        router.push('/');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProviders();
-  }, [router]);
 
   useEffect(() => {
     if (selectedPlan) {
@@ -81,17 +56,14 @@ const BuyData = () => {
     }
   }, [selectedPlan]);
   
-  const handlePlanSelection = async (provider: InternetDataProviderProps) => {
+  const handleProviderSelection = async (provider: InternetDataProviderProps) => {
     setSelectedProviderLogo(providerLogos[provider.name]);
     setIsSubmitting(true);
     setSelectedProvider(provider);
 
     try {
       setLoading(true)
-      const token = sessionStorage.getItem("accessToken");
-      if (!token) {
-        return showToast("Unauthorized transaction!", 'error');
-      };
+      if (!token) return showToast("Unauthorized transaction!", 'error');
 
       const res = await selectInternetData(token, providerParams[provider.name]);
       if (res.success) {
@@ -142,6 +114,7 @@ const BuyData = () => {
           // setTimeout(() => {
             //   window.location.reload();
             // }, 1500);
+            await refetchDashboard();
             showToast(message);
           } else {
           if (message === 'Transaction failed: Undefined variable: res') {
@@ -152,7 +125,6 @@ const BuyData = () => {
         }
       }
     } catch (error) {
-        console.log((error as Error).message);
       showToast(`Error: ${(error as Error).message}`, 'error');
     } finally {
       setIsSubmitting(false);
@@ -160,45 +132,23 @@ const BuyData = () => {
     }
   };
 
-  const handleGoBackHome = () => {
-    updateGeneralData('/dashboard', '');
-    router.push('/dashboard');
-  };
-
-  if (loading) {
-    return (<div className="w-full h-[12rem] flex items-center justify-center">
-      <LoadingSpinner dynamicSize='size-12' />
-    </div>)
-  }
+  // Checking loading state and error state
+  if (isLoading || loading || !!error) return (
+    <StatusHandler
+      isLoading={isLoading || loading}
+      isError={!!error}
+      errorMessage="Failed to load providers. Please try again."
+    />
+  );
 
   return (
     <section className="space-y-5">
-      <Toaster position="top-center" reverseOrder={false} />
       <h1 className="text-3xl font-semibold mt-5">Buy Internet Data</h1>
       {!selectedProvider ? 
-        <>
-          <h2 className="text-base font-medium mb-4">Select Provider</h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {providers.map((provider: InternetDataProviderProps) => (
-              <div
-                key={provider.id}
-                onClick={() => handlePlanSelection(provider)}
-                className="bg-white border rounded-xl p-4 flex flex-col items-center justify-center shadow-sm hover:shadow-md cursor-pointer transition"
-              >
-                <span className="relative size-16 mb-2 rounded-lg border">
-                  <Image
-                    src={providerLogos[provider.name] || "/images/imagePlaceholder.jpeg"}
-                    alt={provider.name}
-                    fill
-                    className="object-contain rounded-lg"
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                  />
-                </span>
-                <span className="text-sm text-center font-medium text-gray-700">{provider.name}</span>
-              </div>
-            ))}
-          </div>
-        </>
+        <ProviderSelection
+          providers={providerData?.data.data || []}
+          onSelect={handleProviderSelection}
+        />
         : (plans && plans.length > 0 && selectedPlan === null) ?
           <DataPlans
             setSelectedPlan={setSelectedPlan}
@@ -207,7 +157,7 @@ const BuyData = () => {
             setSelectedProvider={setSelectedProvider}
           />
         : transactionData ?
-          <TransactionSummary handleGoBackHome={handleGoBackHome} transactionData={transactionData} />
+          <TransactionSummary transactionData={transactionData} />
         : selectedPlan !== null ?
           <FormWrapper
             handleSubmit={handleSubmit}

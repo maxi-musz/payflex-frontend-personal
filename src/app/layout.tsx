@@ -3,6 +3,7 @@ import './globals.css';
 import { GeneralDataProvider } from '@/context/GeneralDataContext';
 import ScrollToTopButton from '@/components/button/ScrollToTopButton';
 import { Maven_Pro, Signika_Negative, Ubuntu, Sora, Inter } from 'next/font/google';
+import ReactQueryProvider from '@/providers/ReactQueryProvider';
 import { Toaster } from 'react-hot-toast';
 
 const inter = Inter({ subsets: ['latin'], weight: ['400', '900'], variable: '--font-inter' });
@@ -21,11 +22,13 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="en" className={`${mavenPro.variable} ${signikaNegative.variable} ${ubuntu.variable} ${sora.variable} ${inter.variable}`}>
       <body className='relative h-full min-h-fit flex'>
         <div className="w-full h-fit min-h-screen">
-          <GeneralDataProvider>
-            {children}
-            <Toaster position="top-center" reverseOrder={false} />
-            <ScrollToTopButton/>
-          </GeneralDataProvider>
+          <ReactQueryProvider>
+            <GeneralDataProvider>
+              {children}
+              <Toaster position="top-center" reverseOrder={false} />
+              <ScrollToTopButton/>
+            </GeneralDataProvider>
+          </ReactQueryProvider>
         </div>
       </body>
     </html>

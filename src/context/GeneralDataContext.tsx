@@ -5,6 +5,8 @@ import { currentUserInfo, INITIAL_GENERAL_DATA } from '../data/base';
 import { GeneralDataProps, TransactionHistoryProps, UserAddressProps, UserDataProps, UserKYCProps, UserProfileProps, UserProps, WalletProps } from '../types/base';
 import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 import { initUserSession } from '@/utils/initUserSession';
+import { useQueries } from '@tanstack/react-query';
+import { getUserDashboard, getUserProfile } from '@/features/dashboard/actions';
 
 interface GeneralDataContextType {
   currentData: GeneralDataProps;
@@ -128,18 +130,44 @@ export const GeneralDataProvider = ({ children }: { children: ReactNode }) => {
       setContextLoading(true);
       // console.log(accessToken);
 
-      const data = await initUserSession(token);
+      // const queryResults = useQueries({
+      //   queries: [
+      //     {
+      //       queryKey: ['userDashboard'],
+      //       queryFn: () => getUserDashboard(token ?? ''),
+      //       enabled: !!token,
+      //     },
+      //     {
+      //       queryKey: ['userProfile'],
+      //       queryFn: () => getUserProfile(token ?? ''),
+      //       enabled: !!token,
+      //     },
+      //   ],
+      // });
+      
+      // const [userDashboardQuery, userProfileQuery] = queryResults;
+      
+      // const {data: userDashboardData, isPending: isDashboardPending, error: dashboardError, } = userDashboardQuery;
+      // const {data: userProfileData, isPending: isProfilePending, error: profileError, } = userProfileQuery;
+      
+      // const isLoading = isDashboardPending || isProfilePending;
+      // const hasError = dashboardError || profileError;
+      
+      // console.log(userDashboardData);
+      // console.log(userProfileData);
 
-      if (data) {
-        setUser(data.user);
-        setWallet(data.wallet);
-        setTransactionHistory(data.transactionHistory);
-        setUserProfile(data.profile_data);
-        setUserAddress(data.addres);
-        setUserKYC(data.user_kyc_data);
-      } else {
-        router.push("/");
-      }
+      // const data = await initUserSession(token);
+
+      // if (data) {
+      //   setUser(data.user);
+      //   setWallet(data.wallet);
+      //   setTransactionHistory(data.transactionHistory);
+      //   setUserProfile(data.profile_data);
+      //   setUserAddress(data.addres);
+      //   setUserKYC(data.user_kyc_data);
+      // } else {
+      //   router.push("/");
+      // }
 
       setContextLoading(false);
     };

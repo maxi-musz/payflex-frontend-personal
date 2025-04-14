@@ -3,16 +3,25 @@
 import ButtonNeutral from '../button/ButtonNeutral';
 import BankTransactionTable from './dataDisplay/BankTransactionTable';
 import TransactionOptions from './dataDisplay/TransactionOptions';
-import { useGeneralData } from '@/context/GeneralDataContext';
 import LoadingSpinner from '../LoadingSpinner';
+import { useUserData } from '@/hooks/useUserData';
 
 const Dashboard = () => {
-  const { transactionHistory, contextLoading } = useGeneralData();
 
+  // updateGeneralData('/', '');
   // useEffect(() => {
-  //   updateGeneralData('/', '');
   // });
 
+  const {
+    userDashboardData,
+    isPending,
+    hasError,
+  } = useUserData();
+
+  if (hasError) return <div>Error loading user data</div>;
+
+  const { transactionHistory } = userDashboardData || {};
+  
   return (
     <div className='w-full pb-4 space-y-2 md:space-y-4'>
       <TransactionOptions />
@@ -22,7 +31,7 @@ const Dashboard = () => {
         <ButtonNeutral btnText1='View all' classes='px-3 py-2 rounded-radius-8 border text-sm' />
       </div>
 
-      {contextLoading ? (
+      {isPending ? (
         <div className="w-full h-[12rem] flex items-center justify-center">
           <LoadingSpinner dynamicSize='size-12' />
         </div>

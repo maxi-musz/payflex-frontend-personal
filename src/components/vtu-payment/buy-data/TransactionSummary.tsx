@@ -1,12 +1,21 @@
+import { useGeneralData } from '@/context/GeneralDataContext';
 import { InternetDataTransactionDataProps } from '@/types/base';
+import { useRouter } from 'next/navigation';
 import React from 'react'
 
 interface TransactionData {
-    handleGoBackHome: () => void
     transactionData: InternetDataTransactionDataProps
 }
 
-const TransactionSummary = ({handleGoBackHome, transactionData}: TransactionData) => {
+const TransactionSummary = ({transactionData}: TransactionData) => {
+    const {updateGeneralData} = useGeneralData();
+    const router = useRouter();
+
+  const handleGoBackHome = () => {
+    updateGeneralData('/dashboard', '');
+    router.push('/dashboard');
+  };
+
   return (
     <div className="flex flex-col items-center justify-center space-y-4 mt-5">
         <h2 className="text-xl font-semibold mb-4">Transaction Details</h2>

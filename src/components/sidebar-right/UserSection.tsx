@@ -4,18 +4,22 @@ import { useGeneralData } from '@/context/GeneralDataContext';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react'
 import LoadingSpinner from '../LoadingSpinner';
+import { useUserData } from '@/hooks/useUserData';
 
 const UserSection = () => {
     const [firstName, setFirstName] = useState('');
     const [email, setEmail] = useState('');
-    const {user, contextLoading} = useGeneralData();
+    // const {user, contextLoading} = useGeneralData();
 
-    useEffect(() => {
-        if (user !== null) {
-            setFirstName(user.name);
-            setEmail(user.email);
-        }
-    }, [user?.name, user?.email, user]);
+  const {
+    userDashboardData,
+    isPending,
+    hasError,
+    } = useUserData();
+
+    if (hasError) return <div>Error loading user data</div>;
+
+    const { user } = userDashboardData || {};
     
   return (
     <div>
@@ -43,10 +47,10 @@ const UserSection = () => {
         </div>
 
         <div className='px-4 mb-6'>
-            {contextLoading ? <LoadingSpinner/> :
+            {isPending ? <LoadingSpinner/> :
             <>
-                <h2 className='font-semibold'>{firstName}</h2>
-                <p className='text-textGray text-sm'>{email}</p>
+                <h2 className='font-semibold'>{user.name}</h2>
+                <p className='text-textGray text-sm'>{user.email}</p>
             </>}
         </div>
     </div>

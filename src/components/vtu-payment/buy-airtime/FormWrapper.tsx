@@ -2,6 +2,7 @@
 
 import ButtonOne from '@/components/button/ButtonOne';
 import InputOne from '@/components/inputs/InputOne';
+import LoadingSpinner from '@/components/LoadingSpinner';
 import { AirtimeProviderProps } from '@/types/base';
 import Image from 'next/image';
 
@@ -60,7 +61,13 @@ const FormWrapper = ({
                     {/* {amountError && <p className='text-center text-xs text-red-700'>{amountError}</p>} */}
                 </div>
 
-                <ButtonOne disabled={isSubmitting} type='submit' btnText1={isSubmitting ? 'Processing...' : 'Buy Airtime'} classes={`w-full py-2 px-3 text-white hover:text-primary bg-primary hover:bg-transparent border border-transparent hover:border-primary rounded-radius-8 cursor-pointer shadow-xl focus:ring-2 focus:ring-primary focus:ring-offset-2 outline-none`} />
+                <ButtonOne
+                    disabled={isSubmitting}
+                    type='submit'
+                    btnText1={isSubmitting ? 'Processing...' : 'Buy Airtime'}
+                    icon1={isSubmitting ? <LoadingSpinner color='text-white' /> : ''}
+                    classes={`w-full py-2 px-3 text-white hover:text-primary bg-primary hover:bg-transparent border border-transparent hover:border-primary rounded-radius-8 cursor-pointer shadow-xl focus:ring-2 focus:ring-primary focus:ring-offset-2 outline-none`}
+                />
             </div>
         </form>
         

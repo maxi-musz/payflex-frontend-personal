@@ -188,6 +188,12 @@ export interface AirtimeProviderProps {
   providerLogoUrl: string
 }
 
+export interface AirtimeProviderResponse {
+  data: AirtimeProviderProps[];
+  success: boolean;
+  message: string;
+}
+
 export interface AirtimeTransactionDataProps {
   provider: string,
   phoneNumber: string,
@@ -218,4 +224,15 @@ export interface InternetDataTransactionDataProps {
   date: string,
   reference: string,
   status: string,
+}
+
+export interface ProviderResponse {
+  success: boolean;
+  message: string;
+  data: {
+    success: boolean;
+    message: string;
+    code: string,
+    data: InternetDataProviderProps[]
+  }
 }

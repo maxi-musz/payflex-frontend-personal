@@ -15,6 +15,8 @@ import { updateKYC } from '@/features/dashboard/actions';
 import ButtonNeutral from '../button/ButtonNeutral';
 import LoadingSpinner from '../LoadingSpinner';
 import { useGeneralData } from '@/stores/useGeneralData';
+import { useUserData } from '@/hooks/useUserData';
+import StatusHandler from '../shared/StatusHandler';
 
 interface ProfileProps {
     data?: KYCType;
@@ -41,18 +43,29 @@ const Verification: React.FC<ProfileProps> = ({ data }) => {
         setInputMode('');
         setInputDisabled(false);
     }
+    
+    const {
+        userProfileData,
+        isPending,
+        hasError,
+        refetchProfile,
+        refetchDashboard
+    } = useUserData();
+
+    const { user_kyc_data } = userProfileData || {};
+  console.log(user_kyc_data);
 
     const {
         register,
         handleSubmit,
         formState: { errors },
-        } = useForm<KYCType>({
+    } = useForm<KYCType>({
         resolver: zodResolver(kycSchema),
         defaultValues: data,
-        });
+    });
     
-        const onFormSubmit = handleSubmit(async (data) => {
-        console.log(data);
+    const onFormSubmit = handleSubmit(async (data) => {
+        // console.log(data);
             
         const token = sessionStorage.getItem("accessToken");
         if (!token) return router.push('/login');
@@ -65,7 +78,7 @@ const Verification: React.FC<ProfileProps> = ({ data }) => {
 
         try {
             const res = await updateKYC(token, UserData);
-            console.log(res);
+            // console.log(res);
             if (res.success) {
                 // const { data } = res;
                 setLoading(false);
@@ -78,7 +91,9 @@ const Verification: React.FC<ProfileProps> = ({ data }) => {
                 //     id_no: data.id_no,
                 // })
             }
-            window.location.reload();
+            
+            await refetchProfile();
+            await refetchDashboard();
             setInputMode('editable');
             setInputDisabled(true);
         } catch (error) {
@@ -88,7 +103,15 @@ const Verification: React.FC<ProfileProps> = ({ data }) => {
             }, 500);
         }
     });
-        // console.log(userKYC?.id_number);
+    
+    // Checking loading state and error state
+    if (isPending || !!hasError) return (
+        <StatusHandler
+            isLoading={isPending}
+            isError={!!hasError}
+            errorMessage="Failed to load providers. Please try again."
+        />
+    );
   return (
     <form onSubmit={onFormSubmit} className='py-3 divide-y'>
         <Toaster position="top-center" reverseOrder={false} />
@@ -100,7 +123,7 @@ const Verification: React.FC<ProfileProps> = ({ data }) => {
                 </div>
 
                 <div className="flex items-center gap-2">
-                    {userKYC?.id_number === null ? inputMode === 'editable' ?
+                    {user_kyc_data?.id_number === '' ? inputMode === 'editable' ?
                     <ButtonNeutral
                         onClick={handleEditForm}
                         classes='py-2 px-8 font-semibold space-x-2 border hover:border-primary hover:text-primary rounded-radius-12 w-full sm:w-fit transition-all duration-300 ease-in-out'
@@ -126,9 +149,10 @@ const Verification: React.FC<ProfileProps> = ({ data }) => {
                         label="ID Type"
                         error={errors.id_type}
                         disabled={inputDisabled}
+                        defaultValue={inputMode !== 'editable' ? user_kyc_data?.id_type : ''}                 
                         mode={inputMode}
-                        classes={`${userKYC?.id_number !== null && inputMode === 'editable' ? 'placeholder:text-neutral-800 placeholder:text-base' : ''} w-full`}
-                        placeholderText={userKYC?.id_type || 'Select ID Type'}
+                        classes={`${user_kyc_data?.id_number !== null && inputMode === 'editable' ? 'placeholder:text-neutral-800 placeholder:text-base' : ''} w-full`}
+                        placeholderText={user_kyc_data?.id_type || 'Select ID Type'}
                     />
                 </div>
                 <div className="w-full">
@@ -137,9 +161,10 @@ const Verification: React.FC<ProfileProps> = ({ data }) => {
                         label="ID Number"
                         error={errors.id_no}
                         disabled={inputDisabled}
+                        defaultValue={inputMode !== 'editable' ? user_kyc_data?.id_number : ''}
                         mode={inputMode}
-                        classes={`${userKYC?.id_number !== null && inputMode === 'editable' ? 'placeholder:text-neutral-800 placeholder:text-base' : ''} w-full`}
-                        placeholderText={userKYC?.id_number || 'Enter your ID number'}
+                        classes={`${user_kyc_data?.id_number !== null && inputMode === 'editable' ? 'placeholder:text-neutral-800 placeholder:text-base' : ''} w-full`}
+                        placeholderText={user_kyc_data?.id_number || 'Enter your ID number'}
                     />
                 </div>
                 <div className="text-primary w-full flex items-start gap-3 p-5 bg-blue-50 border border-blue-100 rounded-radius-12">

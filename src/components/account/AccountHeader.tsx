@@ -4,7 +4,7 @@ import { Edit } from '@mui/icons-material';
 
 const AccountHeader = () => {
   return (
-    <div className="self-start flex items-center gap-10 py-8">
+    <div className="self-start flex items-center gap-10 pb-8">
         <span className="relative size-24 px-3 rounded-full ring-4 ring-primary">
             <Image
                 src="/images/default_avatar.png"

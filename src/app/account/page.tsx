@@ -11,7 +11,7 @@ const Account = () => {
     const [activeTab, setActiveTab] = useState('Profile')
 
   return (
-    <div className='w-full h-fit min-h-screen flex items-start justify-center py-5 px-2'>
+    <div className='w-full h-fit min-h-screen flex items-start justify-center pt-2 pb-5 px-2'>
         <div className='w-full'>
             <AccountHeader/>
             <div className='p-1 rounded-radius-12 border'>

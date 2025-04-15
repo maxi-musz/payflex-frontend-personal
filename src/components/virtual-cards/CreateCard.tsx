@@ -28,14 +28,8 @@ const CreateCard = () => {
     setTimeout(() => {
       showToast("Card created successfully! You can view it in the 'My Cards' tab.");
       setLoading(false);
-      // window.location.reload();
     }, 2000);
   };
-
-  // const handleCheckbox = (e: ChangeEventH<HTMLInputElement>) => {
-  //   setIsChecked(e.target.value)
-  // }
-  // console.log(isChecked);
 
   return (
     <form onSubmit={onFormSubmit} className='py-3 divide-y'>
@@ -47,15 +41,6 @@ const CreateCard = () => {
               <h2 className='text-[22px] font-semibold'>Create Virtual Card</h2>
               <p>Create an international virtual card for online transactions</p>
             </div>
-            {/* <button type='submit'
-              className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-70"
-              disabled={loading}
-            >
-                {loading && (
-                  <LoadingSpinner/>
-                )}
-              {loading ? 'Processing...' : 'Submit'}
-            </button> */}
 
             <ButtonOne
               type='submit'
@@ -106,14 +91,6 @@ const CreateCard = () => {
             </div>
           </div>
         </div>
-
-        {/* <div className="flex items-center justify-end pt-6 pb-1 px-5">
-          <ButtonOne
-            type='submit'
-            classes='py-2 px-8 font-semibold'
-            btnText1={loading ? 'Processing...' : 'Create Virtual Card'}
-          />
-        </div> */}
     </form>
   )
 }

@@ -43,7 +43,7 @@ export const updateProfile = async (token: string, payload: {
     house_number?: string,
   }) => {
     if (!token) {
-        throw new Error("No access token found.");
+      throw new Error("No access token found.");
     }
 
     return await sendApiRequest(

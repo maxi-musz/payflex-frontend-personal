@@ -514,4 +514,6 @@ export const providerParams: Record<string, string> = {
     "SMILE 4G": "SMILE4G",
     "AIRTEL Corporate Gifting": "AIRTEL",
     "Spectranet Internet Data": "SPECTRANET",
-  };
+};
+
+export const idTypes = ['NIGERIAN_BVN_VERIFICATION', 'NIGERIAN_NIN', 'NIGERIAN_INTERNATIONAL_PASSPORT', 'NIGERIAN_PVC', 'NIGERIAN_DRIVERS_LICENSE']

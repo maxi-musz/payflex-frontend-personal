@@ -1,44 +1,32 @@
 'use client';
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ButtonOne from '../button/ButtonOne';
 import { Edit, Save, ShieldOutlined, TaskOutlined } from '@mui/icons-material';
 import InputField from '../inputs/InputField';
-import { Toaster } from 'react-hot-toast';
 import { showToast } from '../HotToast';
 import SelectInputField from '../inputs/InputSelectField';
-import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { kycSchema, KYCType } from '@/features/dashboard/validations';
 import { updateKYC } from '@/features/dashboard/actions';
 import ButtonNeutral from '../button/ButtonNeutral';
 import LoadingSpinner from '../LoadingSpinner';
-import { useGeneralData } from '@/stores/useGeneralData';
 import { useUserData } from '@/hooks/useUserData';
 import StatusHandler from '../shared/StatusHandler';
+import { useAuthToken } from '@/hooks/useAuthToken';
+import { idTypes } from '@/data/base';
 
 interface ProfileProps {
     data?: KYCType;
 }
 
-const id_types = ['NIGERIAN_BVN_VERIFICATION', 'NIGERIAN_NIN', 'NIGERIAN_INTERNATIONAL_PASSPORT', 'NIGERIAN_PVC', 'NIGERIAN_DRIVERS_LICENSE']
-
 const Verification: React.FC<ProfileProps> = ({ data }) => {
-    const [loading, setLoading] = useState(false);
     const [inputDisabled, setInputDisabled] = useState(true);
     const [inputMode, setInputMode] = useState<string>('editable');
 
-    const userKYC = useGeneralData((state) => state.userKYC);
-    
-    // const [updatedKYCInfo, setUpdatedKYCInfo] = useState<
-    // {
-    //     id_type: '',
-    //     id_no: '',
-    // } | null>(null);
-    
-    const router = useRouter();
-    
+    const token = useAuthToken();
+        
     const handleEditForm = () => {
         setInputMode('');
         setInputDisabled(false);
@@ -53,54 +41,50 @@ const Verification: React.FC<ProfileProps> = ({ data }) => {
     } = useUserData();
 
     const { user_kyc_data } = userProfileData || {};
-  console.log(user_kyc_data);
 
     const {
         register,
         handleSubmit,
-        formState: { errors },
+        formState: { isSubmitting, errors },
+        reset,
     } = useForm<KYCType>({
         resolver: zodResolver(kycSchema),
         defaultValues: data,
     });
     
+    useEffect(() => {
+        if (user_kyc_data || inputMode !== 'editable') {
+            reset({
+                id_type: user_kyc_data?.id_type || '',
+                id_no: user_kyc_data?.id_number || '',
+            });
+        }
+    }, [inputMode, user_kyc_data, reset]);
+
     const onFormSubmit = handleSubmit(async (data) => {
-        // console.log(data);
-            
-        const token = sessionStorage.getItem("accessToken");
-        if (!token) return router.push('/login');
-        
-        setLoading(true);
         const UserData = {
             id_type: data.id_type,
             id_no: data.id_no,
         }
 
-        try {
-            const res = await updateKYC(token, UserData);
-            // console.log(res);
-            if (res.success) {
-                // const { data } = res;
-                setLoading(false);
-                setTimeout(() => {
-                    showToast(`${res.message}` || "KYC information updated successfully");
-                }, 500);
+        if (token) {
+            try {
+                const res = await updateKYC(token, UserData);
+                if (res.success) {
+                    setTimeout(() => {
+                        showToast(`${res.message}` || "KYC information updated successfully");
+                    }, 500);
+                }
                 
-                // setUpdatedKYCInfo({
-                //     id_type: data.id_type,
-                //     id_no: data.id_no,
-                // })
+                await refetchProfile();
+                await refetchDashboard();
+                setInputMode('editable');
+                setInputDisabled(true);
+            } catch (error) {
+                setTimeout(() => {
+                    showToast(`Error: ${(error as Error).message || 'An unexpected error occurred'}`, 'error');
+                }, 500);
             }
-            
-            await refetchProfile();
-            await refetchDashboard();
-            setInputMode('editable');
-            setInputDisabled(true);
-        } catch (error) {
-            setLoading(false);
-            setTimeout(() => {
-                showToast(`Error: ${(error as Error).message || 'An unexpected error occurred'}`, 'error');
-            }, 500);
         }
     });
     
@@ -114,7 +98,6 @@ const Verification: React.FC<ProfileProps> = ({ data }) => {
     );
   return (
     <form onSubmit={onFormSubmit} className='py-3 divide-y'>
-        <Toaster position="top-center" reverseOrder={false} />
         <div className='py-6 px-5'>
             <div className="w-full flex items-center justify-between gap-3 flex-wrap pb-8">
                 <div className='flex items-center gap-2'>
@@ -133,9 +116,9 @@ const Verification: React.FC<ProfileProps> = ({ data }) => {
                     <ButtonOne
                         type='submit'
                         classes='py-2 px-8 font-semibold w-full sm:w-fit'
-                        disabled={loading}
-                        icon1={loading ? <LoadingSpinner color='text-white' /> : <Save style={{fontSize: '17px'}} />}
-                        btnText1={loading ? 'Updating...' : 'Update KYC'}
+                        disabled={isSubmitting}
+                        icon1={isSubmitting ? <LoadingSpinner color='text-white' /> : <Save style={{fontSize: '17px'}} />}
+                        btnText1={isSubmitting ? 'Updating...' : 'Update KYC'}
                     /> 
                     : null}
                 </div>
@@ -144,15 +127,14 @@ const Verification: React.FC<ProfileProps> = ({ data }) => {
             <div className="w-full sm:w-96 mx-auto space-y-3 md:space-y-5">
                 <div className="w-full">
                     <SelectInputField
-                        valueArray={id_types}
+                        valueArray={idTypes}
                         {...register("id_type")}
                         label="ID Type"
                         error={errors.id_type}
                         disabled={inputDisabled}
-                        defaultValue={inputMode !== 'editable' ? user_kyc_data?.id_type : ''}                 
                         mode={inputMode}
-                        classes={`${user_kyc_data?.id_number !== null && inputMode === 'editable' ? 'placeholder:text-neutral-800 placeholder:text-base' : ''} w-full`}
-                        placeholderText={user_kyc_data?.id_type || 'Select ID Type'}
+                        classes={`w-full`}
+                        placeholderText={'Select ID Type'}
                     />
                 </div>
                 <div className="w-full">
@@ -161,10 +143,9 @@ const Verification: React.FC<ProfileProps> = ({ data }) => {
                         label="ID Number"
                         error={errors.id_no}
                         disabled={inputDisabled}
-                        defaultValue={inputMode !== 'editable' ? user_kyc_data?.id_number : ''}
                         mode={inputMode}
-                        classes={`${user_kyc_data?.id_number !== null && inputMode === 'editable' ? 'placeholder:text-neutral-800 placeholder:text-base' : ''} w-full`}
-                        placeholderText={user_kyc_data?.id_number || 'Enter your ID number'}
+                        classes={`w-full`}
+                        placeholderText={'Enter your ID number'}
                     />
                 </div>
                 <div className="text-primary w-full flex items-start gap-3 p-5 bg-blue-50 border border-blue-100 rounded-radius-12">
@@ -173,15 +154,6 @@ const Verification: React.FC<ProfileProps> = ({ data }) => {
                 </div>
             </div>
         </div>
-
-        {/* <div className="flex items-center justify-end pt-6 pb-1 px-5">
-            <ButtonOne
-                type='submit'
-                classes='py-2 px-8 font-semibold w-full sm:w-fit'
-                btnText1={loading ? 'Updating...' : 'Update KYC'}
-                icon1={<Save style={{fontSize: '17px'}} />}
-            />
-        </div> */}
     </form>
   )
 }
